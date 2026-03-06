@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Media Campaign Survey</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #2f3941;
+      background: #f3f4f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px 64px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      width: 100%;
+      max-width: 680px;
+      padding: 32px;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .logo-row h1 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1f73b7;
+    }
+
+    .intro {
+      font-size: 14px;
+      color: #49545c;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .intro strong { color: #2f3941; }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #68737d;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 24px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e9ebed;
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      color: #2f3941;
+      margin-bottom: 4px;
+    }
+
+    label .req {
+      color: #cc3340;
+      margin-left: 2px;
+    }
+
+    label .hint {
+      font-weight: normal;
+      color: #68737d;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #c2c8cc;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #2f3941;
+      background: #ffffff;
+      transition: border-color 0.15s;
+      appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #1f73b7;
+      box-shadow: 0 0 0 3px rgba(31,115,183,0.15);
+    }
+
+    textarea { resize: vertical; min-height: 72px; }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-top: 4px;
+    }
+
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: normal;
+      cursor: pointer;
+      margin-bottom: 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 16px;
+    }
+
+    @media (max-width: 480px) {
+      .two-col { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+    }
+
+    .submit-row {
+      margin-top: 32px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    button[type="submit"] {
+      background: #1f73b7;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 28px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button[type="submit"]:hover { background: #1a62a0; }
+    button[type="submit"]:disabled { background: #c2c8cc; cursor: not-allowed; }
+
+    .alert {
+      border-radius: 4px;
+      padding: 12px 16px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .alert-error   { background: #fff0f1; border: 1px solid #f5b8bb; color: #8d1619; }
+    .alert-success { background: #edf8f4; border: 1px solid #aeddd0; color: #186146; }
+    .alert-warning { background: #fff8ed; border: 1px solid #f5d5a0; color: #7a4b00; }
+
+    .alert strong { display: block; margin-bottom: 4px; }
+
+    #status-msg { display: none; }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .invalid-page {
+      text-align: center;
+      padding: 48px 16px;
+    }
+
+    .invalid-page h2 { color: #cc3340; margin-bottom: 12px; }
+    .invalid-page p  { color: #49545c; }
+  </style>
+</head>
+<body>
+<div class="card" id="main-card">
+
+  <script>
+    var ZENDESK_SUBDOMAIN = 'vevomeasurement';
+    var ZENDESK_AUTH = 'bmljaG9sYXMudHJvaXNpQHZldm8uY29tL3Rva2VuOm5aVjZmQ2NhemVHc1hEMTRndTBnU2lvQnJNdUI1R0pPTkEwOExtOHE=';
+
+    // IMPORTANT:
+    // This must match the SURVEY_FORM_SECRET in constants.js.
+    // If constants.js uses a different value, replace this with that exact value.
+    var SURVEY_FORM_SECRET = 'vevo-measurement-survey-2026';
+  </script>
+
+  <div id="invalid-view" class="invalid-page" style="display:none;">
+    <h2>Invalid or expired survey link</h2>
+    <p>This survey link is not valid. Please contact support to request a new link.</p>
+  </div>
+
+  <div id="survey-view">
+    <div class="logo-row">
+      <h1>Media Campaign Survey</h1>
+    </div>
+
+    <p class="intro">
+      Fields marked <strong style="color:#cc3340;">*</strong> are required.
+      Fill in as much detail as possible — this helps us process your campaign request faster.
+    </p>
+
+    <div id="status-msg"></div>
+
+    <form id="survey-form" novalidate>
+
+      <div class="section-title">Agency &amp; Advertiser</div>
+
+      <div class="two-col">
+        <div class="field-group">
+          <label for="f-agency">Agency <span class="req">*</span></label>
+          <input type="text" id="f-agency" name="Agency" placeholder="e.g. Acme Media" required />
+        </div>
+        <div class="field-group">
+          <label for="f-advertiser">Advertiser <span class="req">*</span></label>
+          <input type="text" id="f-advertiser" name="Advertiser" placeholder="e.g. Big Brand Co" required />
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field-group">
+          <label for="f-client-history">Client History</label>
+          <select id="f-client-history" name="Client History">
+            <option value="">-- Select --</option>
+            <option>New client</option>
+            <option>Returning client</option>
+            <option>Existing client</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="f-partnership-type">Partnership Type</label>
+          <select id="f-partnership-type" name="Partnership Type">
+            <option value="">-- Select --</option>
+            <option>Direct</option>
+            <option>Agency</option>
+            <option>Programmatic</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="f-requester-type">Requester Type</label>
+        <select id="f-requester-type" name="Requester Type">
+          <option value="">-- Select --</option>
+          <option>Agency</option>
+          <option>Brand / Advertiser</option>
+          <option>Internal</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="section-title">Campaign Details</div>
+
+      <div class="field-group">
+        <label for="f-buying-model">Buying Model <span class="req">*</span></label>
+        <select id="f-buying-model" name="Buying Model" required>
+          <option value="">-- Select --</option>
+          <option>CPM</option>
+          <option>CPC</option>
+          <option>CPV</option>
+          <option>Flat Fee</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="two-col">
+        <div class="field-group">
+          <label for="f-flight-start">Flight Start Date <span class="req">*</span></label>
+          <input type="date" id="f-flight-start" name="Flight Start Date" required />
+        </div>
+        <div class="field-group">
+          <label for="f-flight-end">Flight End Date <span class="req">*</span></label>
+          <input type="date" id="f-flight-end" name="Flight End Date" required />
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field-group">
+          <label for="f-total-spend">Total Spend <span class="req">*</span></label>
+          <input type="text" id="f-total-spend" name="Total Spend" placeholder="e.g. $500,000" required />
+        </div>
+        <div class="field-group">
+          <label for="f-total-imps">Total Imps <span class="req">*</span></label>
+          <input type="text" id="f-total-imps" name="Total Imps" placeholder="e.g. 10,000,000" required />
+        </div>
+      </div>
+
+      <div class="section-title">Audience &amp; Markets</div>
+
+      <div class="field-group">
+        <label for="f-target-audience">Target Audience <span class="req">*</span></label>
+        <input type="text" id="f-target-audience" name="Target Audience" placeholder="e.g. Adults 25-54" required />
+      </div>
+
+      <div class="field-group">
+        <label for="f-markets">Markets <span class="req">*</span></label>
+        <input type="text" id="f-markets" name="Markets" placeholder="e.g. US, UK, CA" required />
+      </div>
+
+      <div class="field-group">
+        <label for="f-inventory-type">Inventory Type</label>
+        <select id="f-inventory-type" name="Inventory Type">
+          <option value="">-- Select --</option>
+          <option>Display</option>
+          <option>Video</option>
+          <option>Audio</option>
+          <option>CTV</option>
+          <option>Mixed</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="f-artist-franchise">Artist Franchise Inclusion</label>
+        <select id="f-artist-franchise" name="Artist Franchise Inclusion">
+          <option value="">-- Select --</option>
+          <option>Yes</option>
+          <option>No</option>
+          <option>TBD</option>
+        </select>
+      </div>
+
+      <div class="section-title">Measurement &amp; Goals</div>
+
+      <div class="field-group">
+        <label for="f-kpis">Measurement Goals &amp; KPIs <span class="req">*</span></label>
+        <textarea id="f-kpis" name="Measurement Goals & KPIs" placeholder="e.g. Brand Awareness, CTR, Reach" required></textarea>
+      </div>
+
+      <div class="section-title">Impression Breakdown</div>
+
+      <div class="two-col">
+        <div class="field-group">
+          <label for="f-yt-dm">YouTube D/M Imps</label>
+          <input type="text" id="f-yt-dm" name="YouTube D/M Imps" placeholder="e.g. 2,000,000" />
+        </div>
+        <div class="field-group">
+          <label for="f-yt-ctv">YouTube CTV Imps</label>
+          <input type="text" id="f-yt-ctv" name="YouTube CTV Imps" placeholder="e.g. 1,500,000" />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="f-off-yt-ctv">Off-YouTube CTV Imps</label>
+        <input type="text" id="f-off-yt-ctv" name="Off-YouTube CTV Imps" placeholder="e.g. 500,000" />
+      </div>
+
+      <div class="section-title">Technical &amp; Additional</div>
+
+      <div class="field-group">
+        <label for="f-dcm">DCM VAST Tags <span class="hint">(DISQO Only)</span></label>
+        <textarea id="f-dcm" name="DCM VAST Tags (DISQO Only)" placeholder="Paste VAST tag URLs here if applicable"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label for="f-linear-tv">Linear TV Status <span class="hint">(iSpot Only)</span></label>
+        <select id="f-linear-tv" name="Linear TV Status (iSpot Only)">
+          <option value="">-- Select --</option>
+          <option>Active</option>
+          <option>Inactive</option>
+          <option>N/A</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Media Plan Attached</label>
+        <div class="radio-group">
+          <label><input type="radio" name="Media Plan Attached" value="Yes" /> Yes</label>
+          <label><input type="radio" name="Media Plan Attached" value="No" /> No</label>
+          <label><input type="radio" name="Media Plan Attached" value="Will send separately" /> Will send separately</label>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" id="submit-btn">Submit Survey</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  function getParam(name) {
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  var ticketId = getParam('ticket_id');
+  var token = getParam('token');
+
+  function validateToken(tId, tok) {
+    if (!tId || !tok) return false;
+    try {
+      var expected = btoa(String(tId) + ':' + SURVEY_FORM_SECRET);
+      return tok === expected;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  if (!validateToken(ticketId, token)) {
+    document.getElementById('survey-view').style.display = 'none';
+    document.getElementById('invalid-view').style.display = 'block';
+    return;
+  }
+
+  function showStatus(type, title, body) {
+    var el = document.getElementById('status-msg');
+    el.style.display = 'block';
+    el.className = 'alert alert-' + type;
+    el.innerHTML = '<strong>' + title + '</strong>' + (body ? body : '');
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideStatus() {
+    var el = document.getElementById('status-msg');
+    el.style.display = 'none';
+    el.innerHTML = '';
+  }
+
+  function setSubmitting(isSubmitting) {
+    var btn = document.getElementById('submit-btn');
+    if (isSubmitting) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Submitting...';
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Survey';
+    }
+  }
+
+  function collectFormData(form) {
+    var data = {};
+    var elements = form.elements;
+    for (var i = 0; i < elements.length; i++) {
+      var el = elements[i];
+      if (!el.name || el.type === 'submit') continue;
+      if (el.type === 'radio') {
+        if (el.checked) data[el.name] = el.value;
+      } else if (el.type === 'checkbox') {
+        if (el.checked) {
+          data[el.name] = data[el.name] ? data[el.name] + ', ' + el.value : el.value;
+        }
+      } else {
+        if (el.value.trim()) data[el.name] = el.value.trim();
+      }
+    }
+    return data;
+  }
+
+  var FIELD_ID_MAP = {
+    'Agency': 40626591624084,
+    'Advertiser': 40626567565588,
+    'Buying Model': 40626685435540,
+    'Client History': 40633634201620,
+    'Partnership Type': 40633476292884,
+    'Flight Start Date': 40633688427540,
+    'Flight End Date': 40633682599572,
+    'Total Spend': 45903287467156,
+    'Target Audience': 40633839979284,
+    'Inventory Type': 40633862174996,
+    'Markets': 40634066891924,
+    'Artist Franchise Inclusion': 40634094404244,
+    'Measurement Goals & KPIs': 40919389458068,
+    'DCM VAST Tags (DISQO Only)': 40626698760468,
+    'Linear TV Status (iSpot Only)': 40634290426260,
+    'Total Imps': 45750272571284,
+    'YouTube D/M Imps': 45750385158036,
+    'YouTube CTV Imps': 45750420167572,
+    'Off-YouTube CTV Imps': 45750421540372,
+    'Requester Type': 45689441092116,
+    'Media Plan Attached': 0
+  };
+
+  function buildCustomFields(formData) {
+    var customFields = [];
+    for (var label in formData) {
+      var fieldId = FIELD_ID_MAP[label];
+      if (fieldId) {
+        customFields.push({ id: fieldId, value: formData[label] });
+      }
+    }
+    return customFields;
+  }
+
+  function submitToZendesk(formData, callback) {
+    var customFields = buildCustomFields(formData);
+
+    if (customFields.length === 0) {
+      callback(new Error('No field IDs configured. Update FIELD_ID_MAP in survey.html.'));
+      return;
+    }
+
+    var url = 'https://' + ZENDESK_SUBDOMAIN + '.zendesk.com/api/v2/tickets/' + ticketId + '.json';
+
+    var payload = JSON.stringify({
+      ticket: {
+        custom_fields: customFields,
+        comment: {
+          body: buildPlainTextSummary(formData),
+          public: false
+        },
+        tags: ['survey_completed']
+      }
+    });
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', 'Basic ' + ZENDESK_AUTH);
+
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        callback(null);
+      } else {
+        var msg = 'HTTP ' + xhr.status;
+        try {
+          var parsed = JSON.parse(xhr.responseText);
+          if (parsed.description) msg += ': ' + parsed.description;
+          else if (parsed.error) msg += ': ' + parsed.error;
+        } catch (e) {}
+        callback(new Error(msg));
+      }
+    };
+
+    xhr.onerror = function () {
+      callback(new Error('Network error. Check your connection and try again.'));
+    };
+
+    xhr.send(payload);
+  }
+
+  function buildPlainTextSummary(formData) {
+    var lines = ['Survey Response:'];
+    var order = [
+      'Agency', 'Advertiser', 'Buying Model', 'Client History', 'Partnership Type',
+      'Flight Start Date', 'Flight End Date', 'Total Spend', 'Target Audience',
+      'Inventory Type', 'Markets', 'Artist Franchise Inclusion',
+      'Measurement Goals & KPIs', 'DCM VAST Tags (DISQO Only)',
+      'Linear TV Status (iSpot Only)', 'Total Imps', 'YouTube D/M Imps',
+      'YouTube CTV Imps', 'Off-YouTube CTV Imps', 'Requester Type',
+      'Media Plan Attached'
+    ];
+    order.forEach(function (key) {
+      lines.push(key + ': ' + (formData[key] || ''));
+    });
+    return lines.join('\n');
+  }
+
+  var REQUIRED_FIELDS = [
+    'Agency', 'Advertiser', 'Buying Model', 'Flight Start Date',
+    'Flight End Date', 'Total Spend', 'Target Audience', 'Markets',
+    'Measurement Goals & KPIs', 'Total Imps'
+  ];
+
+  function validateRequired(formData) {
+    var missing = REQUIRED_FIELDS.filter(function (f) {
+      return !formData[f] || formData[f].trim() === '';
+    });
+    return missing;
+  }
+
+  document.getElementById('survey-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    hideStatus();
+
+    var formData = collectFormData(this);
+    var missing = validateRequired(formData);
+
+    if (missing.length > 0) {
+      showStatus('warning', 'Please fill in all required fields:', '<ul style="margin:6px 0 0 16px;">' +
+        missing.map(function (f) { return '<li>' + f + '</li>'; }).join('') + '</ul>');
+      return;
+    }
+
+    setSubmitting(true);
+
+    submitToZendesk(formData, function (err) {
+      setSubmitting(false);
+      if (err) {
+        showStatus('error', 'Submission failed', '<p style="margin-top:4px;">' + err.message + '</p>');
+      } else {
+        document.getElementById('survey-form').style.display = 'none';
+        showStatus('success', 'Thank you! Your survey has been submitted.',
+          '<p style="margin-top:4px;">Our team will review your campaign details and be in touch shortly.</p>');
+      }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
