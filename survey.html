@@ -205,10 +205,7 @@
        CONFIGURATION — edit these values before deploying
        ============================================================ -->
   <script>
-    // 1. Your Zendesk subdomain (the part before .zendesk.com)
-    var ZENDESK_SUBDOMAIN = 'vevomeasurement';
-
-    // 2. Must match SURVEY_FORM_SECRET in constants.js
+    // Must match SURVEY_FORM_SECRET in constants.js
     var SURVEY_FORM_SECRET = 'mcs-survey-2024';
   </script>
   <!-- ============================================================ -->
@@ -437,7 +434,6 @@
     document.getElementById('survey-view').style.display  = 'none';
     var invalidView = document.getElementById('invalid-view');
     invalidView.style.display = 'block';
-    // Debug info to diagnose token mismatches
     var debugExpected = '';
     try { debugExpected = btoa(unescape(encodeURIComponent(String(ticketId) + ':' + SURVEY_FORM_SECRET))); } catch(e) { debugExpected = 'btoa error: ' + e; }
     invalidView.innerHTML += '<p style="margin-top:16px;font-size:11px;color:#68737d;word-break:break-all;">' +
@@ -522,18 +518,22 @@
   }
 
   // ---------------------------------------------------------------
-  // 5. Submit via Zendesk Requests API (CORS-enabled, no auth needed)
-  //    POST /api/v2/requests/{id}/comments.json
-  //    This is the end-user-facing API — no Authorization header required.
-  //    The sidebar app will parse the comment and extract custom fields.
+  // 5. Submit as a new ticket via POST /api/v2/requests.json.
+  //    This endpoint is CORS-safe and requires no authentication,
+  //    so anonymous Help Center visitors can submit without being
+  //    signed in. The new ticket subject includes the original
+  //    ticket ID so the sidebar app can find it via search.
   // ---------------------------------------------------------------
   function submitToZendesk(formData, callback) {
-    var url = 'https://' + ZENDESK_SUBDOMAIN + '.zendesk.com/api/v2/requests/' + ticketId + '/comments.json';
+    var url = 'https://vevomeasurement.zendesk.com/api/v2/requests.json';
+
+    var commentBody = buildCommentBody(formData);
 
     var payload = JSON.stringify({
       request: {
+        subject: 'Survey Response for Ticket #' + ticketId,
         comment: {
-          body: buildCommentBody(formData)
+          body: commentBody
         }
       }
     });
@@ -560,7 +560,6 @@
       }
     })
     .catch(function (err) {
-      // fetch only rejects on true network failure (offline, DNS failure, etc.)
       callback(new Error('Could not reach Zendesk. Please check your internet connection and try again. (' + (err.message || 'Network error') + ')'));
     });
   }
