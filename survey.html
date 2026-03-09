@@ -201,14 +201,10 @@
 <body>
 <div class="card" id="main-card">
 
-  <!-- ============================================================
-       CONFIGURATION — edit these values before deploying
-       ============================================================ -->
   <script>
     // Must match SURVEY_FORM_SECRET in constants.js
     var SURVEY_FORM_SECRET = 'mcs-survey-2024';
   </script>
-  <!-- ============================================================ -->
 
   <div id="invalid-view" class="invalid-page" style="display:none;">
     <h2>Invalid or expired survey link</h2>
@@ -497,8 +493,6 @@
 
   // ---------------------------------------------------------------
   // 4. Build the plain-text survey comment body
-  //    The sidebar app parses lines in "Key: Value" format from
-  //    any comment that starts with "Survey Response:"
   // ---------------------------------------------------------------
   function buildCommentBody(formData) {
     var order = [
@@ -518,11 +512,7 @@
   }
 
   // ---------------------------------------------------------------
-  // 5. Submit as a new ticket via POST /api/v2/requests.json.
-  //    This endpoint is CORS-safe and requires no authentication,
-  //    so anonymous Help Center visitors can submit without being
-  //    signed in. The new ticket subject includes the original
-  //    ticket ID so the sidebar app can find it via search.
+  // 5. Submit via POST /api/v2/requests.json (CORS-safe, no auth)
   // ---------------------------------------------------------------
   function submitToZendesk(formData, callback) {
     var url = 'https://vevomeasurement.zendesk.com/api/v2/requests.json';
@@ -532,6 +522,10 @@
     var payload = JSON.stringify({
       request: {
         subject: 'Survey Response for Ticket #' + ticketId,
+        requester: {
+          name: 'Survey Respondent',
+          email: 'survey-noreply@vevomeasurement.zendesk.com'
+        },
         comment: {
           body: commentBody
         }
