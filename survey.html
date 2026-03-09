@@ -83,6 +83,11 @@
       box-shadow: 0 0 0 3px rgba(31,115,183,0.12);
     }
 
+    input.invalid, select.invalid, textarea.invalid {
+      border-color: #dc2626;
+      background: #fff8f8;
+    }
+
     textarea {
       resize: vertical;
       min-height: 80px;
@@ -128,7 +133,7 @@
       margin-top: 8px;
     }
 
-    .submit-btn:hover { background: #1a5f9a; }
+    .submit-btn:hover:not(:disabled) { background: #1a5f9a; }
     .submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
 
     .alert {
@@ -148,6 +153,14 @@
       background: #f0fdf4;
       border: 1px solid #86efac;
       color: #166534;
+    }
+
+    .alert ul {
+      margin: 6px 0 0 18px;
+    }
+
+    .alert ul li {
+      margin-bottom: 2px;
     }
 
     .ticket-ref {
@@ -203,7 +216,7 @@
 </head>
 <body>
 
-<!-- SURVEY VERSION: 13 — submits ONLY to Netlify function, never to Zendesk directly -->
+<!-- SURVEY VERSION: 17 — submits ONLY to Netlify function, never to Zendesk directly -->
 
 <div class="card">
   <div class="card-header">
@@ -232,18 +245,18 @@
       <div class="row-2">
         <div class="form-group">
           <label for="agency">Agency <span class="required">*</span></label>
-          <input type="text" id="agency" name="agency" required placeholder="Agency name" />
+          <input type="text" id="agency" name="agency" placeholder="Agency name" />
         </div>
         <div class="form-group">
           <label for="advertiser">Advertiser <span class="required">*</span></label>
-          <input type="text" id="advertiser" name="advertiser" required placeholder="Advertiser name" />
+          <input type="text" id="advertiser" name="advertiser" placeholder="Advertiser name" />
         </div>
       </div>
 
       <div class="row-2">
         <div class="form-group">
           <label for="buying_model">Buying Model <span class="required">*</span></label>
-          <select id="buying_model" name="buying_model" required>
+          <select id="buying_model" name="buying_model">
             <option value="">Select...</option>
             <option value="CPM">CPM</option>
             <option value="CPC">CPC</option>
@@ -254,7 +267,7 @@
         </div>
         <div class="form-group">
           <label for="client_history">Client History <span class="required">*</span></label>
-          <select id="client_history" name="client_history" required>
+          <select id="client_history" name="client_history">
             <option value="">Select...</option>
             <option value="New Client">New Client</option>
             <option value="Returning Client">Returning Client</option>
@@ -266,7 +279,7 @@
       <div class="row-2">
         <div class="form-group">
           <label for="partnership_type">Partnership Type <span class="required">*</span></label>
-          <select id="partnership_type" name="partnership_type" required>
+          <select id="partnership_type" name="partnership_type">
             <option value="">Select...</option>
             <option value="Direct">Direct</option>
             <option value="Programmatic">Programmatic</option>
@@ -276,7 +289,7 @@
         </div>
         <div class="form-group">
           <label for="requester_type">Requester Type <span class="required">*</span></label>
-          <select id="requester_type" name="requester_type" required>
+          <select id="requester_type" name="requester_type">
             <option value="">Select...</option>
             <option value="Agency">Agency</option>
             <option value="Brand Direct">Brand Direct</option>
@@ -293,17 +306,17 @@
       <div class="row-2">
         <div class="form-group">
           <label for="flight_start_date">Flight Start Date <span class="required">*</span></label>
-          <input type="date" id="flight_start_date" name="flight_start_date" required />
+          <input type="date" id="flight_start_date" name="flight_start_date" />
         </div>
         <div class="form-group">
           <label for="flight_end_date">Flight End Date <span class="required">*</span></label>
-          <input type="date" id="flight_end_date" name="flight_end_date" required />
+          <input type="date" id="flight_end_date" name="flight_end_date" />
         </div>
       </div>
 
       <div class="form-group">
         <label for="total_spend">Total Spend <span class="required">*</span></label>
-        <input type="text" id="total_spend" name="total_spend" required placeholder="e.g. $250,000" />
+        <input type="text" id="total_spend" name="total_spend" placeholder="e.g. $250,000" />
       </div>
 
       <hr class="section-divider" />
@@ -313,17 +326,17 @@
 
       <div class="form-group">
         <label for="target_audience">Target Audience <span class="required">*</span></label>
-        <input type="text" id="target_audience" name="target_audience" required placeholder="e.g. Adults 25-54" />
+        <input type="text" id="target_audience" name="target_audience" placeholder="e.g. Adults 25-54" />
       </div>
 
       <div class="row-2">
         <div class="form-group">
           <label for="inventory_type">Inventory Type <span class="required">*</span></label>
-          <input type="text" id="inventory_type" name="inventory_type" required placeholder="e.g. Display, Video, CTV" />
+          <input type="text" id="inventory_type" name="inventory_type" placeholder="e.g. Display, Video, CTV" />
         </div>
         <div class="form-group">
           <label for="markets">Markets <span class="required">*</span></label>
-          <input type="text" id="markets" name="markets" required placeholder="e.g. New York, Los Angeles" />
+          <input type="text" id="markets" name="markets" placeholder="e.g. US, New York" />
         </div>
       </div>
 
@@ -339,7 +352,7 @@
 
       <div class="form-group">
         <label for="measurement_goals_kpis">Measurement Goals &amp; KPIs <span class="required">*</span></label>
-        <textarea id="measurement_goals_kpis" name="measurement_goals_kpis" required placeholder="e.g. Brand Awareness, VCR > 70%, CTR > 0.5%"></textarea>
+        <textarea id="measurement_goals_kpis" name="measurement_goals_kpis" placeholder="e.g. Brand Awareness, VCR > 70%, CTR > 0.5%"></textarea>
       </div>
 
       <div class="row-2">
@@ -386,7 +399,7 @@
 
       <div class="form-group">
         <label for="media_plan_attached">Media Plan Attached <span class="required">*</span></label>
-        <select id="media_plan_attached" name="media_plan_attached" required>
+        <select id="media_plan_attached" name="media_plan_attached">
           <option value="">Select...</option>
           <option value="Yes">Yes</option>
           <option value="No">No</option>
@@ -405,17 +418,29 @@
     <p>Your campaign intake information has been received.<br />Your account team will be in touch shortly.</p>
   </div>
 
-  <div class="version-badge">v13</div>
+  <div class="version-badge">v17</div>
 </div>
 
 <script>
   // ============================================================
-  // SURVEY VERSION 13
+  // SURVEY VERSION 17
   // Architecture: Browser -> Netlify function -> Zendesk API
   // The browser NEVER calls any Zendesk endpoint directly.
+  //
+  // Fix v17:
+  //   - Removed HTML `required` attribute from all fields.
+  //     The `required` attribute on selects causes browsers to
+  //     block FormData collection for the entire form in some
+  //     environments, resulting in empty values being submitted.
+  //   - All validation is now done purely in JS before submission.
+  //   - Required field IDs are declared explicitly in REQUIRED_FIELDS
+  //     array so there is zero ambiguity about which fields must be filled.
+  //   - On submit: collect ALL FormData first, then validate, then send.
+  //   - Full payload logged to console before every submission.
+  //   - Cache-bust param bumped to v=17 in surveyToken.js.
   // ============================================================
 
-  console.log('[Survey v13] Script loaded. Architecture: Browser -> Netlify -> Zendesk');
+  console.log('[Survey v17] Script loaded. Architecture: Browser -> Netlify -> Zendesk');
 
   var CONFIG = {
     // Must match SURVEY_SHARED_SECRET in constants.js exactly
@@ -426,7 +451,26 @@
     SUBMIT_ENDPOINT: 'https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-survey'
   };
 
-  console.log('[Survey v13] Submit endpoint:', CONFIG.SUBMIT_ENDPOINT);
+  // Explicit list of required field IDs.
+  // These are checked by JS validation - no HTML `required` attribute needed.
+  var REQUIRED_FIELDS = [
+    { id: 'agency',                  label: 'Agency' },
+    { id: 'advertiser',              label: 'Advertiser' },
+    { id: 'buying_model',            label: 'Buying Model' },
+    { id: 'client_history',          label: 'Client History' },
+    { id: 'partnership_type',        label: 'Partnership Type' },
+    { id: 'requester_type',          label: 'Requester Type' },
+    { id: 'flight_start_date',       label: 'Flight Start Date' },
+    { id: 'flight_end_date',         label: 'Flight End Date' },
+    { id: 'total_spend',             label: 'Total Spend' },
+    { id: 'target_audience',         label: 'Target Audience' },
+    { id: 'inventory_type',          label: 'Inventory Type' },
+    { id: 'markets',                 label: 'Markets' },
+    { id: 'measurement_goals_kpis',  label: 'Measurement Goals & KPIs' },
+    { id: 'media_plan_attached',     label: 'Media Plan Attached' }
+  ];
+
+  console.log('[Survey v17] Submit endpoint:', CONFIG.SUBMIT_ENDPOINT);
 
   // Token validation - must match generateSurveyToken() in utils/surveyToken.js exactly.
   // Scheme: btoa(ticketId + ':' + secret)
@@ -445,23 +489,32 @@
     });
   }
 
-  function showFormAlert(message, type) {
+  function showFormAlert(message, listItems) {
     var el = document.getElementById('form-alert');
-    el.textContent = message;
-    el.className = 'alert alert-' + type;
+    el.className = 'alert alert-error';
     el.style.display = '';
+    if (listItems && listItems.length > 0) {
+      var html = '<strong>' + message + '</strong><ul>';
+      listItems.forEach(function(item) { html += '<li>' + item + '</li>'; });
+      html += '</ul>';
+      el.innerHTML = html;
+    } else {
+      el.textContent = message;
+    }
     el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function hideFormAlert() {
-    document.getElementById('form-alert').style.display = 'none';
+    var el = document.getElementById('form-alert');
+    el.style.display = 'none';
+    el.innerHTML = '';
   }
 
   // ---- Validate URL parameters on load ----
   var ticketId = getQueryParam('ticket_id');
   var token = getQueryParam('token');
 
-  console.log('[Survey v13] URL params - ticket_id:', ticketId, 'token present:', !!token);
+  console.log('[Survey v17] URL params - ticket_id:', ticketId, 'token present:', !!token);
 
   if (!ticketId || !token) {
     document.getElementById('error-message').textContent =
@@ -469,7 +522,7 @@
     showScreen('error-screen');
   } else {
     var expectedToken = generateToken(ticketId, CONFIG.SHARED_SECRET);
-    console.log('[Survey v13] Token valid:', token === expectedToken);
+    console.log('[Survey v17] Token valid:', token === expectedToken);
     if (token !== expectedToken) {
       document.getElementById('error-message').textContent =
         'This survey link is invalid or has expired. Please contact support for a new link.';
@@ -486,42 +539,47 @@
     hideFormAlert();
 
     var form = e.target;
-    var requiredFields = form.querySelectorAll('[required]');
-    var missing = [];
 
-    requiredFields.forEach(function(field) {
-      if (!field.value.trim()) {
-        missing.push(field.previousElementSibling.textContent.replace(' *', '').trim());
-        field.style.borderColor = '#dc2626';
-      } else {
-        field.style.borderColor = '';
-      }
-    });
-
-    if (missing.length > 0) {
-      showFormAlert('Please complete the following required fields: ' + missing.join(', '), 'error');
-      return;
-    }
-
-    // Collect all form data as a plain object
+    // Step 1: Collect ALL form data first (before any validation)
+    // This ensures we capture every field value regardless of validation state.
     var formData = new FormData(form);
     var responseData = {};
     formData.forEach(function(value, key) {
       responseData[key] = value.trim();
     });
 
-    // Build the payload: ticketId + all survey fields
+    console.log('[Survey v17] Raw form data collected:', JSON.stringify(responseData));
+
+    // Step 2: Validate required fields using the explicit REQUIRED_FIELDS list
+    var missing = [];
+    REQUIRED_FIELDS.forEach(function(field) {
+      var value = responseData[field.id];
+      var el = document.getElementById(field.id);
+      if (!value || value === '') {
+        missing.push(field.label);
+        if (el) el.classList.add('invalid');
+      } else {
+        if (el) el.classList.remove('invalid');
+      }
+    });
+
+    if (missing.length > 0) {
+      showFormAlert('Please complete the following required fields:', missing);
+      return;
+    }
+
+    // Step 3: Build the full payload
     var payload = Object.assign({ ticketId: ticketId }, responseData);
 
-    console.log('[Survey v13] Submitting to Netlify function:', CONFIG.SUBMIT_ENDPOINT);
-    console.log('[Survey v13] Payload keys:', Object.keys(payload));
+    console.log('[Survey v17] Submitting to Netlify function:', CONFIG.SUBMIT_ENDPOINT);
+    console.log('[Survey v17] Payload keys:', Object.keys(payload));
+    console.log('[Survey v17] Full payload:', JSON.stringify(payload, null, 2));
 
     var submitBtn = document.getElementById('submit-btn');
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
 
-    // POST to the Netlify serverless function ONLY.
-    // This is the single outbound call from the browser.
+    // Step 4: POST to the Netlify serverless function ONLY.
     // The function handles all Zendesk API communication server-side.
     fetch(CONFIG.SUBMIT_ENDPOINT, {
       method: 'POST',
@@ -531,9 +589,9 @@
       body: JSON.stringify(payload)
     })
     .then(function(response) {
-      console.log('[Survey v13] Netlify function HTTP status:', response.status);
+      console.log('[Survey v17] Netlify function HTTP status:', response.status);
       return response.json().then(function(body) {
-        console.log('[Survey v13] Netlify function response body:', JSON.stringify(body));
+        console.log('[Survey v17] Netlify function response body:', JSON.stringify(body));
         if (!response.ok) {
           throw new Error(body.error || body.message || ('HTTP ' + response.status));
         }
@@ -541,24 +599,24 @@
       });
     })
     .then(function(body) {
-      console.log('[Survey v13] Submission successful:', JSON.stringify(body));
+      console.log('[Survey v17] Submission successful:', JSON.stringify(body));
       showScreen('success-screen');
     })
     .catch(function(err) {
-      console.error('[Survey v13] Submission failed:', err.message);
-      showFormAlert(
-        'Submission failed: ' + err.message + '. Please try again or contact support.',
-        'error'
-      );
+      console.error('[Survey v17] Submission failed:', err.message);
+      showFormAlert('Submission failed: ' + err.message + '. Please try again or contact support.', null);
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Campaign Survey';
     });
   });
 
-  // Clear red border on input change
+  // Clear invalid styling on input change
   document.querySelectorAll('input, select, textarea').forEach(function(el) {
+    el.addEventListener('change', function() {
+      this.classList.remove('invalid');
+    });
     el.addEventListener('input', function() {
-      this.style.borderColor = '';
+      this.classList.remove('invalid');
     });
   });
 </script>
