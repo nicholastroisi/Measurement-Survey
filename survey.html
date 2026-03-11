@@ -216,7 +216,7 @@
 </head>
 <body>
 
-<!-- SURVEY VERSION: 17 — submits ONLY to Netlify function, never to Zendesk directly -->
+<!-- SURVEY VERSION: 21 — dropdown options aligned with DROPDOWN_VALUE_MAP in constants.js -->
 
 <div class="card">
   <div class="card-header">
@@ -258,20 +258,16 @@
           <label for="buying_model">Buying Model <span class="required">*</span></label>
           <select id="buying_model" name="buying_model">
             <option value="">Select...</option>
-            <option value="CPM">CPM</option>
-            <option value="CPC">CPC</option>
-            <option value="CPV">CPV</option>
-            <option value="Flat Rate">Flat Rate</option>
-            <option value="Other">Other</option>
+            <option value="Programmatic">Programmatic</option>
+            <option value="Direct">Direct</option>
           </select>
         </div>
         <div class="form-group">
           <label for="client_history">Client History <span class="required">*</span></label>
           <select id="client_history" name="client_history">
             <option value="">Select...</option>
-            <option value="New Client">New Client</option>
-            <option value="Returning Client">Returning Client</option>
-            <option value="Lapsed Client">Lapsed Client</option>
+            <option value="New Account">New Account</option>
+            <option value="Existing Account">Existing Account</option>
           </select>
         </div>
       </div>
@@ -281,10 +277,8 @@
           <label for="partnership_type">Partnership Type <span class="required">*</span></label>
           <select id="partnership_type" name="partnership_type">
             <option value="">Select...</option>
-            <option value="Direct">Direct</option>
-            <option value="Programmatic">Programmatic</option>
-            <option value="Agency">Agency</option>
-            <option value="Self-Serve">Self-Serve</option>
+            <option value="Upfront">Upfront</option>
+            <option value="Scatter">Scatter</option>
           </select>
         </div>
         <div class="form-group">
@@ -332,7 +326,11 @@
       <div class="row-2">
         <div class="form-group">
           <label for="inventory_type">Inventory Type <span class="required">*</span></label>
-          <input type="text" id="inventory_type" name="inventory_type" placeholder="e.g. Display, Video, CTV" />
+          <select id="inventory_type" name="inventory_type">
+            <option value="">Select...</option>
+            <option value="Guaranteed">Guaranteed</option>
+            <option value="Non-Guaranteed">Non-Guaranteed</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="markets">Markets <span class="required">*</span></label>
@@ -342,39 +340,21 @@
 
       <div class="form-group">
         <label for="artist_franchise_inclusion">Artist / Franchise Inclusion</label>
-        <input type="text" id="artist_franchise_inclusion" name="artist_franchise_inclusion" placeholder="e.g. Taylor Swift, Marvel" />
+        <select id="artist_franchise_inclusion" name="artist_franchise_inclusion">
+          <option value="">Select...</option>
+          <option value="Franchise Included">Franchise Included</option>
+          <option value="No Franchise">No Franchise</option>
+        </select>
       </div>
 
       <hr class="section-divider" />
 
-      <!-- Measurement & Impressions -->
-      <div class="section-label">Measurement &amp; Impressions</div>
+      <!-- Measurement -->
+      <div class="section-label">Measurement</div>
 
       <div class="form-group">
         <label for="measurement_goals_kpis">Measurement Goals &amp; KPIs <span class="required">*</span></label>
         <textarea id="measurement_goals_kpis" name="measurement_goals_kpis" placeholder="e.g. Brand Awareness, VCR > 70%, CTR > 0.5%"></textarea>
-      </div>
-
-      <div class="row-2">
-        <div class="form-group">
-          <label for="total_imps">Total Imps</label>
-          <input type="text" id="total_imps" name="total_imps" placeholder="e.g. 50,000,000" />
-        </div>
-        <div class="form-group">
-          <label for="youtube_dm_imps">YouTube D/M Imps</label>
-          <input type="text" id="youtube_dm_imps" name="youtube_dm_imps" placeholder="e.g. 10,000,000" />
-        </div>
-      </div>
-
-      <div class="row-2">
-        <div class="form-group">
-          <label for="youtube_ctv_imps">YouTube CTV Imps</label>
-          <input type="text" id="youtube_ctv_imps" name="youtube_ctv_imps" placeholder="e.g. 8,000,000" />
-        </div>
-        <div class="form-group">
-          <label for="off_youtube_ctv_imps">Off-YouTube CTV Imps</label>
-          <input type="text" id="off_youtube_ctv_imps" name="off_youtube_ctv_imps" placeholder="e.g. 5,000,000" />
-        </div>
       </div>
 
       <hr class="section-divider" />
@@ -384,26 +364,19 @@
 
       <div class="form-group">
         <label for="dcm_vast_tags">DCM VAST Tags (DISQO Only)</label>
-        <textarea id="dcm_vast_tags" name="dcm_vast_tags" placeholder="Paste DCM VAST tag URLs here (one per line)"></textarea>
+        <select id="dcm_vast_tags" name="dcm_vast_tags">
+          <option value="">Select...</option>
+          <option value="Tags Provided">Tags Provided</option>
+          <option value="No Tags">No Tags</option>
+        </select>
       </div>
 
       <div class="form-group">
         <label for="linear_tv_status">Linear TV Status (iSpot Only)</label>
-        <input type="text" id="linear_tv_status" name="linear_tv_status" placeholder="e.g. Active - Q1 2025" />
-      </div>
-
-      <hr class="section-divider" />
-
-      <!-- Attachments -->
-      <div class="section-label">Attachments</div>
-
-      <div class="form-group">
-        <label for="media_plan_attached">Media Plan Attached <span class="required">*</span></label>
-        <select id="media_plan_attached" name="media_plan_attached">
+        <select id="linear_tv_status" name="linear_tv_status">
           <option value="">Select...</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-          <option value="Will follow">Will follow</option>
+          <option value="Linear Active">Linear Active</option>
+          <option value="Digital Only">Digital Only</option>
         </select>
       </div>
 
@@ -418,29 +391,31 @@
     <p>Your campaign intake information has been received.<br />Your account team will be in touch shortly.</p>
   </div>
 
-  <div class="version-badge">v17</div>
+  <div class="version-badge">v21</div>
 </div>
 
 <script>
   // ============================================================
-  // SURVEY VERSION 17
+  // SURVEY VERSION 21
   // Architecture: Browser -> Netlify function -> Zendesk API
   // The browser NEVER calls any Zendesk endpoint directly.
   //
-  // Fix v17:
-  //   - Removed HTML `required` attribute from all fields.
-  //     The `required` attribute on selects causes browsers to
-  //     block FormData collection for the entire form in some
-  //     environments, resulting in empty values being submitted.
-  //   - All validation is now done purely in JS before submission.
-  //   - Required field IDs are declared explicitly in REQUIRED_FIELDS
-  //     array so there is zero ambiguity about which fields must be filled.
-  //   - On submit: collect ALL FormData first, then validate, then send.
-  //   - Full payload logged to console before every submission.
-  //   - Cache-bust param bumped to v=17 in surveyToken.js.
+  // Changes in v21:
+  //   - All dropdown option VALUES now exactly match the keys in
+  //     DROPDOWN_VALUE_MAP in constants.js so extraction works
+  //     without auto-slug fallback:
+  //       buying_model:               Programmatic | Direct
+  //       client_history:             New Account | Existing Account
+  //       partnership_type:           Upfront | Scatter
+  //       inventory_type:             Guaranteed | Non-Guaranteed (now a select)
+  //       artist_franchise_inclusion: Franchise Included | No Franchise (now a select)
+  //       dcm_vast_tags:              Tags Provided | No Tags (now a select)
+  //       linear_tv_status:           Linear Active | Digital Only (now a select)
+  //   - requester_type options unchanged (Agency / Brand Direct / Internal
+  //     already matched DROPDOWN_VALUE_MAP).
   // ============================================================
 
-  console.log('[Survey v17] Script loaded. Architecture: Browser -> Netlify -> Zendesk');
+  console.log('[Survey v21] Script loaded. Architecture: Browser -> Netlify -> Zendesk');
 
   var CONFIG = {
     // Must match SURVEY_SHARED_SECRET in constants.js exactly
@@ -451,28 +426,52 @@
     SUBMIT_ENDPOINT: 'https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-survey'
   };
 
-  // Explicit list of required field IDs.
-  // These are checked by JS validation - no HTML `required` attribute needed.
-  var REQUIRED_FIELDS = [
-    { id: 'agency',                  label: 'Agency' },
-    { id: 'advertiser',              label: 'Advertiser' },
-    { id: 'buying_model',            label: 'Buying Model' },
-    { id: 'client_history',          label: 'Client History' },
-    { id: 'partnership_type',        label: 'Partnership Type' },
-    { id: 'requester_type',          label: 'Requester Type' },
-    { id: 'flight_start_date',       label: 'Flight Start Date' },
-    { id: 'flight_end_date',         label: 'Flight End Date' },
-    { id: 'total_spend',             label: 'Total Spend' },
-    { id: 'target_audience',         label: 'Target Audience' },
-    { id: 'inventory_type',          label: 'Inventory Type' },
-    { id: 'markets',                 label: 'Markets' },
-    { id: 'measurement_goals_kpis',  label: 'Measurement Goals & KPIs' },
-    { id: 'media_plan_attached',     label: 'Media Plan Attached' }
+  // ============================================================
+  // ALL_FIELDS — single source of truth for payload collection.
+  // Every form field appears here exactly once.
+  // id   = the HTML element's id attribute
+  // key  = the payload key sent to Netlify (identical to id here)
+  // ============================================================
+  var ALL_FIELDS = [
+    { id: 'agency',                     key: 'agency' },
+    { id: 'advertiser',                 key: 'advertiser' },
+    { id: 'buying_model',               key: 'buying_model' },
+    { id: 'client_history',             key: 'client_history' },
+    { id: 'partnership_type',           key: 'partnership_type' },
+    { id: 'requester_type',             key: 'requester_type' },
+    { id: 'flight_start_date',          key: 'flight_start_date' },
+    { id: 'flight_end_date',            key: 'flight_end_date' },
+    { id: 'total_spend',                key: 'total_spend' },
+    { id: 'target_audience',            key: 'target_audience' },
+    { id: 'inventory_type',             key: 'inventory_type' },
+    { id: 'markets',                    key: 'markets' },
+    { id: 'artist_franchise_inclusion', key: 'artist_franchise_inclusion' },
+    { id: 'measurement_goals_kpis',     key: 'measurement_goals_kpis' },
+    { id: 'dcm_vast_tags',              key: 'dcm_vast_tags' },
+    { id: 'linear_tv_status',           key: 'linear_tv_status' }
   ];
 
-  console.log('[Survey v17] Submit endpoint:', CONFIG.SUBMIT_ENDPOINT);
+  // REQUIRED_FIELDS: subset of ALL_FIELDS keys that must be non-empty.
+  var REQUIRED_FIELDS = [
+    { key: 'agency',                 label: 'Agency' },
+    { key: 'advertiser',             label: 'Advertiser' },
+    { key: 'buying_model',           label: 'Buying Model' },
+    { key: 'client_history',         label: 'Client History' },
+    { key: 'partnership_type',       label: 'Partnership Type' },
+    { key: 'requester_type',         label: 'Requester Type' },
+    { key: 'flight_start_date',      label: 'Flight Start Date' },
+    { key: 'flight_end_date',        label: 'Flight End Date' },
+    { key: 'total_spend',            label: 'Total Spend' },
+    { key: 'target_audience',        label: 'Target Audience' },
+    { key: 'inventory_type',         label: 'Inventory Type' },
+    { key: 'markets',                label: 'Markets' },
+    { key: 'measurement_goals_kpis', label: 'Measurement Goals & KPIs' }
+  ];
 
-  // Token validation - must match generateSurveyToken() in utils/surveyToken.js exactly.
+  console.log('[Survey v21] Submit endpoint:', CONFIG.SUBMIT_ENDPOINT);
+  console.log('[Survey v21] ALL_FIELDS count:', ALL_FIELDS.length);
+
+  // Token validation — must match generateSurveyToken() in utils/surveyToken.js exactly.
   // Scheme: btoa(ticketId + ':' + secret)
   function generateToken(ticketId, secret) {
     var raw = String(ticketId) + ':' + secret;
@@ -514,7 +513,7 @@
   var ticketId = getQueryParam('ticket_id');
   var token = getQueryParam('token');
 
-  console.log('[Survey v17] URL params - ticket_id:', ticketId, 'token present:', !!token);
+  console.log('[Survey v21] URL params — ticket_id:', ticketId, '| token present:', !!token);
 
   if (!ticketId || !token) {
     document.getElementById('error-message').textContent =
@@ -522,8 +521,9 @@
     showScreen('error-screen');
   } else {
     var expectedToken = generateToken(ticketId, CONFIG.SHARED_SECRET);
-    console.log('[Survey v17] Token valid:', token === expectedToken);
-    if (token !== expectedToken) {
+    var tokenValid = (token === expectedToken);
+    console.log('[Survey v21] Token valid:', tokenValid);
+    if (!tokenValid) {
       document.getElementById('error-message').textContent =
         'This survey link is invalid or has expired. Please contact support for a new link.';
       showScreen('error-screen');
@@ -538,86 +538,110 @@
     e.preventDefault();
     hideFormAlert();
 
-    var form = e.target;
+    // Defer all collection and submission into setTimeout(fn, 0).
+    // This yields back to the browser event loop so any pending
+    // select/date value commits are fully settled in the DOM
+    // before we read .value from any element.
+    setTimeout(function() {
 
-    // Step 1: Collect ALL form data first (before any validation)
-    // This ensures we capture every field value regardless of validation state.
-    var formData = new FormData(form);
-    var responseData = {};
-    formData.forEach(function(value, key) {
-      responseData[key] = value.trim();
-    });
+      // ---- Step 1: Read every field directly from the live DOM ----
+      console.log('[Survey v21] --- BEGIN DOM COLLECTION ---');
 
-    console.log('[Survey v17] Raw form data collected:', JSON.stringify(responseData));
+      var responseData = {};
+      var missingElements = [];
 
-    // Step 2: Validate required fields using the explicit REQUIRED_FIELDS list
-    var missing = [];
-    REQUIRED_FIELDS.forEach(function(field) {
-      var value = responseData[field.id];
-      var el = document.getElementById(field.id);
-      if (!value || value === '') {
-        missing.push(field.label);
-        if (el) el.classList.add('invalid');
-      } else {
-        if (el) el.classList.remove('invalid');
-      }
-    });
-
-    if (missing.length > 0) {
-      showFormAlert('Please complete the following required fields:', missing);
-      return;
-    }
-
-    // Step 3: Build the full payload
-    var payload = Object.assign({ ticketId: ticketId }, responseData);
-
-    console.log('[Survey v17] Submitting to Netlify function:', CONFIG.SUBMIT_ENDPOINT);
-    console.log('[Survey v17] Payload keys:', Object.keys(payload));
-    console.log('[Survey v17] Full payload:', JSON.stringify(payload, null, 2));
-
-    var submitBtn = document.getElementById('submit-btn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-
-    // Step 4: POST to the Netlify serverless function ONLY.
-    // The function handles all Zendesk API communication server-side.
-    fetch(CONFIG.SUBMIT_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(function(response) {
-      console.log('[Survey v17] Netlify function HTTP status:', response.status);
-      return response.json().then(function(body) {
-        console.log('[Survey v17] Netlify function response body:', JSON.stringify(body));
-        if (!response.ok) {
-          throw new Error(body.error || body.message || ('HTTP ' + response.status));
+      ALL_FIELDS.forEach(function(field) {
+        var el = document.getElementById(field.id);
+        if (!el) {
+          console.warn('[Survey v21] MISSING ELEMENT: id="' + field.id + '"');
+          missingElements.push(field.id);
+          responseData[field.key] = '';
+          return;
         }
-        return body;
+        var rawValue = el.value;
+        console.log('[Survey v21]   ' + field.key + ' (raw): ' + JSON.stringify(rawValue));
+        responseData[field.key] = (typeof rawValue === 'string') ? rawValue.trim() : '';
       });
-    })
-    .then(function(body) {
-      console.log('[Survey v17] Submission successful:', JSON.stringify(body));
-      showScreen('success-screen');
-    })
-    .catch(function(err) {
-      console.error('[Survey v17] Submission failed:', err.message);
-      showFormAlert('Submission failed: ' + err.message + '. Please try again or contact support.', null);
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Campaign Survey';
-    });
+
+      console.log('[Survey v21] --- END DOM COLLECTION ---');
+
+      if (missingElements.length > 0) {
+        console.error('[Survey v21] Could not find DOM elements for IDs:', missingElements.join(', '));
+      }
+
+      // ---- Step 2: Validate required fields ----
+      var missing = [];
+      REQUIRED_FIELDS.forEach(function(field) {
+        var value = responseData[field.key];
+        var el = document.getElementById(field.key);
+        if (!value || value === '') {
+          missing.push(field.label);
+          if (el) el.classList.add('invalid');
+        } else {
+          if (el) el.classList.remove('invalid');
+        }
+      });
+
+      if (missing.length > 0) {
+        showFormAlert('Please complete the following required fields:', missing);
+        return;
+      }
+
+      // ---- Step 3: Build the final payload ----
+      var payload = { ticketId: ticketId };
+      ALL_FIELDS.forEach(function(field) {
+        payload[field.key] = responseData[field.key];
+      });
+
+      console.log('[Survey v21] === FINAL PAYLOAD BEFORE POST ===');
+      console.log(JSON.stringify(payload, null, 2));
+      console.log('[Survey v21] Payload field count (including ticketId):', Object.keys(payload).length);
+      console.log('[Survey v21] Submitting to:', CONFIG.SUBMIT_ENDPOINT);
+
+      var submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+
+      // ---- Step 4: POST to Netlify function ONLY ----
+      fetch(CONFIG.SUBMIT_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(function(response) {
+        console.log('[Survey v21] Netlify HTTP status:', response.status);
+        return response.json().then(function(body) {
+          console.log('[Survey v21] Netlify response body:', JSON.stringify(body));
+          if (!response.ok) {
+            var errMsg = body.error || body.message || ('HTTP ' + response.status);
+            if (body.missingFields && body.missingFields.length > 0) {
+              errMsg += ' — missing: ' + body.missingFields.join(', ');
+            }
+            throw new Error(errMsg);
+          }
+          return body;
+        });
+      })
+      .then(function(body) {
+        console.log('[Survey v21] Submission successful:', JSON.stringify(body));
+        showScreen('success-screen');
+      })
+      .catch(function(err) {
+        console.error('[Survey v21] Submission failed:', err.message);
+        showFormAlert('Submission failed: ' + err.message + '. Please try again or contact support.', null);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Campaign Survey';
+      });
+
+    }, 0); // end setTimeout
   });
 
-  // Clear invalid styling on input change
+  // Clear invalid styling on any change or input event
   document.querySelectorAll('input, select, textarea').forEach(function(el) {
-    el.addEventListener('change', function() {
-      this.classList.remove('invalid');
-    });
-    el.addEventListener('input', function() {
-      this.classList.remove('invalid');
-    });
+    el.addEventListener('change', function() { this.classList.remove('invalid'); });
+    el.addEventListener('input',  function() { this.classList.remove('invalid'); });
   });
 </script>
 </body>
