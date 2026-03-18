@@ -119,6 +119,42 @@
       .card-body { padding: 20px; }
     }
 
+    /* Checkbox group for multi-select fields */
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .checkbox-group.invalid {
+      border-color: #dc2626;
+      background: #fff8f8;
+    }
+
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 400;
+      color: #111827;
+    }
+
+    .checkbox-option input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      cursor: pointer;
+      accent-color: #1f73b7;
+    }
+
     .submit-btn {
       width: 100%;
       padding: 14px;
@@ -212,11 +248,73 @@
       text-align: center;
       padding: 8px;
     }
+
+    /* Tier plan sections */
+    .tier-section {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .tier-section:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .tier-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1f73b7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .franchise-name-row {
+      margin-top: 12px;
+    }
+
+    .franchise-name-row.hidden {
+      display: none;
+    }
+
+    .yes-no-group {
+      display: flex;
+      gap: 20px;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 400;
+      color: #111827;
+    }
+
+    .radio-option input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      cursor: pointer;
+      accent-color: #1f73b7;
+    }
   </style>
 </head>
 <body>
 
-<!-- SURVEY VERSION: 21 — dropdown options aligned with DROPDOWN_VALUE_MAP in constants.js -->
+<!-- SURVEY VERSION: 27 — field updates:
+     - Removed Artist / Franchise Inclusion from Targeting & Inventory section
+     - Removed Linear TV Status (iSpot Only) from Platform-Specific section
+     - Merged Measurement and Platform-Specific sections into "Measurement Vendor Details"
+-->
 
 <div class="card">
   <div class="card-header">
@@ -255,12 +353,21 @@
 
       <div class="row-2">
         <div class="form-group">
-          <label for="buying_model">Buying Model <span class="required">*</span></label>
-          <select id="buying_model" name="buying_model">
-            <option value="">Select...</option>
-            <option value="Programmatic">Programmatic</option>
-            <option value="Direct">Direct</option>
-          </select>
+          <label>Buying Model <span class="required">*</span></label>
+          <div class="checkbox-group" id="buying_model_group">
+            <label class="checkbox-option">
+              <input type="checkbox" id="buying_model_programmatic" value="Programmatic" />
+              Programmatic
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" id="buying_model_direct" value="Direct" />
+              Direct
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" id="buying_model_both" value="Both" />
+              Both
+            </label>
+          </div>
         </div>
         <div class="form-group">
           <label for="client_history">Client History <span class="required">*</span></label>
@@ -292,25 +399,40 @@
         </div>
       </div>
 
-      <hr class="section-divider" />
-
-      <!-- Flight Details -->
-      <div class="section-label">Flight Details</div>
-
       <div class="row-2">
         <div class="form-group">
-          <label for="flight_start_date">Flight Start Date <span class="required">*</span></label>
-          <input type="date" id="flight_start_date" name="flight_start_date" />
+          <label for="boostr_id">Boostr ID</label>
+          <input type="text" id="boostr_id" name="boostr_id" placeholder="e.g. BST-12345" />
         </div>
         <div class="form-group">
-          <label for="flight_end_date">Flight End Date <span class="required">*</span></label>
-          <input type="date" id="flight_end_date" name="flight_end_date" />
+          <label for="deal_id">Deal ID</label>
+          <input type="text" id="deal_id" name="deal_id" placeholder="e.g. DL-67890" />
         </div>
       </div>
 
       <div class="form-group">
-        <label for="total_spend">Total Spend <span class="required">*</span></label>
-        <input type="text" id="total_spend" name="total_spend" placeholder="e.g. $250,000" />
+        <label for="vertical">Vertical <span class="required">*</span></label>
+        <select id="vertical" name="vertical">
+          <option value="">Select...</option>
+          <option value="Automotive">Automotive</option>
+          <option value="Consumer Packaged Goods">Consumer Packaged Goods</option>
+          <option value="Education">Education</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Fashion &amp; Apparel">Fashion &amp; Apparel</option>
+          <option value="Finance &amp; Insurance">Finance &amp; Insurance</option>
+          <option value="Food &amp; Beverage">Food &amp; Beverage</option>
+          <option value="Gaming">Gaming</option>
+          <option value="Government &amp; Nonprofit">Government &amp; Nonprofit</option>
+          <option value="Health &amp; Wellness">Health &amp; Wellness</option>
+          <option value="Home &amp; Garden">Home &amp; Garden</option>
+          <option value="Pharmaceuticals">Pharmaceuticals</option>
+          <option value="Retail &amp; E-Commerce">Retail &amp; E-Commerce</option>
+          <option value="Sports">Sports</option>
+          <option value="Technology">Technology</option>
+          <option value="Telecom">Telecom</option>
+          <option value="Travel &amp; Hospitality">Travel &amp; Hospitality</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
 
       <hr class="section-divider" />
@@ -338,46 +460,202 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="artist_franchise_inclusion">Artist / Franchise Inclusion</label>
-        <select id="artist_franchise_inclusion" name="artist_franchise_inclusion">
-          <option value="">Select...</option>
-          <option value="Franchise Included">Franchise Included</option>
-          <option value="No Franchise">No Franchise</option>
-        </select>
-      </div>
-
       <hr class="section-divider" />
 
-      <!-- Measurement -->
-      <div class="section-label">Measurement</div>
+      <!-- Measurement Vendor Details -->
+      <div class="section-label">Measurement Vendor Details</div>
 
       <div class="form-group">
         <label for="measurement_goals_kpis">Measurement Goals &amp; KPIs <span class="required">*</span></label>
         <textarea id="measurement_goals_kpis" name="measurement_goals_kpis" placeholder="e.g. Brand Awareness, VCR > 70%, CTR > 0.5%"></textarea>
       </div>
 
-      <hr class="section-divider" />
-
-      <!-- Platform-Specific -->
-      <div class="section-label">Platform-Specific (if applicable)</div>
+      <div class="form-group">
+        <label for="measurement_vendor_requested">Measurement Vendor Requested <span class="required">*</span></label>
+        <input type="text" id="measurement_vendor_requested" name="measurement_vendor_requested" placeholder="e.g. DISQO, iSpot, Nielsen" />
+      </div>
 
       <div class="form-group">
-        <label for="dcm_vast_tags">DCM VAST Tags (DISQO Only)</label>
+        <label for="dcm_vast_tags">DCM Vast Tags Available?</label>
         <select id="dcm_vast_tags" name="dcm_vast_tags">
           <option value="">Select...</option>
-          <option value="Tags Provided">Tags Provided</option>
-          <option value="No Tags">No Tags</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="linear_tv_status">Linear TV Status (iSpot Only)</label>
-        <select id="linear_tv_status" name="linear_tv_status">
+        <label for="is_linear_tv_running">Is Linear TV Running?</label>
+        <select id="is_linear_tv_running" name="is_linear_tv_running">
           <option value="">Select...</option>
-          <option value="Linear Active">Linear Active</option>
-          <option value="Digital Only">Digital Only</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
         </select>
+      </div>
+
+      <hr class="section-divider" />
+
+      <!-- Tier Plan Sections -->
+      <div class="section-label">Plan Tiers</div>
+
+      <!-- Tier 1 -->
+      <div class="tier-section">
+        <div class="tier-header">Tier 1 Plan</div>
+
+        <div class="form-group">
+          <label for="tier1_spend">Spend</label>
+          <input type="text" id="tier1_spend" name="tier1_spend" placeholder="e.g. $100,000" />
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label for="tier1_campaign_start">Campaign Start Date</label>
+            <input type="date" id="tier1_campaign_start" name="tier1_campaign_start" />
+          </div>
+          <div class="form-group">
+            <label for="tier1_campaign_end">Campaign End Date</label>
+            <input type="date" id="tier1_campaign_end" name="tier1_campaign_end" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Artist / Franchise Inclusion?</label>
+          <div class="yes-no-group">
+            <label class="radio-option">
+              <input type="radio" name="tier1_artist_franchise" id="tier1_artist_franchise_yes" value="Yes" />
+              Yes
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tier1_artist_franchise" id="tier1_artist_franchise_no" value="No" />
+              No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group franchise-name-row hidden" id="tier1_franchise_name_row">
+          <label for="tier1_franchise_name">Franchise Name (If Applicable)</label>
+          <input type="text" id="tier1_franchise_name" name="tier1_franchise_name" placeholder="e.g. Taylor Swift, NFL" />
+        </div>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="tier-section">
+        <div class="tier-header">Tier 2 Plan</div>
+
+        <div class="form-group">
+          <label for="tier2_spend">Spend</label>
+          <input type="text" id="tier2_spend" name="tier2_spend" placeholder="e.g. $75,000" />
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label for="tier2_campaign_start">Campaign Start Date</label>
+            <input type="date" id="tier2_campaign_start" name="tier2_campaign_start" />
+          </div>
+          <div class="form-group">
+            <label for="tier2_campaign_end">Campaign End Date</label>
+            <input type="date" id="tier2_campaign_end" name="tier2_campaign_end" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Artist / Franchise Inclusion?</label>
+          <div class="yes-no-group">
+            <label class="radio-option">
+              <input type="radio" name="tier2_artist_franchise" id="tier2_artist_franchise_yes" value="Yes" />
+              Yes
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tier2_artist_franchise" id="tier2_artist_franchise_no" value="No" />
+              No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group franchise-name-row hidden" id="tier2_franchise_name_row">
+          <label for="tier2_franchise_name">Franchise Name (If Applicable)</label>
+          <input type="text" id="tier2_franchise_name" name="tier2_franchise_name" placeholder="e.g. Taylor Swift, NFL" />
+        </div>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="tier-section">
+        <div class="tier-header">Tier 3 Plan</div>
+
+        <div class="form-group">
+          <label for="tier3_spend">Spend</label>
+          <input type="text" id="tier3_spend" name="tier3_spend" placeholder="e.g. $50,000" />
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label for="tier3_campaign_start">Campaign Start Date</label>
+            <input type="date" id="tier3_campaign_start" name="tier3_campaign_start" />
+          </div>
+          <div class="form-group">
+            <label for="tier3_campaign_end">Campaign End Date</label>
+            <input type="date" id="tier3_campaign_end" name="tier3_campaign_end" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Artist / Franchise Inclusion?</label>
+          <div class="yes-no-group">
+            <label class="radio-option">
+              <input type="radio" name="tier3_artist_franchise" id="tier3_artist_franchise_yes" value="Yes" />
+              Yes
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tier3_artist_franchise" id="tier3_artist_franchise_no" value="No" />
+              No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group franchise-name-row hidden" id="tier3_franchise_name_row">
+          <label for="tier3_franchise_name">Franchise Name (If Applicable)</label>
+          <input type="text" id="tier3_franchise_name" name="tier3_franchise_name" placeholder="e.g. Taylor Swift, NFL" />
+        </div>
+      </div>
+
+      <!-- Tier 4 -->
+      <div class="tier-section">
+        <div class="tier-header">Tier 4 Plan</div>
+
+        <div class="form-group">
+          <label for="tier4_spend">Spend</label>
+          <input type="text" id="tier4_spend" name="tier4_spend" placeholder="e.g. $25,000" />
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label for="tier4_campaign_start">Campaign Start Date</label>
+            <input type="date" id="tier4_campaign_start" name="tier4_campaign_start" />
+          </div>
+          <div class="form-group">
+            <label for="tier4_campaign_end">Campaign End Date</label>
+            <input type="date" id="tier4_campaign_end" name="tier4_campaign_end" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Artist / Franchise Inclusion?</label>
+          <div class="yes-no-group">
+            <label class="radio-option">
+              <input type="radio" name="tier4_artist_franchise" id="tier4_artist_franchise_yes" value="Yes" />
+              Yes
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tier4_artist_franchise" id="tier4_artist_franchise_no" value="No" />
+              No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group franchise-name-row hidden" id="tier4_franchise_name_row">
+          <label for="tier4_franchise_name">Franchise Name (If Applicable)</label>
+          <input type="text" id="tier4_franchise_name" name="tier4_franchise_name" placeholder="e.g. Taylor Swift, NFL" />
+        </div>
       </div>
 
       <button type="submit" class="submit-btn" id="submit-btn">Submit Campaign Survey</button>
@@ -391,88 +669,66 @@
     <p>Your campaign intake information has been received.<br />Your account team will be in touch shortly.</p>
   </div>
 
-  <div class="version-badge">v21</div>
+  <div class="version-badge">v27</div>
 </div>
 
 <script>
-  // ============================================================
-  // SURVEY VERSION 21
-  // Architecture: Browser -> Netlify function -> Zendesk API
-  // The browser NEVER calls any Zendesk endpoint directly.
-  //
-  // Changes in v21:
-  //   - All dropdown option VALUES now exactly match the keys in
-  //     DROPDOWN_VALUE_MAP in constants.js so extraction works
-  //     without auto-slug fallback:
-  //       buying_model:               Programmatic | Direct
-  //       client_history:             New Account | Existing Account
-  //       partnership_type:           Upfront | Scatter
-  //       inventory_type:             Guaranteed | Non-Guaranteed (now a select)
-  //       artist_franchise_inclusion: Franchise Included | No Franchise (now a select)
-  //       dcm_vast_tags:              Tags Provided | No Tags (now a select)
-  //       linear_tv_status:           Linear Active | Digital Only (now a select)
-  //   - requester_type options unchanged (Agency / Brand Direct / Internal
-  //     already matched DROPDOWN_VALUE_MAP).
-  // ============================================================
-
-  console.log('[Survey v21] Script loaded. Architecture: Browser -> Netlify -> Zendesk');
+  console.log('[Survey v27] Script loaded. Architecture: Browser -> Netlify -> Zendesk');
 
   var CONFIG = {
-    // Must match SURVEY_SHARED_SECRET in constants.js exactly
     SHARED_SECRET: 'mcs-survey-2024',
-
-    // The ONLY endpoint this page ever calls.
-    // All Zendesk API communication happens inside this function.
     SUBMIT_ENDPOINT: 'https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-survey'
   };
 
-  // ============================================================
-  // ALL_FIELDS — single source of truth for payload collection.
-  // Every form field appears here exactly once.
-  // id   = the HTML element's id attribute
-  // key  = the payload key sent to Netlify (identical to id here)
-  // ============================================================
   var ALL_FIELDS = [
-    { id: 'agency',                     key: 'agency' },
-    { id: 'advertiser',                 key: 'advertiser' },
-    { id: 'buying_model',               key: 'buying_model' },
-    { id: 'client_history',             key: 'client_history' },
-    { id: 'partnership_type',           key: 'partnership_type' },
-    { id: 'requester_type',             key: 'requester_type' },
-    { id: 'flight_start_date',          key: 'flight_start_date' },
-    { id: 'flight_end_date',            key: 'flight_end_date' },
-    { id: 'total_spend',                key: 'total_spend' },
-    { id: 'target_audience',            key: 'target_audience' },
-    { id: 'inventory_type',             key: 'inventory_type' },
-    { id: 'markets',                    key: 'markets' },
-    { id: 'artist_franchise_inclusion', key: 'artist_franchise_inclusion' },
-    { id: 'measurement_goals_kpis',     key: 'measurement_goals_kpis' },
-    { id: 'dcm_vast_tags',              key: 'dcm_vast_tags' },
-    { id: 'linear_tv_status',           key: 'linear_tv_status' }
+    { id: 'agency',                       key: 'agency' },
+    { id: 'advertiser',                   key: 'advertiser' },
+    { id: 'client_history',               key: 'client_history' },
+    { id: 'partnership_type',             key: 'partnership_type' },
+    { id: 'requester_type',               key: 'requester_type' },
+    { id: 'boostr_id',                    key: 'boostr_id' },
+    { id: 'deal_id',                      key: 'deal_id' },
+    { id: 'vertical',                     key: 'vertical' },
+    { id: 'target_audience',              key: 'target_audience' },
+    { id: 'inventory_type',               key: 'inventory_type' },
+    { id: 'markets',                      key: 'markets' },
+    { id: 'measurement_goals_kpis',       key: 'measurement_goals_kpis' },
+    { id: 'measurement_vendor_requested', key: 'measurement_vendor_requested' },
+    { id: 'dcm_vast_tags',                key: 'dcm_vast_tags' },
+    { id: 'is_linear_tv_running',         key: 'is_linear_tv_running' },
+    { id: 'tier1_spend',          key: 'tier1_spend' },
+    { id: 'tier1_campaign_start', key: 'tier1_campaign_start' },
+    { id: 'tier1_campaign_end',   key: 'tier1_campaign_end' },
+    { id: 'tier1_franchise_name', key: 'tier1_franchise_name' },
+    { id: 'tier2_spend',          key: 'tier2_spend' },
+    { id: 'tier2_campaign_start', key: 'tier2_campaign_start' },
+    { id: 'tier2_campaign_end',   key: 'tier2_campaign_end' },
+    { id: 'tier2_franchise_name', key: 'tier2_franchise_name' },
+    { id: 'tier3_spend',          key: 'tier3_spend' },
+    { id: 'tier3_campaign_start', key: 'tier3_campaign_start' },
+    { id: 'tier3_campaign_end',   key: 'tier3_campaign_end' },
+    { id: 'tier3_franchise_name', key: 'tier3_franchise_name' },
+    { id: 'tier4_spend',          key: 'tier4_spend' },
+    { id: 'tier4_campaign_start', key: 'tier4_campaign_start' },
+    { id: 'tier4_campaign_end',   key: 'tier4_campaign_end' },
+    { id: 'tier4_franchise_name', key: 'tier4_franchise_name' }
   ];
 
-  // REQUIRED_FIELDS: subset of ALL_FIELDS keys that must be non-empty.
   var REQUIRED_FIELDS = [
-    { key: 'agency',                 label: 'Agency' },
-    { key: 'advertiser',             label: 'Advertiser' },
-    { key: 'buying_model',           label: 'Buying Model' },
-    { key: 'client_history',         label: 'Client History' },
-    { key: 'partnership_type',       label: 'Partnership Type' },
-    { key: 'requester_type',         label: 'Requester Type' },
-    { key: 'flight_start_date',      label: 'Flight Start Date' },
-    { key: 'flight_end_date',        label: 'Flight End Date' },
-    { key: 'total_spend',            label: 'Total Spend' },
-    { key: 'target_audience',        label: 'Target Audience' },
-    { key: 'inventory_type',         label: 'Inventory Type' },
-    { key: 'markets',                label: 'Markets' },
-    { key: 'measurement_goals_kpis', label: 'Measurement Goals & KPIs' }
+    { key: 'agency',                       label: 'Agency' },
+    { key: 'advertiser',                   label: 'Advertiser' },
+    { key: 'buying_model',                 label: 'Buying Model' },
+    { key: 'client_history',               label: 'Client History' },
+    { key: 'partnership_type',             label: 'Partnership Type' },
+    { key: 'requester_type',               label: 'Requester Type' },
+    { key: 'vertical',                     label: 'Vertical' },
+    { key: 'target_audience',              label: 'Target Audience' },
+    { key: 'inventory_type',               label: 'Inventory Type' },
+    { key: 'markets',                      label: 'Markets' },
+    { key: 'measurement_goals_kpis',       label: 'Measurement Goals & KPIs' },
+    { key: 'measurement_vendor_requested', label: 'Measurement Vendor Requested' }
   ];
 
-  console.log('[Survey v21] Submit endpoint:', CONFIG.SUBMIT_ENDPOINT);
-  console.log('[Survey v21] ALL_FIELDS count:', ALL_FIELDS.length);
-
-  // Token validation — must match generateSurveyToken() in utils/surveyToken.js exactly.
-  // Scheme: btoa(ticketId + ':' + secret)
   function generateToken(ticketId, secret) {
     var raw = String(ticketId) + ':' + secret;
     return btoa(unescape(encodeURIComponent(raw)));
@@ -509,11 +765,10 @@
     el.innerHTML = '';
   }
 
-  // ---- Validate URL parameters on load ----
   var ticketId = getQueryParam('ticket_id');
-  var token = getQueryParam('token');
+  var token    = getQueryParam('token');
 
-  console.log('[Survey v21] URL params — ticket_id:', ticketId, '| token present:', !!token);
+  console.log('[Survey v27] URL params — ticket_id:', ticketId, '| token present:', !!token);
 
   if (!ticketId || !token) {
     document.getElementById('error-message').textContent =
@@ -522,7 +777,7 @@
   } else {
     var expectedToken = generateToken(ticketId, CONFIG.SHARED_SECRET);
     var tokenValid = (token === expectedToken);
-    console.log('[Survey v21] Token valid:', tokenValid);
+    console.log('[Survey v27] Token valid:', tokenValid);
     if (!tokenValid) {
       document.getElementById('error-message').textContent =
         'This survey link is invalid or has expired. Please contact support for a new link.';
@@ -533,19 +788,13 @@
     }
   }
 
-  // ---- Form submission ----
   document.getElementById('survey-form').addEventListener('submit', function(e) {
     e.preventDefault();
     hideFormAlert();
 
-    // Defer all collection and submission into setTimeout(fn, 0).
-    // This yields back to the browser event loop so any pending
-    // select/date value commits are fully settled in the DOM
-    // before we read .value from any element.
     setTimeout(function() {
 
-      // ---- Step 1: Read every field directly from the live DOM ----
-      console.log('[Survey v21] --- BEGIN DOM COLLECTION ---');
+      console.log('[Survey v27] --- BEGIN DOM COLLECTION ---');
 
       var responseData = {};
       var missingElements = [];
@@ -553,32 +802,61 @@
       ALL_FIELDS.forEach(function(field) {
         var el = document.getElementById(field.id);
         if (!el) {
-          console.warn('[Survey v21] MISSING ELEMENT: id="' + field.id + '"');
+          console.warn('[Survey v27] MISSING ELEMENT: id="' + field.id + '"');
           missingElements.push(field.id);
           responseData[field.key] = '';
           return;
         }
         var rawValue = el.value;
-        console.log('[Survey v21]   ' + field.key + ' (raw): ' + JSON.stringify(rawValue));
+        console.log('[Survey v27]   ' + field.key + ' (raw): ' + JSON.stringify(rawValue));
         responseData[field.key] = (typeof rawValue === 'string') ? rawValue.trim() : '';
       });
 
-      console.log('[Survey v21] --- END DOM COLLECTION ---');
+      var buyingModelChecked = [];
+      var cbProg   = document.getElementById('buying_model_programmatic');
+      var cbDirect = document.getElementById('buying_model_direct');
+      var cbBoth   = document.getElementById('buying_model_both');
+      if (cbProg   && cbProg.checked)   buyingModelChecked.push('Programmatic');
+      if (cbDirect && cbDirect.checked) buyingModelChecked.push('Direct');
+      if (cbBoth   && cbBoth.checked)   buyingModelChecked.push('Both');
+      responseData['buying_model'] = buyingModelChecked.join(', ');
+      console.log('[Survey v27]   buying_model (checkboxes): ' + JSON.stringify(responseData['buying_model']));
+
+      [1, 2, 3, 4].forEach(function(tier) {
+        var key = 'tier' + tier + '_artist_franchise';
+        var radios = document.querySelectorAll('input[name="' + key + '"]');
+        var selected = '';
+        radios.forEach(function(r) { if (r.checked) selected = r.value; });
+        responseData[key] = selected;
+        console.log('[Survey v27]   ' + key + ' (radio): ' + JSON.stringify(selected));
+      });
+
+      console.log('[Survey v27] --- END DOM COLLECTION ---');
 
       if (missingElements.length > 0) {
-        console.error('[Survey v21] Could not find DOM elements for IDs:', missingElements.join(', '));
+        console.error('[Survey v27] Could not find DOM elements for IDs:', missingElements.join(', '));
       }
 
-      // ---- Step 2: Validate required fields ----
       var missing = [];
       REQUIRED_FIELDS.forEach(function(field) {
         var value = responseData[field.key];
-        var el = document.getElementById(field.key);
         if (!value || value === '') {
           missing.push(field.label);
-          if (el) el.classList.add('invalid');
+          if (field.key === 'buying_model') {
+            var group = document.getElementById('buying_model_group');
+            if (group) group.classList.add('invalid');
+          } else {
+            var el = document.getElementById(field.key);
+            if (el) el.classList.add('invalid');
+          }
         } else {
-          if (el) el.classList.remove('invalid');
+          if (field.key === 'buying_model') {
+            var group = document.getElementById('buying_model_group');
+            if (group) group.classList.remove('invalid');
+          } else {
+            var el = document.getElementById(field.key);
+            if (el) el.classList.remove('invalid');
+          }
         }
       });
 
@@ -587,33 +865,35 @@
         return;
       }
 
-      // ---- Step 3: Build the final payload ----
       var payload = { ticketId: ticketId };
+
       ALL_FIELDS.forEach(function(field) {
         payload[field.key] = responseData[field.key];
       });
+      payload['buying_model'] = responseData['buying_model'];
+      [1, 2, 3, 4].forEach(function(tier) {
+        var key = 'tier' + tier + '_artist_franchise';
+        payload[key] = responseData[key] || '';
+      });
 
-      console.log('[Survey v21] === FINAL PAYLOAD BEFORE POST ===');
+      console.log('[Survey v27] === FINAL PAYLOAD BEFORE POST ===');
       console.log(JSON.stringify(payload, null, 2));
-      console.log('[Survey v21] Payload field count (including ticketId):', Object.keys(payload).length);
-      console.log('[Survey v21] Submitting to:', CONFIG.SUBMIT_ENDPOINT);
+      console.log('[Survey v27] Payload field count (including ticketId):', Object.keys(payload).length);
+      console.log('[Survey v27] Submitting to:', CONFIG.SUBMIT_ENDPOINT);
 
       var submitBtn = document.getElementById('submit-btn');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Submitting...';
 
-      // ---- Step 4: POST to Netlify function ONLY ----
       fetch(CONFIG.SUBMIT_ENDPOINT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
       .then(function(response) {
-        console.log('[Survey v21] Netlify HTTP status:', response.status);
+        console.log('[Survey v27] Netlify HTTP status:', response.status);
         return response.json().then(function(body) {
-          console.log('[Survey v21] Netlify response body:', JSON.stringify(body));
+          console.log('[Survey v27] Netlify response body:', JSON.stringify(body));
           if (!response.ok) {
             var errMsg = body.error || body.message || ('HTTP ' + response.status);
             if (body.missingFields && body.missingFields.length > 0) {
@@ -625,23 +905,56 @@
         });
       })
       .then(function(body) {
-        console.log('[Survey v21] Submission successful:', JSON.stringify(body));
+        console.log('[Survey v27] Submission successful:', JSON.stringify(body));
         showScreen('success-screen');
       })
       .catch(function(err) {
-        console.error('[Survey v21] Submission failed:', err.message);
+        console.error('[Survey v27] Submission failed:', err.message);
         showFormAlert('Submission failed: ' + err.message + '. Please try again or contact support.', null);
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Campaign Survey';
       });
 
-    }, 0); // end setTimeout
+    }, 0);
   });
 
-  // Clear invalid styling on any change or input event
   document.querySelectorAll('input, select, textarea').forEach(function(el) {
     el.addEventListener('change', function() { this.classList.remove('invalid'); });
     el.addEventListener('input',  function() { this.classList.remove('invalid'); });
+  });
+
+  ['buying_model_programmatic', 'buying_model_direct', 'buying_model_both'].forEach(function(id) {
+    var cb = document.getElementById(id);
+    if (cb) {
+      cb.addEventListener('change', function() {
+        var group = document.getElementById('buying_model_group');
+        if (group) group.classList.remove('invalid');
+      });
+    }
+  });
+
+  [1, 2, 3, 4].forEach(function(tier) {
+    var yesId = 'tier' + tier + '_artist_franchise_yes';
+    var noId  = 'tier' + tier + '_artist_franchise_no';
+    var rowId = 'tier' + tier + '_franchise_name_row';
+
+    function updateFranchiseRow() {
+      var yesEl = document.getElementById(yesId);
+      var row   = document.getElementById(rowId);
+      if (!yesEl || !row) return;
+      if (yesEl.checked) {
+        row.classList.remove('hidden');
+      } else {
+        row.classList.add('hidden');
+        var nameInput = document.getElementById('tier' + tier + '_franchise_name');
+        if (nameInput) nameInput.value = '';
+      }
+    }
+
+    var yesEl = document.getElementById(yesId);
+    var noEl  = document.getElementById(noId);
+    if (yesEl) yesEl.addEventListener('change', updateFranchiseRow);
+    if (noEl)  noEl.addEventListener('change', updateFranchiseRow);
   });
 </script>
 </body>
