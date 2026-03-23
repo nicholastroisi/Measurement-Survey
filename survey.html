@@ -244,7 +244,7 @@
 
       <form id="survey-form" novalidate>
 
-        <!-- ── Evergreen Fields ── -->
+        <!-- Evergreen Fields -->
         <h2>Campaign Details</h2>
 
         <div class="field">
@@ -377,7 +377,7 @@
           </select>
         </div>
 
-        <!-- ── Tier Fields ── -->
+        <!-- Tier Fields -->
         <h2>Campaign Tiers</h2>
 
         <!-- Tier 1 -->
@@ -584,10 +584,10 @@
         if (!payload.target_audience) errors.push('Target Audience');
         if (!payload.inventory_type) errors.push('Inventory Type');
         if (!payload.markets) errors.push('Markets');
-        if (!payload.measurement_goals) errors.push('Measurement Goals / KPIs');
-        if (!payload.measurement_vendor || payload.measurement_vendor.length === 0) errors.push('Measurement Vendor(s) Requested (at least one)');
+        if (!payload.measurement_goals_kpis) errors.push('Measurement Goals / KPIs');
+        if (!payload.measurement_vendor_requested || payload.measurement_vendor_requested.length === 0) errors.push('Measurement Vendor(s) Requested (at least one)');
         if (!payload.dcm_vast_tags) errors.push('DCM VAST Tags (DISQO Only)');
-        if (!payload.linear_tv) errors.push('Is Linear TV Running?');
+        if (!payload.is_linear_tv_running) errors.push('Is Linear TV Running?');
         return errors;
       }
 
@@ -613,10 +613,10 @@
           target_audience: (document.getElementById('target_audience').value || '').trim(),
           inventory_type: (document.getElementById('inventory_type').value || '').trim(),
           markets: (document.getElementById('markets').value || '').trim(),
-          measurement_goals: (document.getElementById('measurement_goals').value || '').trim(),
-          measurement_vendor: getSelectValues('measurement_vendor'),
+          measurement_goals_kpis: (document.getElementById('measurement_goals').value || '').trim(),
+          measurement_vendor_requested: getSelectValues('measurement_vendor'),
           dcm_vast_tags: (document.getElementById('dcm_vast_tags').value || '').trim(),
-          linear_tv: (document.getElementById('linear_tv').value || '').trim(),
+          is_linear_tv_running: (document.getElementById('linear_tv').value || '').trim(),
 
           // Tier fields
           tier1_spend: (document.getElementById('tier1_spend').value || '').trim(),
@@ -651,7 +651,7 @@
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Submitting…';
+        submitBtn.textContent = 'Submitting...';
 
         fetch('https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-survey', {
           method: 'POST',
