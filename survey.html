@@ -105,6 +105,12 @@
       padding-right: 28px;
     }
 
+    select[multiple] {
+      background-image: none;
+      padding-right: 10px;
+      min-height: 120px;
+    }
+
     .radio-group, .checkbox-group {
       display: flex;
       flex-wrap: wrap;
@@ -127,6 +133,12 @@
       accent-color: #1f73b7;
       cursor: pointer;
       flex-shrink: 0;
+    }
+
+    .field-hint {
+      font-size: 12px;
+      color: #68737d;
+      margin-top: 4px;
     }
 
     .tier-block {
@@ -168,6 +180,15 @@
     }
 
     .error-banner.visible { display: block; }
+
+    .error-banner ul {
+      margin: 6px 0 0 16px;
+      padding: 0;
+    }
+
+    .error-banner ul li {
+      margin-bottom: 2px;
+    }
 
     .submit-row {
       margin-top: 32px;
@@ -223,7 +244,7 @@
 
       <form id="survey-form" novalidate>
 
-        <!-- Evergreen Fields -->
+        <!-- ── Evergreen Fields ── -->
         <h2>Campaign Details</h2>
 
         <div class="field">
@@ -237,26 +258,35 @@
         </div>
 
         <div class="field">
-          <label>Buying Model<span class="req">*</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="buying_model" value="Programmatic" /> Programmatic</label>
-            <label><input type="radio" name="buying_model" value="Direct" /> Direct</label>
-            <label><input type="radio" name="buying_model" value="Both" /> Both</label>
-          </div>
+          <label for="buying_model">Buying Model<span class="req">*</span></label>
+          <select id="buying_model" name="buying_model">
+            <option value="">— Select —</option>
+            <option value="Programmatic">Programmatic</option>
+            <option value="Direct">Direct</option>
+            <option value="Both">Both</option>
+          </select>
         </div>
 
         <div class="field">
-          <label for="client_history">Client History</label>
-          <textarea id="client_history" name="client_history" rows="3"></textarea>
+          <label for="client_history">Client History<span class="req">*</span></label>
+          <select id="client_history" name="client_history">
+            <option value="">— Select —</option>
+            <option value="New Account">New Account</option>
+            <option value="Existing Account">Existing Account</option>
+          </select>
         </div>
 
         <div class="field">
-          <label for="partnership_type">Partnership Type</label>
-          <input type="text" id="partnership_type" name="partnership_type" />
+          <label for="partnership_type">Partnership Type<span class="req">*</span></label>
+          <select id="partnership_type" name="partnership_type">
+            <option value="">— Select —</option>
+            <option value="Upfront">Upfront</option>
+            <option value="Scatter">Scatter</option>
+          </select>
         </div>
 
         <div class="field">
-          <label for="requester_type">Requester Type</label>
+          <label for="requester_type">Requester Type<span class="req">*</span></label>
           <select id="requester_type" name="requester_type">
             <option value="">— Select —</option>
             <option value="Agency">Agency</option>
@@ -266,21 +296,31 @@
         </div>
 
         <div class="field">
-          <label for="boostr_id">Boostr ID</label>
+          <label for="boostr_id">Boostr ID<span class="req">*</span></label>
           <input type="text" id="boostr_id" name="boostr_id" />
         </div>
 
         <div class="field">
-          <label>Vertical<span class="req">*</span></label>
-          <div class="checkbox-group" id="vertical-group">
-            <label><input type="checkbox" name="vertical" value="Music" /> Music</label>
-            <label><input type="checkbox" name="vertical" value="Entertainment" /> Entertainment</label>
-            <label><input type="checkbox" name="vertical" value="Sports" /> Sports</label>
-            <label><input type="checkbox" name="vertical" value="News" /> News</label>
-            <label><input type="checkbox" name="vertical" value="Lifestyle" /> Lifestyle</label>
-            <label><input type="checkbox" name="vertical" value="Technology" /> Technology</label>
-            <label><input type="checkbox" name="vertical" value="Other" /> Other</label>
-          </div>
+          <label for="vertical">Vertical<span class="req">*</span></label>
+          <select id="vertical" name="vertical" multiple>
+            <option value="Tech">Tech</option>
+            <option value="Auto">Auto</option>
+            <option value="CPG">CPG</option>
+            <option value="Retail">Retail</option>
+            <option value="Travel">Travel</option>
+            <option value="Telecom">Telecom</option>
+            <option value="Finance/Banking">Finance/Banking</option>
+            <option value="Health &amp; Beauty">Health &amp; Beauty</option>
+            <option value="Cable/Streaming">Cable/Streaming</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="QSR/Family Restaurants">QSR/Family Restaurants</option>
+            <option value="Other">Other</option>
+            <option value="Pharma">Pharma</option>
+            <option value="Insurance">Insurance</option>
+            <option value="Gaming">Gaming</option>
+          </select>
+          <p class="field-hint">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</p>
         </div>
 
         <div class="field">
@@ -290,7 +330,11 @@
 
         <div class="field">
           <label for="inventory_type">Inventory Type<span class="req">*</span></label>
-          <input type="text" id="inventory_type" name="inventory_type" />
+          <select id="inventory_type" name="inventory_type">
+            <option value="">— Select —</option>
+            <option value="Guaranteed">Guaranteed</option>
+            <option value="Non-Guaranteed">Non-Guaranteed</option>
+          </select>
         </div>
 
         <div class="field">
@@ -299,32 +343,41 @@
         </div>
 
         <div class="field">
-          <label for="measurement_goals">Measurement Goals / KPIs</label>
+          <label for="measurement_goals">Measurement Goals / KPIs<span class="req">*</span></label>
           <textarea id="measurement_goals" name="measurement_goals" rows="3"></textarea>
         </div>
 
         <div class="field">
-          <label for="measurement_vendor">Measurement Vendor Requested</label>
-          <input type="text" id="measurement_vendor" name="measurement_vendor" />
+          <label for="measurement_vendor">Measurement Vendor(s) Requested<span class="req">*</span></label>
+          <select id="measurement_vendor" name="measurement_vendor" multiple>
+            <option value="Disqo">Disqo</option>
+            <option value="Nielsen">Nielsen</option>
+            <option value="ISpot">ISpot</option>
+            <option value="Adelaide">Adelaide</option>
+            <option value="Other">Other</option>
+          </select>
+          <p class="field-hint">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</p>
         </div>
 
         <div class="field">
-          <label>DCM / VAST Tags Available</label>
-          <div class="radio-group">
-            <label><input type="radio" name="dcm_vast_tags" value="Yes" /> Yes</label>
-            <label><input type="radio" name="dcm_vast_tags" value="No" /> No</label>
-          </div>
+          <label for="dcm_vast_tags">DCM VAST Tags (DISQO Only)<span class="req">*</span></label>
+          <select id="dcm_vast_tags" name="dcm_vast_tags">
+            <option value="">— Select —</option>
+            <option value="Tags Provided">Tags Provided</option>
+            <option value="No Tags">No Tags</option>
+          </select>
         </div>
 
         <div class="field">
-          <label>Is Linear TV Running Concurrently</label>
-          <div class="radio-group">
-            <label><input type="radio" name="linear_tv" value="Yes" /> Yes</label>
-            <label><input type="radio" name="linear_tv" value="No" /> No</label>
-          </div>
+          <label for="linear_tv">Is Linear TV Running?<span class="req">*</span></label>
+          <select id="linear_tv" name="linear_tv">
+            <option value="">— Select —</option>
+            <option value="Linear Active">Linear Active</option>
+            <option value="Digital Only">Digital Only</option>
+          </select>
         </div>
 
-        <!-- Tier Fields -->
+        <!-- ── Tier Fields ── -->
         <h2>Campaign Tiers</h2>
 
         <!-- Tier 1 -->
@@ -482,15 +535,35 @@
       var formWrapper = document.getElementById('form-wrapper');
       var thankYou = document.getElementById('thank-you');
 
-      function showError(msg) {
-        errorBanner.textContent = msg;
+      function showError(errors) {
+        if (typeof errors === 'string') {
+          errorBanner.innerHTML = errors;
+        } else {
+          var html = 'Please complete the following required fields:<ul>';
+          for (var i = 0; i < errors.length; i++) {
+            html += '<li>' + errors[i] + '</li>';
+          }
+          html += '</ul>';
+          errorBanner.innerHTML = html;
+        }
         errorBanner.classList.add('visible');
         errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
       function hideError() {
-        errorBanner.textContent = '';
+        errorBanner.innerHTML = '';
         errorBanner.classList.remove('visible');
+      }
+
+      function getSelectValues(id) {
+        var el = document.getElementById(id);
+        var selected = [];
+        for (var i = 0; i < el.options.length; i++) {
+          if (el.options[i].selected) {
+            selected.push(el.options[i].value);
+          }
+        }
+        return selected;
       }
 
       function getRadioValue(name) {
@@ -498,20 +571,24 @@
         return checked ? checked.value : '';
       }
 
-      function getCheckboxValues(name) {
-        var checked = form.querySelectorAll('input[name="' + name + '"]:checked');
-        return Array.prototype.map.call(checked, function (el) { return el.value; });
-      }
-
       function validate(payload) {
-        if (!payload.agency) return 'Agency is required.';
-        if (!payload.advertiser) return 'Advertiser is required.';
-        if (!payload.buying_model) return 'Buying Model is required.';
-        if (!payload.vertical || payload.vertical.length === 0) return 'At least one Vertical must be selected.';
-        if (!payload.target_audience) return 'Target Audience is required.';
-        if (!payload.inventory_type) return 'Inventory Type is required.';
-        if (!payload.markets) return 'Markets is required.';
-        return null;
+        var errors = [];
+        if (!payload.agency) errors.push('Agency');
+        if (!payload.advertiser) errors.push('Advertiser');
+        if (!payload.buying_model) errors.push('Buying Model');
+        if (!payload.client_history) errors.push('Client History');
+        if (!payload.partnership_type) errors.push('Partnership Type');
+        if (!payload.requester_type) errors.push('Requester Type');
+        if (!payload.boostr_id) errors.push('Boostr ID');
+        if (!payload.vertical || payload.vertical.length === 0) errors.push('Vertical (at least one)');
+        if (!payload.target_audience) errors.push('Target Audience');
+        if (!payload.inventory_type) errors.push('Inventory Type');
+        if (!payload.markets) errors.push('Markets');
+        if (!payload.measurement_goals) errors.push('Measurement Goals / KPIs');
+        if (!payload.measurement_vendor || payload.measurement_vendor.length === 0) errors.push('Measurement Vendor(s) Requested (at least one)');
+        if (!payload.dcm_vast_tags) errors.push('DCM VAST Tags (DISQO Only)');
+        if (!payload.linear_tv) errors.push('Is Linear TV Running?');
+        return errors;
       }
 
       form.addEventListener('submit', function (e) {
@@ -527,19 +604,19 @@
           // Evergreen fields
           agency: (document.getElementById('agency').value || '').trim(),
           advertiser: (document.getElementById('advertiser').value || '').trim(),
-          buying_model: getRadioValue('buying_model'),
+          buying_model: (document.getElementById('buying_model').value || '').trim(),
           client_history: (document.getElementById('client_history').value || '').trim(),
           partnership_type: (document.getElementById('partnership_type').value || '').trim(),
           requester_type: (document.getElementById('requester_type').value || '').trim(),
           boostr_id: (document.getElementById('boostr_id').value || '').trim(),
-          vertical: getCheckboxValues('vertical'),
+          vertical: getSelectValues('vertical'),
           target_audience: (document.getElementById('target_audience').value || '').trim(),
           inventory_type: (document.getElementById('inventory_type').value || '').trim(),
           markets: (document.getElementById('markets').value || '').trim(),
           measurement_goals: (document.getElementById('measurement_goals').value || '').trim(),
-          measurement_vendor: (document.getElementById('measurement_vendor').value || '').trim(),
-          dcm_vast_tags: getRadioValue('dcm_vast_tags'),
-          linear_tv: getRadioValue('linear_tv'),
+          measurement_vendor: getSelectValues('measurement_vendor'),
+          dcm_vast_tags: (document.getElementById('dcm_vast_tags').value || '').trim(),
+          linear_tv: (document.getElementById('linear_tv').value || '').trim(),
 
           // Tier fields
           tier1_spend: (document.getElementById('tier1_spend').value || '').trim(),
@@ -567,9 +644,9 @@
           tier4_franchise_name: (document.getElementById('tier4_franchise_name').value || '').trim()
         };
 
-        var validationError = validate(payload);
-        if (validationError) {
-          showError(validationError);
+        var validationErrors = validate(payload);
+        if (validationErrors.length > 0) {
+          showError(validationErrors);
           return;
         }
 
