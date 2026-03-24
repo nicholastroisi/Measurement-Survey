@@ -300,26 +300,25 @@
         </div>
 
         <div class="field">
-          <label for="vertical">Vertical<span class="req">*</span></label>
-          <select id="vertical" name="vertical" multiple>
-            <option value="Tech">Tech</option>
-            <option value="Auto">Auto</option>
-            <option value="CPG">CPG</option>
-            <option value="Retail">Retail</option>
-            <option value="Travel">Travel</option>
-            <option value="Telecom">Telecom</option>
-            <option value="Finance/Banking">Finance/Banking</option>
-            <option value="Health &amp; Beauty">Health &amp; Beauty</option>
-            <option value="Cable/Streaming">Cable/Streaming</option>
-            <option value="Lifestyle">Lifestyle</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="QSR/Family Restaurants">QSR/Family Restaurants</option>
-            <option value="Other">Other</option>
-            <option value="Pharma">Pharma</option>
-            <option value="Insurance">Insurance</option>
-            <option value="Gaming">Gaming</option>
-          </select>
-          <p class="field-hint">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</p>
+          <label>Vertical<span class="req">*</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="vertical" value="Tech" /> Tech</label>
+            <label><input type="checkbox" name="vertical" value="Auto" /> Auto</label>
+            <label><input type="checkbox" name="vertical" value="CPG" /> CPG</label>
+            <label><input type="checkbox" name="vertical" value="Retail" /> Retail</label>
+            <label><input type="checkbox" name="vertical" value="Travel" /> Travel</label>
+            <label><input type="checkbox" name="vertical" value="Telecom" /> Telecom</label>
+            <label><input type="checkbox" name="vertical" value="Finance/Banking" /> Finance/Banking</label>
+            <label><input type="checkbox" name="vertical" value="Health & Beauty" /> Health & Beauty</label>
+            <label><input type="checkbox" name="vertical" value="Cable/Streaming" /> Cable/Streaming</label>
+            <label><input type="checkbox" name="vertical" value="Lifestyle" /> Lifestyle</label>
+            <label><input type="checkbox" name="vertical" value="Entertainment" /> Entertainment</label>
+            <label><input type="checkbox" name="vertical" value="QSR/Family Restaurants" /> QSR/Family Restaurants</label>
+            <label><input type="checkbox" name="vertical" value="Other" /> Other</label>
+            <label><input type="checkbox" name="vertical" value="Pharma" /> Pharma</label>
+            <label><input type="checkbox" name="vertical" value="Insurance" /> Insurance</label>
+            <label><input type="checkbox" name="vertical" value="Gaming" /> Gaming</label>
+          </div>
         </div>
 
         <div class="field">
@@ -347,15 +346,14 @@
         </div>
 
         <div class="field">
-          <label for="measurement_vendor">Measurement Vendor(s) Requested<span class="req">*</span></label>
-          <select id="measurement_vendor" name="measurement_vendor" multiple>
-            <option value="Disqo">Disqo</option>
-            <option value="Nielsen">Nielsen</option>
-            <option value="ISpot">ISpot</option>
-            <option value="Adelaide">Adelaide</option>
-            <option value="Other">Other</option>
-          </select>
-          <p class="field-hint">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</p>
+          <label>Measurement Vendor(s) Requested<span class="req">*</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="measurement_vendor_requested" value="Disqo" /> Disqo</label>
+            <label><input type="checkbox" name="measurement_vendor_requested" value="Nielsen" /> Nielsen</label>
+            <label><input type="checkbox" name="measurement_vendor_requested" value="ISpot" /> ISpot</label>
+            <label><input type="checkbox" name="measurement_vendor_requested" value="Adelaide" /> Adelaide</label>
+            <label><input type="checkbox" name="measurement_vendor_requested" value="Other" /> Other</label>
+          </div>
         </div>
 
         <div class="field">
@@ -565,6 +563,15 @@
         return selected;
       }
 
+      function getCheckboxValues(name) {
+        var checked = form.querySelectorAll('input[type="checkbox"][name="' + name + '"]:checked');
+        var values = [];
+        for (var i = 0; i < checked.length; i++) {
+          values.push(checked[i].value);
+        }
+        return values;
+      }
+
       function getRadioValue(name) {
         var checked = form.querySelector('input[name="' + name + '"]:checked');
         return checked ? checked.value : '';
@@ -608,12 +615,12 @@
           partnership_type: (document.getElementById('partnership_type').value || '').trim(),
           requester_type: (document.getElementById('requester_type').value || '').trim(),
           boostr_id: (document.getElementById('boostr_id').value || '').trim(),
-          vertical: getSelectValues('vertical'),
+          vertical: getCheckboxValues('vertical'),
           target_audience: (document.getElementById('target_audience').value || '').trim(),
           inventory_type: (document.getElementById('inventory_type').value || '').trim(),
           markets: (document.getElementById('markets').value || '').trim(),
           measurement_goals_kpis: (document.getElementById('measurement_goals').value || '').trim(),
-          measurement_vendor_requested: getSelectValues('measurement_vendor'),
+          measurement_vendor_requested: getCheckboxValues('measurement_vendor_requested'),
           dcm_vast_tags: (document.getElementById('dcm_vast_tags').value || '').trim(),
           is_linear_tv_running: (document.getElementById('linear_tv').value || '').trim(),
 
