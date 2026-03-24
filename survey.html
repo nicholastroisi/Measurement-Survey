@@ -244,7 +244,7 @@
 
       <form id="survey-form" novalidate>
 
-        <!-- Evergreen Fields -->
+        <!-- ── Evergreen Fields ── -->
         <h2>Campaign Details</h2>
 
         <div class="field">
@@ -289,9 +289,8 @@
           <label for="requester_type">Requester Type<span class="req">*</span></label>
           <select id="requester_type" name="requester_type">
             <option value="">— Select —</option>
-            <option value="Agency">Agency</option>
-            <option value="Direct Advertiser">Direct Advertiser</option>
-            <option value="Internal">Internal</option>
+            <option value="AE">AE</option>
+            <option value="Client">Client</option>
           </select>
         </div>
 
@@ -372,12 +371,12 @@
           <label for="linear_tv">Is Linear TV Running?<span class="req">*</span></label>
           <select id="linear_tv" name="linear_tv">
             <option value="">— Select —</option>
-            <option value="Linear Active">Linear Active</option>
-            <option value="Digital Only">Digital Only</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
           </select>
         </div>
 
-        <!-- Tier Fields -->
+        <!-- ── Tier Fields ── -->
         <h2>Campaign Tiers</h2>
 
         <!-- Tier 1 -->
@@ -651,7 +650,7 @@
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Submitting...';
+        submitBtn.textContent = 'Submitting…';
 
         fetch('https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-survey', {
           method: 'POST',
