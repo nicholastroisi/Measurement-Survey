@@ -244,7 +244,7 @@
 
       <form id="survey-form" novalidate>
 
-        <!-- ── Evergreen Fields ── -->
+        <!-- Evergreen Fields -->
         <h2>Campaign Details</h2>
 
         <div class="field">
@@ -289,8 +289,9 @@
           <label for="requester_type">Requester Type<span class="req">*</span></label>
           <select id="requester_type" name="requester_type">
             <option value="">— Select —</option>
-            <option value="AE">AE</option>
+            <option value="Sales Team">Sales Team</option>
             <option value="Client">Client</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 
@@ -309,7 +310,7 @@
             <label><input type="checkbox" name="vertical" value="Travel" /> Travel</label>
             <label><input type="checkbox" name="vertical" value="Telecom" /> Telecom</label>
             <label><input type="checkbox" name="vertical" value="Finance/Banking" /> Finance/Banking</label>
-            <label><input type="checkbox" name="vertical" value="Health & Beauty" /> Health & Beauty</label>
+            <label><input type="checkbox" name="vertical" value="Health & Beauty" /> Health &amp; Beauty</label>
             <label><input type="checkbox" name="vertical" value="Cable/Streaming" /> Cable/Streaming</label>
             <label><input type="checkbox" name="vertical" value="Lifestyle" /> Lifestyle</label>
             <label><input type="checkbox" name="vertical" value="Entertainment" /> Entertainment</label>
@@ -336,13 +337,26 @@
         </div>
 
         <div class="field">
-          <label for="markets">Markets<span class="req">*</span></label>
-          <input type="text" id="markets" name="markets" />
+          <label>Markets<span class="req">*</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="markets" value="National" /> National</label>
+            <label><input type="checkbox" name="markets" value="Local" /> Local (Send DMA file via email)</label>
+          </div>
         </div>
 
         <div class="field">
-          <label for="measurement_goals">Measurement Goals / KPIs<span class="req">*</span></label>
-          <textarea id="measurement_goals" name="measurement_goals" rows="3"></textarea>
+          <label>Measurement Goals / KPIs</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Reach & Frequency" /> Reach &amp; Frequency</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Awareness" /> Awareness</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Consideration" /> Consideration</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Favorability" /> Favorability</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Ad Recall" /> Ad Recall</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Purchase Intent" /> Purchase Intent</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Store Visitation" /> Store Visitation</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Website Visitation" /> Website Visitation</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Search Lift" /> Search Lift</label>
+          </div>
         </div>
 
         <div class="field">
@@ -357,12 +371,20 @@
         </div>
 
         <div class="field">
-          <label for="dcm_vast_tags">DCM VAST Tags (DISQO Only)<span class="req">*</span></label>
-          <select id="dcm_vast_tags" name="dcm_vast_tags">
-            <option value="">— Select —</option>
-            <option value="Tags Provided">Tags Provided</option>
-            <option value="No Tags">No Tags</option>
-          </select>
+          <label>Can the client provide any of the following tags for brand lift?</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="dcm_vast_tags" value="VAST Tags (YT D/M)" /> VAST Tags (YT D/M)</label>
+            <label><input type="checkbox" name="dcm_vast_tags" value="Site Serve Tags (FAST)" /> Site Serve Tags (FAST)</label>
+            <label><input type="checkbox" name="dcm_vast_tags" value="Client is unable to provide tags" /> Client is unable to provide tags</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Will there be client-led reporting?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="client_led_reporting" value="Yes" /> Yes</label>
+            <label><input type="radio" name="client_led_reporting" value="No" /> No</label>
+          </div>
         </div>
 
         <div class="field">
@@ -374,7 +396,12 @@
           </select>
         </div>
 
-        <!-- ── Tier Fields ── -->
+        <div class="field">
+          <label for="additional_context">Any Additional Context?</label>
+          <textarea id="additional_context" name="additional_context" rows="3" placeholder="Share any additional details that would help us process your campaign request"></textarea>
+        </div>
+
+        <!-- Tier Fields -->
         <h2>Campaign Tiers</h2>
 
         <!-- Tier 1 -->
@@ -395,10 +422,12 @@
             </div>
           </div>
           <div class="field">
-            <label>Artist / Franchise Tie-in</label>
-            <div class="radio-group">
-              <label><input type="radio" name="tier1_artist_franchise" value="Yes" /> Yes</label>
-              <label><input type="radio" name="tier1_artist_franchise" value="No" /> No</label>
+            <label>Which sponsorships are included?</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="tier1_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
+              <label><input type="checkbox" name="tier1_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
+              <label><input type="checkbox" name="tier1_sponsorships" value="Holiday" /> Holiday</label>
+              <label><input type="checkbox" name="tier1_sponsorships" value="Concerts" /> Concerts</label>
             </div>
           </div>
           <div class="field">
@@ -425,10 +454,12 @@
             </div>
           </div>
           <div class="field">
-            <label>Artist / Franchise Tie-in</label>
-            <div class="radio-group">
-              <label><input type="radio" name="tier2_artist_franchise" value="Yes" /> Yes</label>
-              <label><input type="radio" name="tier2_artist_franchise" value="No" /> No</label>
+            <label>Which sponsorships are included?</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="tier2_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
+              <label><input type="checkbox" name="tier2_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
+              <label><input type="checkbox" name="tier2_sponsorships" value="Holiday" /> Holiday</label>
+              <label><input type="checkbox" name="tier2_sponsorships" value="Concerts" /> Concerts</label>
             </div>
           </div>
           <div class="field">
@@ -455,10 +486,12 @@
             </div>
           </div>
           <div class="field">
-            <label>Artist / Franchise Tie-in</label>
-            <div class="radio-group">
-              <label><input type="radio" name="tier3_artist_franchise" value="Yes" /> Yes</label>
-              <label><input type="radio" name="tier3_artist_franchise" value="No" /> No</label>
+            <label>Which sponsorships are included?</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="tier3_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
+              <label><input type="checkbox" name="tier3_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
+              <label><input type="checkbox" name="tier3_sponsorships" value="Holiday" /> Holiday</label>
+              <label><input type="checkbox" name="tier3_sponsorships" value="Concerts" /> Concerts</label>
             </div>
           </div>
           <div class="field">
@@ -485,10 +518,12 @@
             </div>
           </div>
           <div class="field">
-            <label>Artist / Franchise Tie-in</label>
-            <div class="radio-group">
-              <label><input type="radio" name="tier4_artist_franchise" value="Yes" /> Yes</label>
-              <label><input type="radio" name="tier4_artist_franchise" value="No" /> No</label>
+            <label>Which sponsorships are included?</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="tier4_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
+              <label><input type="checkbox" name="tier4_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
+              <label><input type="checkbox" name="tier4_sponsorships" value="Holiday" /> Holiday</label>
+              <label><input type="checkbox" name="tier4_sponsorships" value="Concerts" /> Concerts</label>
             </div>
           </div>
           <div class="field">
@@ -520,7 +555,6 @@
       var requesterName = params.get('requester_name') || '';
       var requesterEmail = params.get('requester_email') || '';
 
-      // Personalize greeting
       if (requesterName) {
         document.getElementById('greeting').textContent =
           'Hi ' + requesterName + ', please complete this survey to help us process your campaign request.';
@@ -552,17 +586,6 @@
         errorBanner.classList.remove('visible');
       }
 
-      function getSelectValues(id) {
-        var el = document.getElementById(id);
-        var selected = [];
-        for (var i = 0; i < el.options.length; i++) {
-          if (el.options[i].selected) {
-            selected.push(el.options[i].value);
-          }
-        }
-        return selected;
-      }
-
       function getCheckboxValues(name) {
         var checked = form.querySelectorAll('input[type="checkbox"][name="' + name + '"]:checked');
         var values = [];
@@ -589,10 +612,8 @@
         if (!payload.vertical || payload.vertical.length === 0) errors.push('Vertical (at least one)');
         if (!payload.target_audience) errors.push('Target Audience');
         if (!payload.inventory_type) errors.push('Inventory Type');
-        if (!payload.markets) errors.push('Markets');
-        if (!payload.measurement_goals_kpis) errors.push('Measurement Goals / KPIs');
+        if (!payload.markets || payload.markets.length === 0) errors.push('Markets (at least one)');
         if (!payload.measurement_vendor_requested || payload.measurement_vendor_requested.length === 0) errors.push('Measurement Vendor(s) Requested (at least one)');
-        if (!payload.dcm_vast_tags) errors.push('DCM VAST Tags (DISQO Only)');
         if (!payload.is_linear_tv_running) errors.push('Is Linear TV Running?');
         return errors;
       }
@@ -607,7 +628,6 @@
           requester_name: requesterName,
           requester_email: requesterEmail,
 
-          // Evergreen fields
           agency: (document.getElementById('agency').value || '').trim(),
           advertiser: (document.getElementById('advertiser').value || '').trim(),
           buying_model: (document.getElementById('buying_model').value || '').trim(),
@@ -618,35 +638,36 @@
           vertical: getCheckboxValues('vertical'),
           target_audience: (document.getElementById('target_audience').value || '').trim(),
           inventory_type: (document.getElementById('inventory_type').value || '').trim(),
-          markets: (document.getElementById('markets').value || '').trim(),
-          measurement_goals_kpis: (document.getElementById('measurement_goals').value || '').trim(),
+          markets: getCheckboxValues('markets'),
+          measurement_goals_kpis: getCheckboxValues('measurement_goals_kpis'),
           measurement_vendor_requested: getCheckboxValues('measurement_vendor_requested'),
-          dcm_vast_tags: (document.getElementById('dcm_vast_tags').value || '').trim(),
+          dcm_vast_tags: getCheckboxValues('dcm_vast_tags'),
+          client_led_reporting: getRadioValue('client_led_reporting'),
           is_linear_tv_running: (document.getElementById('linear_tv').value || '').trim(),
+          additional_context: (document.getElementById('additional_context').value || '').trim(),
 
-          // Tier fields
           tier1_spend: (document.getElementById('tier1_spend').value || '').trim(),
           tier1_campaign_start: (document.getElementById('tier1_campaign_start').value || '').trim(),
           tier1_campaign_end: (document.getElementById('tier1_campaign_end').value || '').trim(),
-          tier1_artist_franchise: getRadioValue('tier1_artist_franchise'),
+          tier1_sponsorships: getCheckboxValues('tier1_sponsorships'),
           tier1_franchise_name: (document.getElementById('tier1_franchise_name').value || '').trim(),
 
           tier2_spend: (document.getElementById('tier2_spend').value || '').trim(),
           tier2_campaign_start: (document.getElementById('tier2_campaign_start').value || '').trim(),
           tier2_campaign_end: (document.getElementById('tier2_campaign_end').value || '').trim(),
-          tier2_artist_franchise: getRadioValue('tier2_artist_franchise'),
+          tier2_sponsorships: getCheckboxValues('tier2_sponsorships'),
           tier2_franchise_name: (document.getElementById('tier2_franchise_name').value || '').trim(),
 
           tier3_spend: (document.getElementById('tier3_spend').value || '').trim(),
           tier3_campaign_start: (document.getElementById('tier3_campaign_start').value || '').trim(),
           tier3_campaign_end: (document.getElementById('tier3_campaign_end').value || '').trim(),
-          tier3_artist_franchise: getRadioValue('tier3_artist_franchise'),
+          tier3_sponsorships: getCheckboxValues('tier3_sponsorships'),
           tier3_franchise_name: (document.getElementById('tier3_franchise_name').value || '').trim(),
 
           tier4_spend: (document.getElementById('tier4_spend').value || '').trim(),
           tier4_campaign_start: (document.getElementById('tier4_campaign_start').value || '').trim(),
           tier4_campaign_end: (document.getElementById('tier4_campaign_end').value || '').trim(),
-          tier4_artist_franchise: getRadioValue('tier4_artist_franchise'),
+          tier4_sponsorships: getCheckboxValues('tier4_sponsorships'),
           tier4_franchise_name: (document.getElementById('tier4_franchise_name').value || '').trim()
         };
 
@@ -657,7 +678,7 @@
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Submitting…';
+        submitBtn.textContent = 'Submitting\u2026';
 
         fetch('https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-survey', {
           method: 'POST',
