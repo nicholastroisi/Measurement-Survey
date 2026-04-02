@@ -74,7 +74,6 @@
     }
 
     input[type="date"],
-    input[type="number"],
     input[type="text"] {
       width: 100%;
       padding: 9px 12px;
@@ -88,7 +87,6 @@
     }
 
     input[type="date"]:focus,
-    input[type="number"]:focus,
     input[type="text"]:focus {
       outline: none;
       border-color: #1f73b7;
@@ -262,30 +260,30 @@
 
     <div class="field-group">
       <label for="total_spend">Total Spend ($) <span class="required">*</span></label>
-      <input type="number" id="total_spend" name="total_spend" min="0" step="1" placeholder="e.g. 250000" required />
+      <input type="text" id="total_spend" name="total_spend" inputmode="numeric" placeholder="e.g. 250,000" required />
       <div class="field-error" id="err_total_spend">Required.</div>
     </div>
 
     <div class="field-group">
       <label for="total_imps">Total Imps <span class="required">*</span></label>
-      <input type="number" id="total_imps" name="total_imps" min="0" step="1" placeholder="e.g. 15000000" required />
+      <input type="text" id="total_imps" name="total_imps" inputmode="numeric" placeholder="e.g. 15,000,000" required />
       <div class="field-error" id="err_total_imps">Required.</div>
     </div>
 
     <div class="two-col">
       <div class="field-group">
         <label for="youtube_dm_imps">YouTube D/M Imps</label>
-        <input type="number" id="youtube_dm_imps" name="youtube_dm_imps" min="0" step="1" placeholder="Optional" />
+        <input type="text" id="youtube_dm_imps" name="youtube_dm_imps" inputmode="numeric" placeholder="Optional" />
       </div>
       <div class="field-group">
         <label for="youtube_ctv_imps">YouTube CTV Imps</label>
-        <input type="number" id="youtube_ctv_imps" name="youtube_ctv_imps" min="0" step="1" placeholder="Optional" />
+        <input type="text" id="youtube_ctv_imps" name="youtube_ctv_imps" inputmode="numeric" placeholder="Optional" />
       </div>
     </div>
 
     <div class="field-group">
       <label for="off_youtube_ctv_imps">Off-YouTube CTV Imps</label>
-      <input type="number" id="off_youtube_ctv_imps" name="off_youtube_ctv_imps" min="0" step="1" placeholder="Optional" />
+      <input type="text" id="off_youtube_ctv_imps" name="off_youtube_ctv_imps" inputmode="numeric" placeholder="Optional" />
     </div>
 
     <div class="field-group">
@@ -311,7 +309,7 @@
     </div>
 
     <div class="field-group franchise-field">
-      <label for="franchise_artist_name">Franchise / Artist Name</label>
+      <label for="franchise_artist_name">Ad Products/Sponsorship(s) included</label>
       <input type="text" id="franchise_artist_name" name="franchise_artist_name" placeholder="e.g. Taylor Swift Eras Tour" />
     </div>
 
@@ -341,18 +339,40 @@
   var NETLIFY_FUNCTION_URL = 'https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-sales-survey';
   var SURVEY_SHARED_SECRET = 'mcs-survey-2024';
 
+  // -----------------------------------------------------------------------
+  // Utility functions — defined first so submit handler can reference them
+  // -----------------------------------------------------------------------
+
+  function stripCommas(value) {
+    return String(value).replace(/,/g, '');
+  }
+
+  function formatWithCommas(value) {
+    // Strip everything except digits
+    var digits = stripCommas(value).replace(/[^\d]/g, '');
+    if (!digits) return '';
+    // Insert commas every 3 digits from the right
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  // -----------------------------------------------------------------------
   // Parse URL params
+  // -----------------------------------------------------------------------
+
   var params = new URLSearchParams(window.location.search);
   var ticketId = params.get('ticket_id');
   var token = params.get('token');
   var requesterName = params.get('requester_name') || '';
   var requesterEmail = params.get('requester_email') || '';
 
+  // -----------------------------------------------------------------------
   // Validate token
+  // -----------------------------------------------------------------------
+
   function generateExpectedToken(tId) {
     var raw = tId + ':' + SURVEY_SHARED_SECRET;
     var b64 = btoa(raw);
-    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    return b64.replace(/+/g, '-').replace(///g, '_').replace(/=/g, '');
   }
 
   if (!ticketId || !token || token !== generateExpectedToken(ticketId)) {
@@ -364,13 +384,58 @@
     return;
   }
 
+  // -----------------------------------------------------------------------
   // Personalize greeting
+  // -----------------------------------------------------------------------
+
   if (requesterName) {
     document.getElementById('greeting').textContent =
       'Hi ' + requesterName + ', please complete the details below to confirm your campaign parameters.';
   }
 
+  // -----------------------------------------------------------------------
+  // Comma formatting — attach input listeners to all numeric fields
+  // -----------------------------------------------------------------------
+
+  var numericFieldIds = ['total_spend', 'total_imps', 'youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'];
+
+  numericFieldIds.forEach(function(fieldId) {
+    var input = document.getElementById(fieldId);
+    if (!input) return;
+
+    input.addEventListener('input', function() {
+      var cursorPos = input.selectionStart;
+      var oldLen = input.value.length;
+      var formatted = formatWithCommas(input.value);
+      input.value = formatted;
+      // Adjust cursor position to account for added/removed commas
+      var newLen = formatted.length;
+      var newCursor = cursorPos + (newLen - oldLen);
+      if (newCursor < 0) newCursor = 0;
+      if (newCursor > newLen) newCursor = newLen;
+      input.setSelectionRange(newCursor, newCursor);
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // Clear error styling on input
+  // -----------------------------------------------------------------------
+
+  ['flight_start_date', 'flight_end_date', 'total_spend', 'total_imps'].forEach(function(fieldId) {
+    var input = document.getElementById(fieldId);
+    if (input) {
+      input.addEventListener('input', function() {
+        input.classList.remove('error');
+        var errEl = document.getElementById('err_' + fieldId);
+        if (errEl) errEl.classList.remove('visible');
+      });
+    }
+  });
+
+  // -----------------------------------------------------------------------
   // Form submission
+  // -----------------------------------------------------------------------
+
   document.getElementById('survey-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -381,7 +446,8 @@
     requiredFields.forEach(function(fieldId) {
       var input = document.getElementById(fieldId);
       var errEl = document.getElementById('err_' + fieldId);
-      if (!input.value.trim()) {
+      var rawValue = stripCommas(input.value).trim();
+      if (!rawValue) {
         input.classList.add('error');
         errEl.classList.add('visible');
         valid = false;
@@ -410,21 +476,24 @@
       sponsorshipTypes.push(cb.value);
     });
 
-    // Build payload
+    // Build payload — strip commas from all numeric fields before submitting
     var payload = {
       ticket_id: ticketId,
       token: token,
       flight_start_date: document.getElementById('flight_start_date').value,
       flight_end_date: document.getElementById('flight_end_date').value,
-      total_spend: document.getElementById('total_spend').value,
-      total_imps: document.getElementById('total_imps').value,
+      total_spend: stripCommas(document.getElementById('total_spend').value).trim(),
+      total_imps: stripCommas(document.getElementById('total_imps').value).trim(),
     };
 
-    var optionalFields = ['youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps', 'franchise_artist_name'];
-    optionalFields.forEach(function(fieldId) {
-      var val = document.getElementById(fieldId).value.trim();
+    var optionalNumericFields = ['youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'];
+    optionalNumericFields.forEach(function(fieldId) {
+      var val = stripCommas(document.getElementById(fieldId).value).trim();
       if (val) payload[fieldId] = val;
     });
+
+    var franchiseVal = document.getElementById('franchise_artist_name').value.trim();
+    if (franchiseVal) payload.franchise_artist_name = franchiseVal;
 
     // Nielsen dashboard (required radio)
     var nielsenChecked = document.querySelector('input[name="nielsen_dashboard"]:checked');
@@ -473,17 +542,6 @@
     });
   });
 
-  // Clear error on input
-  ['flight_start_date', 'flight_end_date', 'total_spend', 'total_imps'].forEach(function(fieldId) {
-    var input = document.getElementById(fieldId);
-    if (input) {
-      input.addEventListener('input', function() {
-        input.classList.remove('error');
-        var errEl = document.getElementById('err_' + fieldId);
-        if (errEl) errEl.classList.remove('visible');
-      });
-    }
-  });
 })();
 </script>
 </body>
