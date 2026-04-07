@@ -218,4 +218,140 @@
     return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   }
 
-  if (!ticketI
+  if (!ticketId || !token || token !== generateExpectedToken(ticketId)) {
+    document.getElementById('main-card').innerHTML =
+      '<div class="token-error">' +
+      '<h2>Invalid Survey Link</h2>' +
+      '<p>This survey link is invalid or has expired. Please contact your account manager.</p>' +
+      '</div>';
+    return;
+  }
+
+  if (requesterName) {
+    document.getElementById('greeting').textContent =
+      'Hi ' + requesterName + ', please complete the details below to confirm your campaign parameters.';
+  }
+
+  var numericFieldIds = ['total_spend', 'total_imps', 'youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'];
+  numericFieldIds.forEach(function(fieldId) {
+    var input = document.getElementById(fieldId);
+    if (!input) return;
+    input.addEventListener('input', function() {
+      var cursorPos = input.selectionStart;
+      var oldLen = input.value.length;
+      var formatted = formatWithCommas(input.value);
+      input.value = formatted;
+      var newLen = formatted.length;
+      var newCursor = cursorPos + (newLen - oldLen);
+      if (newCursor < 0) newCursor = 0;
+      if (newCursor > newLen) newCursor = newLen;
+      input.setSelectionRange(newCursor, newCursor);
+    });
+  });
+
+  ['flight_start_date', 'flight_end_date', 'total_spend', 'total_imps'].forEach(function(fieldId) {
+    var input = document.getElementById(fieldId);
+    if (input) {
+      input.addEventListener('input', function() {
+        input.classList.remove('error');
+        var errEl = document.getElementById('err_' + fieldId);
+        if (errEl) errEl.classList.remove('visible');
+      });
+    }
+  });
+
+  document.getElementById('survey-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var valid = true;
+
+    var requiredFields = ['flight_start_date', 'flight_end_date', 'total_spend', 'total_imps'];
+    requiredFields.forEach(function(fieldId) {
+      var input = document.getElementById(fieldId);
+      var errEl = document.getElementById('err_' + fieldId);
+      var rawValue = stripCommas(input.value).trim();
+      if (!rawValue) {
+        input.classList.add('error');
+        errEl.classList.add('visible');
+        valid = false;
+      } else {
+        input.classList.remove('error');
+        errEl.classList.remove('visible');
+      }
+    });
+
+    var nielsenSelected = document.querySelector('input[name="nielsen_dashboard"]:checked');
+    var nielsenErr = document.getElementById('err_nielsen_dashboard');
+    if (!nielsenSelected) {
+      nielsenErr.classList.add('visible');
+      valid = false;
+    } else {
+      nielsenErr.classList.remove('visible');
+    }
+
+    if (!valid) return;
+
+    var sponsorshipCheckboxes = document.querySelectorAll('input[name="sponsorship_type"]:checked');
+    var sponsorshipTypes = [];
+    sponsorshipCheckboxes.forEach(function(cb) { sponsorshipTypes.push(cb.value); });
+
+    var payload = {
+      ticket_id: ticketId,
+      token: token,
+      flight_start_date: document.getElementById('flight_start_date').value,
+      flight_end_date: document.getElementById('flight_end_date').value,
+      total_spend: stripCommas(document.getElementById('total_spend').value).trim(),
+      total_imps: stripCommas(document.getElementById('total_imps').value).trim(),
+    };
+
+    ['youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'].forEach(function(fieldId) {
+      var val = stripCommas(document.getElementById(fieldId).value).trim();
+      if (val) payload[fieldId] = val;
+    });
+
+    var franchiseVal = document.getElementById('franchise_artist_name').value.trim();
+    if (franchiseVal) payload.franchise_artist_name = franchiseVal;
+
+    var nielsenChecked = document.querySelector('input[name="nielsen_dashboard"]:checked');
+    if (nielsenChecked) payload.nielsen_dashboard = nielsenChecked.value;
+
+    if (sponsorshipTypes.length > 0) payload.sponsorship_type = sponsorshipTypes;
+
+    var btn = document.getElementById('submit-btn');
+    var statusBox = document.getElementById('status-box');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Submitting...';
+    statusBox.className = 'status-box';
+    statusBox.innerHTML = '';
+
+    fetch(NETLIFY_FUNCTION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(res) {
+      return res.json().then(function(data) { return { status: res.status, data: data }; });
+    })
+    .then(function(result) {
+      if (result.status === 200 && result.data.success) {
+        document.getElementById('survey-form').style.display = 'none';
+        statusBox.className = 'status-box success';
+        statusBox.innerHTML =
+          '<h3>Thank you!</h3>' +
+          '<p>Your campaign confirmation has been submitted successfully. Your account manager will review the details shortly.</p>';
+      } else {
+        throw new Error(result.data.error || 'Submission failed. Please try again.');
+      }
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Survey';
+      statusBox.className = 'status-box error';
+      statusBox.innerHTML =
+        '<h3>Submission Failed</h3>' +
+        '<p>' + (err.message || 'An unexpected error occurred. Please try again.') + '</p>';
+    });
+  });
+})();
+</script>
+</body>
+</html>
