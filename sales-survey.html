@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales Campaign Confirmation Survey</title>
+  <title>Final Campaign Details Survey</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #f3f4f6;
@@ -16,6 +17,7 @@
       justify-content: center;
       padding: 32px 16px;
     }
+
     .card {
       background: #fff;
       border-radius: 8px;
@@ -24,12 +26,14 @@
       width: 100%;
       max-width: 560px;
     }
+
     .logo-bar {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 24px;
     }
+
     .logo-bar .brand {
       font-size: 13px;
       font-weight: 600;
@@ -37,12 +41,40 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    h1 { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 6px; }
-    .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 28px; line-height: 1.5; }
-    .field-group { margin-bottom: 16px; }
-    label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
-    label .required { color: #ef4444; margin-left: 2px; }
-    input[type="date"], input[type="text"] {
+
+    h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 5px;
+    }
+
+    label .required {
+      color: #ef4444;
+      margin-left: 2px;
+    }
+
+    input[type="date"],
+    input[type="text"] {
       width: 100%;
       padding: 9px 12px;
       border: 1px solid #d1d5db;
@@ -53,21 +85,59 @@
       transition: border-color 0.15s;
       -webkit-appearance: none;
     }
-    input[type="date"]:focus, input[type="text"]:focus {
+
+    input[type="date"]:focus,
+    input[type="text"]:focus {
       outline: none;
       border-color: #1f73b7;
       box-shadow: 0 0 0 3px rgba(31,115,183,0.15);
     }
-    input.error { border-color: #ef4444; }
-    .field-error { font-size: 12px; color: #ef4444; margin-top: 4px; display: none; }
-    .field-error.visible { display: block; }
-    .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
-    .checkbox-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-    .checkbox-item input[type="checkbox"] {
-      width: 16px; height: 16px; accent-color: #1f73b7; cursor: pointer; flex-shrink: 0;
+
+    input.error {
+      border-color: #ef4444;
     }
-    .checkbox-item span { font-size: 14px; color: #374151; }
-    .franchise-field { margin-top: 12px; }
+
+    .field-error {
+      font-size: 12px;
+      color: #ef4444;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .field-error.visible {
+      display: block;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #1f73b7;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .checkbox-item span {
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .franchise-field {
+      margin-top: 12px;
+    }
+
     .submit-btn {
       width: 100%;
       padding: 12px;
@@ -81,23 +151,83 @@
       margin-top: 28px;
       transition: background 0.15s;
     }
-    .submit-btn:hover:not(:disabled) { background: #1a5f9a; }
-    .submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
-    .status-box { display: none; padding: 16px; border-radius: 6px; margin-top: 20px; font-size: 14px; line-height: 1.5; }
-    .status-box.success { display: block; background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46; }
-    .status-box.error { display: block; background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
-    .status-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .spinner {
-      display: inline-block; width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
-      border-radius: 50%; animation: spin 0.7s linear infinite;
-      vertical-align: middle; margin-right: 6px;
+
+    .submit-btn:hover:not(:disabled) {
+      background: #1a5f9a;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .token-error { text-align: center; padding: 40px 20px; color: #991b1b; }
-    .token-error h2 { font-size: 18px; margin-bottom: 8px; }
-    .token-error p { font-size: 14px; color: #6b7280; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .submit-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .status-box {
+      display: none;
+      padding: 16px;
+      border-radius: 6px;
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .status-box.success {
+      display: block;
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
+      color: #065f46;
+    }
+
+    .status-box.error {
+      display: block;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+    }
+
+    .status-box h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .token-error {
+      text-align: center;
+      padding: 40px 20px;
+      color: #991b1b;
+    }
+
+    .token-error h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .token-error p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
     @media (max-width: 480px) {
       .two-col { grid-template-columns: 1fr; }
       .card { padding: 20px; }
@@ -107,11 +237,14 @@
 <body>
 <div class="card" id="main-card">
   <div class="logo-bar">
-    <span class="brand">Sales Campaign Survey</span>
+    <span class="brand">Final Campaign Details Survey</span>
   </div>
-  <h1>Campaign Confirmation</h1>
+
+  <h1>Final Campaign Details Survey</h1>
   <p class="subtitle" id="greeting">Please complete the details below to confirm your campaign parameters.</p>
+
   <form id="survey-form" novalidate>
+
     <div class="two-col">
       <div class="field-group">
         <label for="flight_start_date">Flight Start Date <span class="required">*</span></label>
@@ -124,16 +257,19 @@
         <div class="field-error" id="err_flight_end_date">Required.</div>
       </div>
     </div>
+
     <div class="field-group">
       <label for="total_spend">Total Spend ($) <span class="required">*</span></label>
       <input type="text" id="total_spend" name="total_spend" inputmode="numeric" placeholder="e.g. 250,000" required />
       <div class="field-error" id="err_total_spend">Required.</div>
     </div>
+
     <div class="field-group">
       <label for="total_imps">Total Imps <span class="required">*</span></label>
       <input type="text" id="total_imps" name="total_imps" inputmode="numeric" placeholder="e.g. 15,000,000" required />
       <div class="field-error" id="err_total_imps">Required.</div>
     </div>
+
     <div class="two-col">
       <div class="field-group">
         <label for="youtube_dm_imps">YouTube D/M Imps</label>
@@ -144,10 +280,12 @@
         <input type="text" id="youtube_ctv_imps" name="youtube_ctv_imps" inputmode="numeric" placeholder="Optional" />
       </div>
     </div>
+
     <div class="field-group">
       <label for="off_youtube_ctv_imps">Off-YouTube CTV Imps</label>
       <input type="text" id="off_youtube_ctv_imps" name="off_youtube_ctv_imps" inputmode="numeric" placeholder="Optional" />
     </div>
+
     <div class="field-group">
       <label>Sponsorship Type</label>
       <div class="checkbox-group">
@@ -169,10 +307,12 @@
         </label>
       </div>
     </div>
+
     <div class="field-group franchise-field">
       <label for="franchise_artist_name">Ad Products/Sponsorship(s) included</label>
       <input type="text" id="franchise_artist_name" name="franchise_artist_name" placeholder="e.g. Taylor Swift Eras Tour" />
     </div>
+
     <div class="field-group">
       <label>Create Client-Facing Nielsen Dashboard? (If applicable) <span class="required">*</span></label>
       <div class="checkbox-group" style="flex-direction: row; gap: 20px;">
@@ -187,24 +327,37 @@
       </div>
       <div class="field-error" id="err_nielsen_dashboard">Required.</div>
     </div>
+
     <button type="submit" class="submit-btn" id="submit-btn">Submit Survey</button>
+
     <div class="status-box" id="status-box"></div>
   </form>
 </div>
+
 <script>
 (function() {
   var NETLIFY_FUNCTION_URL = 'https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-sales-survey';
   var SURVEY_SHARED_SECRET = 'mcs-survey-2024';
+
+  // -----------------------------------------------------------------------
+  // Utility functions — defined first so submit handler can reference them
+  // -----------------------------------------------------------------------
 
   function stripCommas(value) {
     return String(value).replace(/,/g, '');
   }
 
   function formatWithCommas(value) {
+    // Strip everything except digits
     var digits = stripCommas(value).replace(/[^\d]/g, '');
     if (!digits) return '';
+    // Insert commas every 3 digits from the right
     return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
+
+  // -----------------------------------------------------------------------
+  // Parse URL params
+  // -----------------------------------------------------------------------
 
   var params = new URLSearchParams(window.location.search);
   var ticketId = params.get('ticket_id');
@@ -212,10 +365,14 @@
   var requesterName = params.get('requester_name') || '';
   var requesterEmail = params.get('requester_email') || '';
 
+  // -----------------------------------------------------------------------
+  // Validate token
+  // -----------------------------------------------------------------------
+
   function generateExpectedToken(tId) {
     var raw = tId + ':' + SURVEY_SHARED_SECRET;
     var b64 = btoa(raw);
-    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    return b64.replace(/+/g, '-').replace(///g, '_').replace(/=/g, '');
   }
 
   if (!ticketId || !token || token !== generateExpectedToken(ticketId)) {
@@ -227,20 +384,31 @@
     return;
   }
 
+  // -----------------------------------------------------------------------
+  // Personalize greeting
+  // -----------------------------------------------------------------------
+
   if (requesterName) {
     document.getElementById('greeting').textContent =
       'Hi ' + requesterName + ', please complete the details below to confirm your campaign parameters.';
   }
 
+  // -----------------------------------------------------------------------
+  // Comma formatting — attach input listeners to all numeric fields
+  // -----------------------------------------------------------------------
+
   var numericFieldIds = ['total_spend', 'total_imps', 'youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'];
+
   numericFieldIds.forEach(function(fieldId) {
     var input = document.getElementById(fieldId);
     if (!input) return;
+
     input.addEventListener('input', function() {
       var cursorPos = input.selectionStart;
       var oldLen = input.value.length;
       var formatted = formatWithCommas(input.value);
       input.value = formatted;
+      // Adjust cursor position to account for added/removed commas
       var newLen = formatted.length;
       var newCursor = cursorPos + (newLen - oldLen);
       if (newCursor < 0) newCursor = 0;
@@ -248,6 +416,10 @@
       input.setSelectionRange(newCursor, newCursor);
     });
   });
+
+  // -----------------------------------------------------------------------
+  // Clear error styling on input
+  // -----------------------------------------------------------------------
 
   ['flight_start_date', 'flight_end_date', 'total_spend', 'total_imps'].forEach(function(fieldId) {
     var input = document.getElementById(fieldId);
@@ -260,10 +432,16 @@
     }
   });
 
+  // -----------------------------------------------------------------------
+  // Form submission
+  // -----------------------------------------------------------------------
+
   document.getElementById('survey-form').addEventListener('submit', function(e) {
     e.preventDefault();
+
     var valid = true;
 
+    // Validate required fields
     var requiredFields = ['flight_start_date', 'flight_end_date', 'total_spend', 'total_imps'];
     requiredFields.forEach(function(fieldId) {
       var input = document.getElementById(fieldId);
@@ -279,6 +457,7 @@
       }
     });
 
+    // Validate Nielsen dashboard radio
     var nielsenSelected = document.querySelector('input[name="nielsen_dashboard"]:checked');
     var nielsenErr = document.getElementById('err_nielsen_dashboard');
     if (!nielsenSelected) {
@@ -290,10 +469,14 @@
 
     if (!valid) return;
 
+    // Collect sponsorship types
     var sponsorshipCheckboxes = document.querySelectorAll('input[name="sponsorship_type"]:checked');
     var sponsorshipTypes = [];
-    sponsorshipCheckboxes.forEach(function(cb) { sponsorshipTypes.push(cb.value); });
+    sponsorshipCheckboxes.forEach(function(cb) {
+      sponsorshipTypes.push(cb.value);
+    });
 
+    // Build payload — strip commas from all numeric fields before submitting
     var payload = {
       ticket_id: ticketId,
       token: token,
@@ -303,7 +486,8 @@
       total_imps: stripCommas(document.getElementById('total_imps').value).trim(),
     };
 
-    ['youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'].forEach(function(fieldId) {
+    var optionalNumericFields = ['youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'];
+    optionalNumericFields.forEach(function(fieldId) {
       var val = stripCommas(document.getElementById(fieldId).value).trim();
       if (val) payload[fieldId] = val;
     });
@@ -311,11 +495,15 @@
     var franchiseVal = document.getElementById('franchise_artist_name').value.trim();
     if (franchiseVal) payload.franchise_artist_name = franchiseVal;
 
+    // Nielsen dashboard (required radio)
     var nielsenChecked = document.querySelector('input[name="nielsen_dashboard"]:checked');
     if (nielsenChecked) payload.nielsen_dashboard = nielsenChecked.value;
 
-    if (sponsorshipTypes.length > 0) payload.sponsorship_type = sponsorshipTypes;
+    if (sponsorshipTypes.length > 0) {
+      payload.sponsorship_type = sponsorshipTypes;
+    }
 
+    // Submit
     var btn = document.getElementById('submit-btn');
     var statusBox = document.getElementById('status-box');
     btn.disabled = true;
@@ -329,15 +517,17 @@
       body: JSON.stringify(payload)
     })
     .then(function(res) {
-      return res.json().then(function(data) { return { status: res.status, data: data }; });
+      return res.json().then(function(data) {
+        return { status: res.status, data: data };
+      });
     })
     .then(function(result) {
       if (result.status === 200 && result.data.success) {
         document.getElementById('survey-form').style.display = 'none';
         statusBox.className = 'status-box success';
         statusBox.innerHTML =
-          '<h3>Thank you!</h3>' +
-          '<p>Your campaign confirmation has been submitted successfully. Your account manager will review the details shortly.</p>';
+          '<h3>Submission Confirmed</h3>' +
+          '<p>Thank you for submitting the finalized campaign details. The measurement team will be in touch with next steps.</p>';
       } else {
         throw new Error(result.data.error || 'Submission failed. Please try again.');
       }
@@ -351,6 +541,7 @@
         '<p>' + (err.message || 'An unexpected error occurred. Please try again.') + '</p>';
     });
   });
+
 })();
 </script>
 </body>
