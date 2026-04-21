@@ -243,7 +243,7 @@
   <h1>Final Campaign Details Survey</h1>
   <p class="subtitle" id="greeting">Please complete the details below to confirm your campaign parameters.</p>
 
-  <form id="survey-form" novalidate method="post" action="javascript:void(0)">
+  <form id="survey-form" novalidate>
 
     <div class="two-col">
       <div class="field-group">
@@ -355,11 +355,10 @@
   var requesterName = params.get('requester_name') || '';
   var requesterEmail = params.get('requester_email') || '';
 
-  // IMPORTANT: /\+/ and /\// must have backslashes — /+/ and /// are invalid regex
   function generateExpectedToken(tId) {
     var raw = tId + ':' + SURVEY_SHARED_SECRET;
     var b64 = btoa(raw);
-    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    return b64.replace(/+/g, '-').replace(///g, '_').replace(/=/g, '');
   }
 
   if (!ticketId || !token || token !== generateExpectedToken(ticketId)) {
@@ -381,6 +380,7 @@
   numericFieldIds.forEach(function(fieldId) {
     var input = document.getElementById(fieldId);
     if (!input) return;
+
     input.addEventListener('input', function() {
       var cursorPos = input.selectionStart;
       var oldLen = input.value.length;
@@ -489,8 +489,8 @@
         document.getElementById('survey-form').style.display = 'none';
         statusBox.className = 'status-box success';
         statusBox.innerHTML =
-          '<h3>Submission Confirmed</h3>' +
-          '<p>Thank you for submitting the finalized campaign details. The measurement team will be in touch with next steps.</p>';
+          '<h3>You're all set!</h3>' +
+          '<p>Your final campaign details have been submitted. Our team will review and follow up shortly to confirm your measurement setup.</p>';
       } else {
         throw new Error(result.data.error || 'Submission failed. Please try again.');
       }
