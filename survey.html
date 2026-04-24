@@ -590,25 +590,56 @@
         {
           label: 'Always On',
           slug: 'always_on',
-          suboptions: ['Run of Network', 'Genre', 'Mood', 'Daypart', 'Device']
+          suboptions: [
+            'Reach Media',
+            'Run of Network',
+            'Genre',
+            'Demo',
+            'FAST',
+            'Curated Media',
+            'Artists in Cycle',
+            'Vevo Studios',
+            'Rising Artists',
+            'Moments',
+            'Local',
+            'Artist Targeting'
+          ]
         },
         {
           label: 'Inclusive Solutions',
           slug: 'inclusive_solutions',
           suboptions: [
-            'Black History Month', 'Hispanic Heritage Month', 'Pride',
-            'AAPI Heritage Month', "Women's History Month", 'Veterans Day'
+            'Somos Vevo Network',
+            'Vevo BLK Network',
+            'Out Loud',
+            'API Amplified'
           ]
         },
         {
           label: 'Sponsorships',
           slug: 'sponsorships',
-          suboptions: ['Artist Franchise', 'Event or Award Show', 'Holiday', 'Concerts']
+          suboptions: [
+            'Artist Franchise',
+            'Premieres',
+            'Programs',
+            'Custom Artist Takeover',
+            'First Impression Takeover',
+            'Channel Takeover',
+            'Vevo Originals'
+          ]
         },
         {
           label: 'Vevo Evolve',
           slug: 'vevo_evolve',
-          suboptions: ['Vevo CTRL', 'Vevo Verified', 'Vevo Lift', 'Vevo Presents']
+          suboptions: [
+            'Targeting',
+            'Advanced Audiences',
+            'Contextual Targeting',
+            'Creative Match',
+            'Performance',
+            'Reach Forecasting',
+            'Attention Guaranteed'
+          ]
         }
       ];
 
@@ -692,7 +723,6 @@
 
       [1, 2, 3, 4].forEach(function (n) { buildPillarUI(n); });
 
-      // URL params
       var params = new URLSearchParams(window.location.search);
       var ticketId       = params.get('ticket_id')       || '';
       var token          = params.get('token')           || '';
