@@ -232,6 +232,65 @@
       margin-bottom: 16px;
       display: block;
     }
+
+    /* Pillar / sub-option styles */
+    .pillar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .pillar-item {
+      border: 1px solid #d8dcde;
+      border-radius: 4px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .pillar-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      color: #2f3941;
+    }
+
+    .pillar-header input[type="checkbox"] {
+      flex-shrink: 0;
+    }
+
+    .suboption-panel {
+      display: none;
+      padding: 10px 12px 12px 36px;
+      background: #f3f4f6;
+      border-top: 1px solid #d8dcde;
+      border-left: 3px solid #1f73b7;
+    }
+
+    .suboption-panel.visible {
+      display: block;
+    }
+
+    .suboption-panel .checkbox-group {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pillar-error {
+      font-size: 12px;
+      color: #cc3340;
+      padding: 4px 12px 8px 36px;
+      background: #f3f4f6;
+      display: none;
+    }
+
+    .pillar-error.visible {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -244,7 +303,6 @@
 
       <form id="survey-form" novalidate>
 
-        <!-- ── Evergreen Fields ── -->
         <h2>Campaign Details</h2>
 
         <div class="field">
@@ -310,7 +368,7 @@
             <label><input type="checkbox" name="vertical" value="Travel" /> Travel</label>
             <label><input type="checkbox" name="vertical" value="Telecom" /> Telecom</label>
             <label><input type="checkbox" name="vertical" value="Finance/Banking" /> Finance/Banking</label>
-            <label><input type="checkbox" name="vertical" value="Health & Beauty" /> Health &amp; Beauty</label>
+            <label><input type="checkbox" name="vertical" value="Health &amp; Beauty" /> Health &amp; Beauty</label>
             <label><input type="checkbox" name="vertical" value="Cable/Streaming" /> Cable/Streaming</label>
             <label><input type="checkbox" name="vertical" value="Lifestyle" /> Lifestyle</label>
             <label><input type="checkbox" name="vertical" value="Entertainment" /> Entertainment</label>
@@ -347,7 +405,7 @@
         <div class="field">
           <label>Measurement Goals / KPIs</label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="measurement_goals_kpis" value="Reach & Frequency" /> Reach &amp; Frequency</label>
+            <label><input type="checkbox" name="measurement_goals_kpis" value="Reach &amp; Frequency" /> Reach &amp; Frequency</label>
             <label><input type="checkbox" name="measurement_goals_kpis" value="Awareness" /> Awareness</label>
             <label><input type="checkbox" name="measurement_goals_kpis" value="Consideration" /> Consideration</label>
             <label><input type="checkbox" name="measurement_goals_kpis" value="Favorability" /> Favorability</label>
@@ -401,7 +459,6 @@
           <textarea id="additional_context" name="additional_context" rows="3" placeholder="Share any additional details that would help us process your campaign request"></textarea>
         </div>
 
-        <!-- ── Tier Fields ── -->
         <h2>Campaign Tiers</h2>
 
         <!-- Tier 1 -->
@@ -422,13 +479,8 @@
             </div>
           </div>
           <div class="field">
-            <label>Which sponsorships are included?</label>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="tier1_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
-              <label><input type="checkbox" name="tier1_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
-              <label><input type="checkbox" name="tier1_sponsorships" value="Holiday" /> Holiday</label>
-              <label><input type="checkbox" name="tier1_sponsorships" value="Concerts" /> Concerts</label>
-            </div>
+            <label>Sponsorship Pillars</label>
+            <div class="pillar-list" id="tier1-pillar-list"></div>
           </div>
           <div class="field">
             <label for="tier1_franchise_name">Name of Sponsorship Opportunity</label>
@@ -454,13 +506,8 @@
             </div>
           </div>
           <div class="field">
-            <label>Which sponsorships are included?</label>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="tier2_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
-              <label><input type="checkbox" name="tier2_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
-              <label><input type="checkbox" name="tier2_sponsorships" value="Holiday" /> Holiday</label>
-              <label><input type="checkbox" name="tier2_sponsorships" value="Concerts" /> Concerts</label>
-            </div>
+            <label>Sponsorship Pillars</label>
+            <div class="pillar-list" id="tier2-pillar-list"></div>
           </div>
           <div class="field">
             <label for="tier2_franchise_name">Name of Sponsorship Opportunity</label>
@@ -486,13 +533,8 @@
             </div>
           </div>
           <div class="field">
-            <label>Which sponsorships are included?</label>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="tier3_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
-              <label><input type="checkbox" name="tier3_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
-              <label><input type="checkbox" name="tier3_sponsorships" value="Holiday" /> Holiday</label>
-              <label><input type="checkbox" name="tier3_sponsorships" value="Concerts" /> Concerts</label>
-            </div>
+            <label>Sponsorship Pillars</label>
+            <div class="pillar-list" id="tier3-pillar-list"></div>
           </div>
           <div class="field">
             <label for="tier3_franchise_name">Name of Sponsorship Opportunity</label>
@@ -518,13 +560,8 @@
             </div>
           </div>
           <div class="field">
-            <label>Which sponsorships are included?</label>
-            <div class="checkbox-group">
-              <label><input type="checkbox" name="tier4_sponsorships" value="Artist Franchise" /> Artist Franchise</label>
-              <label><input type="checkbox" name="tier4_sponsorships" value="Event or Award Show" /> Event or Award Show</label>
-              <label><input type="checkbox" name="tier4_sponsorships" value="Holiday" /> Holiday</label>
-              <label><input type="checkbox" name="tier4_sponsorships" value="Concerts" /> Concerts</label>
-            </div>
+            <label>Sponsorship Pillars</label>
+            <div class="pillar-list" id="tier4-pillar-list"></div>
           </div>
           <div class="field">
             <label for="tier4_franchise_name">Name of Sponsorship Opportunity</label>
@@ -549,32 +586,136 @@
 
   <script>
     (function () {
+      var PILLARS = [
+        {
+          label: 'Always On',
+          slug: 'always_on',
+          suboptions: ['Run of Network', 'Genre', 'Mood', 'Daypart', 'Device']
+        },
+        {
+          label: 'Inclusive Solutions',
+          slug: 'inclusive_solutions',
+          suboptions: [
+            'Black History Month', 'Hispanic Heritage Month', 'Pride',
+            'AAPI Heritage Month', "Women's History Month", 'Veterans Day'
+          ]
+        },
+        {
+          label: 'Sponsorships',
+          slug: 'sponsorships',
+          suboptions: ['Artist Franchise', 'Event or Award Show', 'Holiday', 'Concerts']
+        },
+        {
+          label: 'Vevo Evolve',
+          slug: 'vevo_evolve',
+          suboptions: ['Vevo CTRL', 'Vevo Verified', 'Vevo Lift', 'Vevo Presents']
+        }
+      ];
+
+      function buildPillarUI(tierNum) {
+        var container = document.getElementById('tier' + tierNum + '-pillar-list');
+        if (!container) return;
+
+        PILLARS.forEach(function (pillar) {
+          var pillarId = 'tier' + tierNum + '_pillar_' + pillar.slug;
+          var panelId  = 'tier' + tierNum + '_panel_' + pillar.slug;
+          var errorId  = 'tier' + tierNum + '_pillarerr_' + pillar.slug;
+
+          var item = document.createElement('div');
+          item.className = 'pillar-item';
+
+          var header = document.createElement('div');
+          header.className = 'pillar-header';
+
+          var cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.id   = pillarId;
+          cb.name  = 'tier' + tierNum + '_sponsorship_pillars';
+          cb.value = pillar.label;
+
+          var lbl = document.createElement('label');
+          lbl.htmlFor = pillarId;
+          lbl.style.fontWeight  = '600';
+          lbl.style.marginBottom = '0';
+          lbl.style.cursor = 'pointer';
+          lbl.textContent = pillar.label;
+
+          header.appendChild(cb);
+          header.appendChild(lbl);
+
+          var panel = document.createElement('div');
+          panel.className = 'suboption-panel';
+          panel.id = panelId;
+
+          var subGroup = document.createElement('div');
+          subGroup.className = 'checkbox-group';
+
+          pillar.suboptions.forEach(function (sub) {
+            var subId = 'tier' + tierNum + '_' + pillar.slug + '_' + sub.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+            var subLabel = document.createElement('label');
+            subLabel.style.fontWeight = '400';
+
+            var subCb = document.createElement('input');
+            subCb.type  = 'checkbox';
+            subCb.id    = subId;
+            subCb.name  = 'tier' + tierNum + '_sponsorship_suboptions_' + pillar.slug;
+            subCb.value = sub;
+
+            subLabel.appendChild(subCb);
+            subLabel.appendChild(document.createTextNode(' ' + sub));
+            subGroup.appendChild(subLabel);
+          });
+
+          panel.appendChild(subGroup);
+
+          var errorEl = document.createElement('div');
+          errorEl.className   = 'pillar-error';
+          errorEl.id          = errorId;
+          errorEl.textContent = 'Select at least one sub-option for ' + pillar.label + '.';
+
+          cb.addEventListener('change', function () {
+            if (cb.checked) {
+              panel.classList.add('visible');
+            } else {
+              panel.classList.remove('visible');
+              panel.querySelectorAll('input[type="checkbox"]').forEach(function (s) { s.checked = false; });
+              errorEl.classList.remove('visible');
+            }
+          });
+
+          item.appendChild(header);
+          item.appendChild(panel);
+          item.appendChild(errorEl);
+          container.appendChild(item);
+        });
+      }
+
+      [1, 2, 3, 4].forEach(function (n) { buildPillarUI(n); });
+
+      // URL params
       var params = new URLSearchParams(window.location.search);
-      var ticketId = params.get('ticket_id') || '';
-      var token = params.get('token') || '';
-      var requesterName = params.get('requester_name') || '';
+      var ticketId       = params.get('ticket_id')       || '';
+      var token          = params.get('token')           || '';
+      var requesterName  = params.get('requester_name')  || '';
       var requesterEmail = params.get('requester_email') || '';
 
-      // Personalize greeting
       if (requesterName) {
         document.getElementById('greeting').textContent =
           'Hi ' + requesterName + ', please complete this survey to help us process your campaign request.';
       }
 
-      var form = document.getElementById('survey-form');
-      var submitBtn = document.getElementById('submit-btn');
+      var form        = document.getElementById('survey-form');
+      var submitBtn   = document.getElementById('submit-btn');
       var errorBanner = document.getElementById('error-banner');
       var formWrapper = document.getElementById('form-wrapper');
-      var thankYou = document.getElementById('thank-you');
+      var thankYou    = document.getElementById('thank-you');
 
       function showError(errors) {
         if (typeof errors === 'string') {
           errorBanner.innerHTML = errors;
         } else {
           var html = 'Please complete the following required fields:<ul>';
-          for (var i = 0; i < errors.length; i++) {
-            html += '<li>' + errors[i] + '</li>';
-          }
+          for (var i = 0; i < errors.length; i++) { html += '<li>' + errors[i] + '</li>'; }
           html += '</ul>';
           errorBanner.innerHTML = html;
         }
@@ -590,9 +731,7 @@
       function getCheckboxValues(name) {
         var checked = form.querySelectorAll('input[type="checkbox"][name="' + name + '"]:checked');
         var values = [];
-        for (var i = 0; i < checked.length; i++) {
-          values.push(checked[i].value);
-        }
+        for (var i = 0; i < checked.length; i++) { values.push(checked[i].value); }
         return values;
       }
 
@@ -601,19 +740,45 @@
         return checked ? checked.value : '';
       }
 
+      function collectTierPillarData(tierNum) {
+        var pillars = getCheckboxValues('tier' + tierNum + '_sponsorship_pillars');
+        var suboptionParts = [];
+        PILLARS.forEach(function (pillar) {
+          var subs = getCheckboxValues('tier' + tierNum + '_sponsorship_suboptions_' + pillar.slug);
+          if (subs.length > 0) { suboptionParts.push(pillar.label + ': ' + subs.join(', ')); }
+        });
+        return { pillars: pillars, suboptions: suboptionParts.join(' | ') };
+      }
+
+      function validateTierPillars(tierNum) {
+        var valid = true;
+        PILLARS.forEach(function (pillar) {
+          var cb      = document.getElementById('tier' + tierNum + '_pillar_' + pillar.slug);
+          var errorEl = document.getElementById('tier' + tierNum + '_pillarerr_' + pillar.slug);
+          if (cb && cb.checked) {
+            var subs = getCheckboxValues('tier' + tierNum + '_sponsorship_suboptions_' + pillar.slug);
+            if (subs.length === 0) { errorEl.classList.add('visible'); valid = false; }
+            else { errorEl.classList.remove('visible'); }
+          } else if (errorEl) {
+            errorEl.classList.remove('visible');
+          }
+        });
+        return valid;
+      }
+
       function validate(payload) {
         var errors = [];
-        if (!payload.agency) errors.push('Agency');
-        if (!payload.advertiser) errors.push('Advertiser');
-        if (!payload.buying_model) errors.push('Buying Model');
-        if (!payload.client_history) errors.push('Client History');
-        if (!payload.partnership_type) errors.push('Partnership Type');
-        if (!payload.requester_type) errors.push('Requester Type');
-        if (!payload.boostr_id) errors.push('Boostr ID');
-        if (!payload.vertical || payload.vertical.length === 0) errors.push('Vertical (at least one)');
-        if (!payload.target_audience) errors.push('Target Audience');
-        if (!payload.inventory_type) errors.push('Inventory Type');
-        if (!payload.markets || payload.markets.length === 0) errors.push('Markets (at least one)');
+        if (!payload.agency)              errors.push('Agency');
+        if (!payload.advertiser)          errors.push('Advertiser');
+        if (!payload.buying_model)        errors.push('Buying Model');
+        if (!payload.client_history)      errors.push('Client History');
+        if (!payload.partnership_type)    errors.push('Partnership Type');
+        if (!payload.requester_type)      errors.push('Requester Type');
+        if (!payload.boostr_id)           errors.push('Boostr ID');
+        if (!payload.vertical || payload.vertical.length === 0)                           errors.push('Vertical (at least one)');
+        if (!payload.target_audience)     errors.push('Target Audience');
+        if (!payload.inventory_type)      errors.push('Inventory Type');
+        if (!payload.markets || payload.markets.length === 0)                             errors.push('Markets (at least one)');
         if (!payload.measurement_vendor_requested || payload.measurement_vendor_requested.length === 0) errors.push('Measurement Vendor(s) Requested (at least one)');
         if (!payload.is_linear_tv_running) errors.push('Is Linear TV Running?');
         return errors;
@@ -623,62 +788,73 @@
         e.preventDefault();
         hideError();
 
-        var payload = {
-          ticket_id: ticketId,
-          token: token,
-          requester_name: requesterName,
-          requester_email: requesterEmail,
+        var pillarValid = true;
+        [1, 2, 3, 4].forEach(function (n) { if (!validateTierPillars(n)) pillarValid = false; });
+        if (!pillarValid) {
+          showError('Please select at least one sub-option for each checked sponsorship pillar.');
+          var firstErr = form.querySelector('.pillar-error.visible');
+          if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return;
+        }
 
-          // Evergreen fields
-          agency: (document.getElementById('agency').value || '').trim(),
-          advertiser: (document.getElementById('advertiser').value || '').trim(),
-          buying_model: (document.getElementById('buying_model').value || '').trim(),
-          client_history: (document.getElementById('client_history').value || '').trim(),
-          partnership_type: (document.getElementById('partnership_type').value || '').trim(),
-          requester_type: (document.getElementById('requester_type').value || '').trim(),
-          boostr_id: (document.getElementById('boostr_id').value || '').trim(),
-          vertical: getCheckboxValues('vertical'),
-          target_audience: (document.getElementById('target_audience').value || '').trim(),
-          inventory_type: (document.getElementById('inventory_type').value || '').trim(),
-          markets: getCheckboxValues('markets'),
-          measurement_goals_kpis: getCheckboxValues('measurement_goals_kpis'),
+        var t1 = collectTierPillarData(1);
+        var t2 = collectTierPillarData(2);
+        var t3 = collectTierPillarData(3);
+        var t4 = collectTierPillarData(4);
+
+        var payload = {
+          ticket_id: ticketId, token: token,
+          requester_name: requesterName, requester_email: requesterEmail,
+
+          agency:            (document.getElementById('agency').value || '').trim(),
+          advertiser:        (document.getElementById('advertiser').value || '').trim(),
+          buying_model:      (document.getElementById('buying_model').value || '').trim(),
+          client_history:    (document.getElementById('client_history').value || '').trim(),
+          partnership_type:  (document.getElementById('partnership_type').value || '').trim(),
+          requester_type:    (document.getElementById('requester_type').value || '').trim(),
+          boostr_id:         (document.getElementById('boostr_id').value || '').trim(),
+          vertical:          getCheckboxValues('vertical'),
+          target_audience:   (document.getElementById('target_audience').value || '').trim(),
+          inventory_type:    (document.getElementById('inventory_type').value || '').trim(),
+          markets:           getCheckboxValues('markets'),
+          measurement_goals_kpis:       getCheckboxValues('measurement_goals_kpis'),
           measurement_vendor_requested: getCheckboxValues('measurement_vendor_requested'),
-          dcm_vast_tags: getCheckboxValues('dcm_vast_tags'),
+          dcm_vast_tags:     getCheckboxValues('dcm_vast_tags'),
           client_led_reporting: getRadioValue('client_led_reporting'),
           is_linear_tv_running: (document.getElementById('linear_tv').value || '').trim(),
           additional_context: (document.getElementById('additional_context').value || '').trim(),
 
-          // Tier fields
-          tier1_spend: (document.getElementById('tier1_spend').value || '').trim(),
-          tier1_campaign_start: (document.getElementById('tier1_campaign_start').value || '').trim(),
-          tier1_campaign_end: (document.getElementById('tier1_campaign_end').value || '').trim(),
-          tier1_sponsorships: getCheckboxValues('tier1_sponsorships'),
-          tier1_franchise_name: (document.getElementById('tier1_franchise_name').value || '').trim(),
+          tier1_spend:                  (document.getElementById('tier1_spend').value || '').trim(),
+          tier1_campaign_start:         (document.getElementById('tier1_campaign_start').value || '').trim(),
+          tier1_campaign_end:           (document.getElementById('tier1_campaign_end').value || '').trim(),
+          tier1_sponsorship_pillars:    t1.pillars,
+          tier1_sponsorship_suboptions: t1.suboptions,
+          tier1_franchise_name:         (document.getElementById('tier1_franchise_name').value || '').trim(),
 
-          tier2_spend: (document.getElementById('tier2_spend').value || '').trim(),
-          tier2_campaign_start: (document.getElementById('tier2_campaign_start').value || '').trim(),
-          tier2_campaign_end: (document.getElementById('tier2_campaign_end').value || '').trim(),
-          tier2_sponsorships: getCheckboxValues('tier2_sponsorships'),
-          tier2_franchise_name: (document.getElementById('tier2_franchise_name').value || '').trim(),
+          tier2_spend:                  (document.getElementById('tier2_spend').value || '').trim(),
+          tier2_campaign_start:         (document.getElementById('tier2_campaign_start').value || '').trim(),
+          tier2_campaign_end:           (document.getElementById('tier2_campaign_end').value || '').trim(),
+          tier2_sponsorship_pillars:    t2.pillars,
+          tier2_sponsorship_suboptions: t2.suboptions,
+          tier2_franchise_name:         (document.getElementById('tier2_franchise_name').value || '').trim(),
 
-          tier3_spend: (document.getElementById('tier3_spend').value || '').trim(),
-          tier3_campaign_start: (document.getElementById('tier3_campaign_start').value || '').trim(),
-          tier3_campaign_end: (document.getElementById('tier3_campaign_end').value || '').trim(),
-          tier3_sponsorships: getCheckboxValues('tier3_sponsorships'),
-          tier3_franchise_name: (document.getElementById('tier3_franchise_name').value || '').trim(),
+          tier3_spend:                  (document.getElementById('tier3_spend').value || '').trim(),
+          tier3_campaign_start:         (document.getElementById('tier3_campaign_start').value || '').trim(),
+          tier3_campaign_end:           (document.getElementById('tier3_campaign_end').value || '').trim(),
+          tier3_sponsorship_pillars:    t3.pillars,
+          tier3_sponsorship_suboptions: t3.suboptions,
+          tier3_franchise_name:         (document.getElementById('tier3_franchise_name').value || '').trim(),
 
-          tier4_spend: (document.getElementById('tier4_spend').value || '').trim(),
-          tier4_campaign_start: (document.getElementById('tier4_campaign_start').value || '').trim(),
-          tier4_campaign_end: (document.getElementById('tier4_campaign_end').value || '').trim(),
-          tier4_sponsorships: getCheckboxValues('tier4_sponsorships'),
-          tier4_franchise_name: (document.getElementById('tier4_franchise_name').value || '').trim()
+          tier4_spend:                  (document.getElementById('tier4_spend').value || '').trim(),
+          tier4_campaign_start:         (document.getElementById('tier4_campaign_start').value || '').trim(),
+          tier4_campaign_end:           (document.getElementById('tier4_campaign_end').value || '').trim(),
+          tier4_sponsorship_pillars:    t4.pillars,
+          tier4_sponsorship_suboptions: t4.suboptions,
+          tier4_franchise_name:         (document.getElementById('tier4_franchise_name').value || '').trim()
         };
 
         var validationErrors = validate(payload);
-        if (validationErrors.length > 0) {
-          showError(validationErrors);
-          return;
-        }
+        if (validationErrors.length > 0) { showError(validationErrors); return; }
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Submitting\u2026';
@@ -691,8 +867,7 @@
           .then(function (res) {
             if (!res.ok) {
               return res.text().then(function (text) {
-                var msg = text || ('Request failed with status ' + res.status);
-                throw new Error(msg);
+                throw new Error(text || ('Request failed with status ' + res.status));
               });
             }
             return res.json();
