@@ -108,6 +108,89 @@
       display: block;
     }
 
+    .sponsorship-section {
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+
+    .pillar-row {
+      margin-bottom: 4px;
+    }
+
+    .pillar-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      padding: 4px 0;
+      margin-bottom: 0;
+    }
+
+    .pillar-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #1f73b7;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .sub-options {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+      margin-left: 26px;
+      padding: 8px 10px;
+      background: #f9fafb;
+      border-left: 2px solid #d1d5db;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .sub-options.visible {
+      display: flex;
+    }
+
+    .sub-option-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 400;
+      color: #374151;
+      margin-bottom: 0;
+    }
+
+    .sub-option-label input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: #1f73b7;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .pillar-error {
+      font-size: 12px;
+      color: #ef4444;
+      margin-top: 4px;
+      margin-left: 26px;
+      display: none;
+    }
+
+    .pillar-error.visible {
+      display: block;
+    }
+
+    .pillar-divider {
+      border: none;
+      border-top: 1px solid #f3f4f6;
+      margin: 8px 0;
+    }
+
     .checkbox-group {
       display: flex;
       flex-direction: column;
@@ -121,7 +204,8 @@
       cursor: pointer;
     }
 
-    .checkbox-item input[type="checkbox"] {
+    .checkbox-item input[type="checkbox"],
+    .checkbox-item input[type="radio"] {
       width: 16px;
       height: 16px;
       accent-color: #1f73b7;
@@ -243,7 +327,7 @@
   <h1>Final Campaign Details Survey</h1>
   <p class="subtitle" id="greeting">Please complete the details below to confirm your campaign parameters.</p>
 
-  <form id="survey-form" novalidate method="post" action="javascript:void(0)">
+  <form id="survey-form" method="post" action="javascript:void(0)" novalidate>
 
     <div class="two-col">
       <div class="field-group">
@@ -287,25 +371,87 @@
     </div>
 
     <div class="field-group">
-      <label>Sponsorship Type</label>
-      <div class="checkbox-group">
-        <label class="checkbox-item">
-          <input type="checkbox" name="sponsorship_type" value="Artist Franchise" />
-          <span>Artist Franchise</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="sponsorship_type" value="Event or Award Show" />
-          <span>Event or Award Show</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="sponsorship_type" value="Holiday" />
-          <span>Holiday</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="sponsorship_type" value="Concert" />
-          <span>Concert</span>
-        </label>
+      <label>Ad Products / Sponsorship Type</label>
+      <div class="sponsorship-section" id="sponsorship-section">
+
+        <div class="pillar-row" id="pillar-row-always_on">
+          <label class="pillar-label">
+            <input type="checkbox" name="sponsorship_type" value="Always On" id="pillar_always_on" />
+            Always On
+          </label>
+          <div class="sub-options" id="sub-always_on">
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Reach Media" /> Reach Media</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Run of Network" /> Run of Network</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Genre" /> Genre</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Demo" /> Demo</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="FAST" /> FAST</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Curated Media" /> Curated Media</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Artists in Cycle" /> Artists in Cycle</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Vevo Studios" /> Vevo Studios</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Rising Artists" /> Rising Artists</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Moments" /> Moments</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Local" /> Local</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Always On" value="Artist Targeting" /> Artist Targeting</label>
+          </div>
+          <div class="pillar-error" id="err-pillar-always_on">Select at least one option for Always On.</div>
+        </div>
+
+        <hr class="pillar-divider" />
+
+        <div class="pillar-row" id="pillar-row-inclusive_solutions">
+          <label class="pillar-label">
+            <input type="checkbox" name="sponsorship_type" value="Inclusive Solutions" id="pillar_inclusive_solutions" />
+            Inclusive Solutions
+          </label>
+          <div class="sub-options" id="sub-inclusive_solutions">
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Inclusive Solutions" value="Somos Vevo Network" /> Somos Vevo Network</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Inclusive Solutions" value="Vevo BLK Network" /> Vevo BLK Network</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Inclusive Solutions" value="Out Loud" /> Out Loud</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Inclusive Solutions" value="API Amplified" /> API Amplified</label>
+          </div>
+          <div class="pillar-error" id="err-pillar-inclusive_solutions">Select at least one option for Inclusive Solutions.</div>
+        </div>
+
+        <hr class="pillar-divider" />
+
+        <div class="pillar-row" id="pillar-row-sponsorships">
+          <label class="pillar-label">
+            <input type="checkbox" name="sponsorship_type" value="Sponsorships" id="pillar_sponsorships" />
+            Sponsorships
+          </label>
+          <div class="sub-options" id="sub-sponsorships">
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Sponsorships" value="Artist Franchise" /> Artist Franchise</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Sponsorships" value="Premieres" /> Premieres</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Sponsorships" value="Programs" /> Programs</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Sponsorships" value="Custom Artist Takeover" /> Custom Artist Takeover</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Sponsorships" value="First Impression Takeover" /> First Impression Takeover</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Sponsorships" value="Channel Takeover" /> Channel Takeover</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Sponsorships" value="Vevo Originals" /> Vevo Originals</label>
+          </div>
+          <div class="pillar-error" id="err-pillar-sponsorships">Select at least one option for Sponsorships.</div>
+        </div>
+
+        <hr class="pillar-divider" />
+
+        <div class="pillar-row" id="pillar-row-vevo_evolve">
+          <label class="pillar-label">
+            <input type="checkbox" name="sponsorship_type" value="Vevo Evolve" id="pillar_vevo_evolve" />
+            Vevo Evolve
+          </label>
+          <div class="sub-options" id="sub-vevo_evolve">
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Vevo Evolve" value="Targeting" /> Targeting</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Vevo Evolve" value="Advanced Audiences" /> Advanced Audiences</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Vevo Evolve" value="Contextual Targeting" /> Contextual Targeting</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Vevo Evolve" value="Creative Match" /> Creative Match</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Vevo Evolve" value="Performance" /> Performance</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Vevo Evolve" value="Reach Forecasting" /> Reach Forecasting</label>
+            <label class="sub-option-label"><input type="checkbox" name="sponsorship_sub" data-pillar="Vevo Evolve" value="Attention Guaranteed" /> Attention Guaranteed</label>
+          </div>
+          <div class="pillar-error" id="err-pillar-vevo_evolve">Select at least one option for Vevo Evolve.</div>
+        </div>
+
       </div>
+      <div class="field-error" id="err_sponsorship_type"></div>
     </div>
 
     <div class="field-group franchise-field">
@@ -381,7 +527,6 @@
   numericFieldIds.forEach(function(fieldId) {
     var input = document.getElementById(fieldId);
     if (!input) return;
-
     input.addEventListener('input', function() {
       var cursorPos = input.selectionStart;
       var oldLen = input.value.length;
@@ -404,6 +549,32 @@
         if (errEl) errEl.classList.remove('visible');
       });
     }
+  });
+
+  var PILLAR_ID_MAP = {
+    'Always On': 'always_on',
+    'Inclusive Solutions': 'inclusive_solutions',
+    'Sponsorships': 'sponsorships',
+    'Vevo Evolve': 'vevo_evolve',
+  };
+
+  var pillarCheckboxes = document.querySelectorAll('input[name="sponsorship_type"]');
+
+  pillarCheckboxes.forEach(function(pillarCb) {
+    pillarCb.addEventListener('change', function() {
+      var pillarKey = PILLAR_ID_MAP[pillarCb.value];
+      if (!pillarKey) return;
+      var subDiv = document.getElementById('sub-' + pillarKey);
+      var errDiv = document.getElementById('err-pillar-' + pillarKey);
+      if (pillarCb.checked) {
+        subDiv.classList.add('visible');
+      } else {
+        subDiv.classList.remove('visible');
+        var subs = subDiv.querySelectorAll('input[type="checkbox"]');
+        subs.forEach(function(s) { s.checked = false; });
+        if (errDiv) errDiv.classList.remove('visible');
+      }
+    });
   });
 
   document.getElementById('survey-form').addEventListener('submit', function(e) {
@@ -435,13 +606,39 @@
       nielsenErr.classList.remove('visible');
     }
 
+    var checkedPillars = document.querySelectorAll('input[name="sponsorship_type"]:checked');
+    checkedPillars.forEach(function(pillarCb) {
+      var pillarKey = PILLAR_ID_MAP[pillarCb.value];
+      if (!pillarKey) return;
+      var subDiv = document.getElementById('sub-' + pillarKey);
+      var errDiv = document.getElementById('err-pillar-' + pillarKey);
+      var checkedSubs = subDiv.querySelectorAll('input[type="checkbox"]:checked');
+      if (checkedSubs.length === 0) {
+        if (errDiv) errDiv.classList.add('visible');
+        valid = false;
+      } else {
+        if (errDiv) errDiv.classList.remove('visible');
+      }
+    });
+
     if (!valid) return;
 
-    var sponsorshipCheckboxes = document.querySelectorAll('input[name="sponsorship_type"]:checked');
     var sponsorshipTypes = [];
-    sponsorshipCheckboxes.forEach(function(cb) {
-      sponsorshipTypes.push(cb.value);
+    checkedPillars.forEach(function(cb) { sponsorshipTypes.push(cb.value); });
+
+    var subSelectionParts = [];
+    sponsorshipTypes.forEach(function(pillarValue) {
+      var pillarKey = PILLAR_ID_MAP[pillarValue];
+      if (!pillarKey) return;
+      var subDiv = document.getElementById('sub-' + pillarKey);
+      var checkedSubs = subDiv.querySelectorAll('input[type="checkbox"]:checked');
+      var subValues = [];
+      checkedSubs.forEach(function(s) { subValues.push(s.value); });
+      if (subValues.length > 0) {
+        subSelectionParts.push(pillarValue + ': ' + subValues.join(', '));
+      }
     });
+    var sponsorshipSubSelections = subSelectionParts.join(' | ');
 
     var payload = {
       ticket_id: ticketId,
@@ -452,8 +649,7 @@
       total_imps: stripCommas(document.getElementById('total_imps').value).trim(),
     };
 
-    var optionalNumericFields = ['youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'];
-    optionalNumericFields.forEach(function(fieldId) {
+    ['youtube_dm_imps', 'youtube_ctv_imps', 'off_youtube_ctv_imps'].forEach(function(fieldId) {
       var val = stripCommas(document.getElementById(fieldId).value).trim();
       if (val) payload[fieldId] = val;
     });
@@ -464,9 +660,8 @@
     var nielsenChecked = document.querySelector('input[name="nielsen_dashboard"]:checked');
     if (nielsenChecked) payload.nielsen_dashboard = nielsenChecked.value;
 
-    if (sponsorshipTypes.length > 0) {
-      payload.sponsorship_type = sponsorshipTypes;
-    }
+    if (sponsorshipTypes.length > 0) payload.sponsorship_type = sponsorshipTypes;
+    if (sponsorshipSubSelections) payload.sponsorship_sub_selections = sponsorshipSubSelections;
 
     var btn = document.getElementById('submit-btn');
     var statusBox = document.getElementById('status-box');
@@ -481,9 +676,7 @@
       body: JSON.stringify(payload)
     })
     .then(function(res) {
-      return res.json().then(function(data) {
-        return { status: res.status, data: data };
-      });
+      return res.json().then(function(data) { return { status: res.status, data: data }; });
     })
     .then(function(result) {
       if (result.status === 200 && result.data.success) {
