@@ -233,7 +233,7 @@
       display: block;
     }
 
-    /* Pillar / sub-option styles */
+    /* ── Pillar / sub-option styles ── */
     .pillar-list {
       display: flex;
       flex-direction: column;
@@ -451,7 +451,7 @@
         </div>
 
         <div class="field">
-          <label>Will there be client-led reporting?</label>
+          <label>Will there be client-led measurement?</label>
           <div class="radio-group">
             <label><input type="radio" name="client_led_reporting" value="Yes" /> Yes</label>
             <label><input type="radio" name="client_led_reporting" value="No" /> No</label>
@@ -600,38 +600,60 @@
 
   <script>
     (function () {
-      // Pillar / sub-option configuration
+      // ── Pillar / sub-option configuration ──
       var PILLARS = [
         {
           label: 'Always On',
           slug: 'always_on',
           suboptions: [
-            'Reach Media','Run of Network','Genre','Demo','FAST',
-            'Curated Media','Artists in Cycle','Vevo Studios',
-            'Rising Artists','Moments','Local','Artist Targeting'
+            'Reach Media',
+            'Run of Network',
+            'Genre',
+            'Demo',
+            'FAST',
+            'Curated Media',
+            'Artists in Cycle',
+            'Vevo Studios',
+            'Rising Artists',
+            'Moments',
+            'Local',
+            'Artist Targeting'
           ]
         },
         {
           label: 'Inclusive Solutions',
           slug: 'inclusive_solutions',
           suboptions: [
-            'Somos Vevo Network','Vevo BLK Network','Out Loud','API Amplified'
+            'Somos Vevo Network',
+            'Vevo BLK Network',
+            'Out Loud',
+            'API Amplified'
           ]
         },
         {
           label: 'Sponsorships',
           slug: 'sponsorships',
           suboptions: [
-            'Artist Franchise','Premieres','Programs','Custom Artist Takeover',
-            'First Impression Takeover','Channel Takeover','Vevo Originals'
+            'Artist Franchise',
+            'Premieres',
+            'Programs',
+            'Custom Artist Takeover',
+            'First Impression Takeover',
+            'Channel Takeover',
+            'Vevo Originals'
           ]
         },
         {
           label: 'Vevo Evolve',
           slug: 'vevo_evolve',
           suboptions: [
-            'Targeting','Advanced Audiences','Contextual Targeting',
-            'Creative Match','Performance','Reach Forecasting','Attention Guaranteed'
+            'Targeting',
+            'Advanced Audiences',
+            'Contextual Targeting',
+            'Creative Match',
+            'Performance',
+            'Reach Forecasting',
+            'Attention Guaranteed'
           ]
         }
       ];
@@ -642,24 +664,26 @@
 
         PILLARS.forEach(function (pillar) {
           var pillarId = 'tier' + tierNum + '_pillar_' + pillar.slug;
-          var panelId  = 'tier' + tierNum + '_panel_'  + pillar.slug;
-          var errorId  = 'tier' + tierNum + '_pillarerr_' + pillar.slug;
+          var panelId = 'tier' + tierNum + '_panel_' + pillar.slug;
+          var errorId = 'tier' + tierNum + '_pillarerr_' + pillar.slug;
 
+          // Outer item
           var item = document.createElement('div');
           item.className = 'pillar-item';
 
+          // Header row (checkbox + label)
           var header = document.createElement('div');
           header.className = 'pillar-header';
 
           var cb = document.createElement('input');
           cb.type = 'checkbox';
-          cb.id   = pillarId;
-          cb.name  = 'tier' + tierNum + '_sponsorship_pillars';
+          cb.id = pillarId;
+          cb.name = 'tier' + tierNum + '_sponsorship_pillars';
           cb.value = pillar.label;
 
           var lbl = document.createElement('label');
           lbl.htmlFor = pillarId;
-          lbl.style.fontWeight  = '600';
+          lbl.style.fontWeight = '600';
           lbl.style.marginBottom = '0';
           lbl.style.cursor = 'pointer';
           lbl.textContent = pillar.label;
@@ -667,6 +691,7 @@
           header.appendChild(cb);
           header.appendChild(lbl);
 
+          // Sub-option panel
           var panel = document.createElement('div');
           panel.className = 'suboption-panel';
           panel.id = panelId;
@@ -680,9 +705,9 @@
             subLabel.style.fontWeight = '400';
 
             var subCb = document.createElement('input');
-            subCb.type  = 'checkbox';
-            subCb.id    = subId;
-            subCb.name  = 'tier' + tierNum + '_sponsorship_suboptions_' + pillar.slug;
+            subCb.type = 'checkbox';
+            subCb.id = subId;
+            subCb.name = 'tier' + tierNum + '_sponsorship_suboptions_' + pillar.slug;
             subCb.value = sub;
 
             subLabel.appendChild(subCb);
@@ -692,17 +717,21 @@
 
           panel.appendChild(subGroup);
 
+          // Inline error
           var errorEl = document.createElement('div');
-          errorEl.className   = 'pillar-error';
-          errorEl.id          = errorId;
+          errorEl.className = 'pillar-error';
+          errorEl.id = errorId;
           errorEl.textContent = 'Select at least one sub-option for ' + pillar.label + '.';
 
+          // Toggle panel on pillar checkbox change
           cb.addEventListener('change', function () {
             if (cb.checked) {
               panel.classList.add('visible');
             } else {
               panel.classList.remove('visible');
-              panel.querySelectorAll('input[type="checkbox"]').forEach(function (s) { s.checked = false; });
+              // Clear sub-selections
+              var subs = panel.querySelectorAll('input[type="checkbox"]');
+              subs.forEach(function (s) { s.checked = false; });
               errorEl.classList.remove('visible');
             }
           });
@@ -714,11 +743,12 @@
         });
       }
 
+      // Build pillar UI for all four tiers
       [1, 2, 3, 4].forEach(function (n) { buildPillarUI(n); });
 
-      // "Other" write-in toggle
+      // ── "Other" write-in toggle ──
       function setupOtherWritein(checkboxId, inputId) {
-        var cb    = document.getElementById(checkboxId);
+        var cb = document.getElementById(checkboxId);
         var input = document.getElementById(inputId);
         if (!cb || !input) return;
         cb.addEventListener('change', function () {
@@ -732,13 +762,13 @@
       }
 
       setupOtherWritein('vertical_other_cb', 'vertical_other_input');
-      setupOtherWritein('vendor_other_cb',   'vendor_other_input');
+      setupOtherWritein('vendor_other_cb', 'vendor_other_input');
 
-      // URL params
-      var params         = new URLSearchParams(window.location.search);
-      var ticketId       = params.get('ticket_id')       || '';
-      var token          = params.get('token')           || '';
-      var requesterName  = params.get('requester_name')  || '';
+      // ── URL params ──
+      var params = new URLSearchParams(window.location.search);
+      var ticketId = params.get('ticket_id') || '';
+      var token = params.get('token') || '';
+      var requesterName = params.get('requester_name') || '';
       var requesterEmail = params.get('requester_email') || '';
 
       if (requesterName) {
@@ -746,18 +776,20 @@
           'Hi ' + requesterName + ', please complete this survey to help us process your campaign request.';
       }
 
-      var form        = document.getElementById('survey-form');
-      var submitBtn   = document.getElementById('submit-btn');
+      var form = document.getElementById('survey-form');
+      var submitBtn = document.getElementById('submit-btn');
       var errorBanner = document.getElementById('error-banner');
       var formWrapper = document.getElementById('form-wrapper');
-      var thankYou    = document.getElementById('thank-you');
+      var thankYou = document.getElementById('thank-you');
 
       function showError(errors) {
         if (typeof errors === 'string') {
           errorBanner.innerHTML = errors;
         } else {
           var html = 'Please complete the following required fields:<ul>';
-          for (var i = 0; i < errors.length; i++) { html += '<li>' + errors[i] + '</li>'; }
+          for (var i = 0; i < errors.length; i++) {
+            html += '<li>' + errors[i] + '</li>';
+          }
           html += '</ul>';
           errorBanner.innerHTML = html;
         }
@@ -772,8 +804,10 @@
 
       function getCheckboxValues(name) {
         var checked = form.querySelectorAll('input[type="checkbox"][name="' + name + '"]:checked');
-        var values  = [];
-        for (var i = 0; i < checked.length; i++) { values.push(checked[i].value); }
+        var values = [];
+        for (var i = 0; i < checked.length; i++) {
+          values.push(checked[i].value);
+        }
         return values;
       }
 
@@ -782,45 +816,59 @@
         return checked ? checked.value : '';
       }
 
+      // Collect pillar + sub-option data for one tier
       function collectTierPillarData(tierNum) {
         var pillars = getCheckboxValues('tier' + tierNum + '_sponsorship_pillars');
         var suboptionParts = [];
         PILLARS.forEach(function (pillar) {
           var subs = getCheckboxValues('tier' + tierNum + '_sponsorship_suboptions_' + pillar.slug);
-          if (subs.length > 0) { suboptionParts.push(pillar.label + ': ' + subs.join(', ')); }
+          if (subs.length > 0) {
+            suboptionParts.push(pillar.label + ': ' + subs.join(', '));
+          }
         });
-        return { pillars: pillars, suboptions: suboptionParts.join(' | ') };
+        return {
+          pillars: pillars,
+          suboptions: suboptionParts.join(' | ')
+        };
       }
 
+      // Validate that every checked pillar has at least one sub-option
       function validateTierPillars(tierNum) {
         var valid = true;
         PILLARS.forEach(function (pillar) {
-          var cb      = document.getElementById('tier' + tierNum + '_pillar_' + pillar.slug);
-          var errorEl = document.getElementById('tier' + tierNum + '_pillarerr_' + pillar.slug);
+          var pillarId = 'tier' + tierNum + '_pillar_' + pillar.slug;
+          var errorId = 'tier' + tierNum + '_pillarerr_' + pillar.slug;
+          var cb = document.getElementById(pillarId);
+          var errorEl = document.getElementById(errorId);
           if (cb && cb.checked) {
             var subs = getCheckboxValues('tier' + tierNum + '_sponsorship_suboptions_' + pillar.slug);
-            if (subs.length === 0) { errorEl.classList.add('visible'); valid = false; }
-            else { errorEl.classList.remove('visible'); }
-          } else if (errorEl) { errorEl.classList.remove('visible'); }
+            if (subs.length === 0) {
+              errorEl.classList.add('visible');
+              valid = false;
+            } else {
+              errorEl.classList.remove('visible');
+            }
+          } else if (errorEl) {
+            errorEl.classList.remove('visible');
+          }
         });
         return valid;
       }
 
       function validate(payload) {
         var errors = [];
-        if (!payload.agency)              errors.push('Agency');
-        if (!payload.advertiser)          errors.push('Advertiser');
-        if (!payload.buying_model)        errors.push('Buying Model');
-        if (!payload.client_history)      errors.push('Client History');
-        if (!payload.partnership_type)    errors.push('Partnership Type');
-        if (!payload.requester_type)      errors.push('Requester Type');
-        if (!payload.boostr_id)           errors.push('Boostr ID');
+        if (!payload.agency) errors.push('Agency');
+        if (!payload.advertiser) errors.push('Advertiser');
+        if (!payload.buying_model) errors.push('Buying Model');
+        if (!payload.client_history) errors.push('Client History');
+        if (!payload.partnership_type) errors.push('Partnership Type');
+        if (!payload.requester_type) errors.push('Requester Type');
+        if (!payload.boostr_id) errors.push('Boostr ID');
         if (!payload.vertical || payload.vertical.length === 0) errors.push('Vertical (at least one)');
-        if (!payload.target_audience)     errors.push('Target Audience');
-        if (!payload.inventory_type)      errors.push('Inventory Type');
-        if (!payload.markets || payload.markets.length === 0)   errors.push('Markets (at least one)');
-        if (!payload.measurement_vendor_requested || payload.measurement_vendor_requested.length === 0)
-          errors.push('Measurement Vendor(s) Requested (at least one)');
+        if (!payload.target_audience) errors.push('Target Audience');
+        if (!payload.inventory_type) errors.push('Inventory Type');
+        if (!payload.markets || payload.markets.length === 0) errors.push('Markets (at least one)');
+        if (!payload.measurement_vendor_requested || payload.measurement_vendor_requested.length === 0) errors.push('Measurement Vendor(s) Requested (at least one)');
         if (!payload.is_linear_tv_running) errors.push('Is Linear TV Running?');
         return errors;
       }
@@ -829,10 +877,14 @@
         e.preventDefault();
         hideError();
 
+        // Validate pillar sub-options first
         var pillarValid = true;
-        [1, 2, 3, 4].forEach(function (n) { if (!validateTierPillars(n)) pillarValid = false; });
+        [1, 2, 3, 4].forEach(function (n) {
+          if (!validateTierPillars(n)) pillarValid = false;
+        });
         if (!pillarValid) {
           showError('Please select at least one sub-option for each checked sponsorship pillar.');
+          // Scroll to first pillar error
           var firstErr = form.querySelector('.pillar-error.visible');
           if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           return;
@@ -844,63 +896,70 @@
         var t4 = collectTierPillarData(4);
 
         var payload = {
-          ticket_id: ticketId, token: token,
-          requester_name: requesterName, requester_email: requesterEmail,
+          ticket_id: ticketId,
+          token: token,
+          requester_name: requesterName,
+          requester_email: requesterEmail,
 
-          agency:           (document.getElementById('agency').value           || '').trim(),
-          advertiser:       (document.getElementById('advertiser').value       || '').trim(),
-          buying_model:     (document.getElementById('buying_model').value     || '').trim(),
-          client_history:   (document.getElementById('client_history').value   || '').trim(),
+          // Evergreen fields
+          agency: (document.getElementById('agency').value || '').trim(),
+          advertiser: (document.getElementById('advertiser').value || '').trim(),
+          buying_model: (document.getElementById('buying_model').value || '').trim(),
+          client_history: (document.getElementById('client_history').value || '').trim(),
           partnership_type: (document.getElementById('partnership_type').value || '').trim(),
-          requester_type:   (document.getElementById('requester_type').value   || '').trim(),
-          boostr_id:        (document.getElementById('boostr_id').value        || '').trim(),
-          vertical:         getCheckboxValues('vertical'),
-          vertical_other:   (document.getElementById('vertical_other_input').value || '').trim(),
-          target_audience:  (document.getElementById('target_audience').value  || '').trim(),
-          inventory_type:   (document.getElementById('inventory_type').value   || '').trim(),
-          markets:                    getCheckboxValues('markets'),
-          measurement_goals_kpis:     getCheckboxValues('measurement_goals_kpis'),
+          requester_type: (document.getElementById('requester_type').value || '').trim(),
+          boostr_id: (document.getElementById('boostr_id').value || '').trim(),
+          vertical: getCheckboxValues('vertical'),
+          vertical_other: (document.getElementById('vertical_other_input').value || '').trim(),
+          target_audience: (document.getElementById('target_audience').value || '').trim(),
+          inventory_type: (document.getElementById('inventory_type').value || '').trim(),
+          markets: getCheckboxValues('markets'),
+          measurement_goals_kpis: getCheckboxValues('measurement_goals_kpis'),
           measurement_vendor_requested: getCheckboxValues('measurement_vendor_requested'),
-          measurement_vendor_other:   (document.getElementById('vendor_other_input').value || '').trim(),
-          dcm_vast_tags:              getCheckboxValues('dcm_vast_tags'),
-          client_led_reporting:       getRadioValue('client_led_reporting'),
-          is_linear_tv_running:       (document.getElementById('linear_tv').value || '').trim(),
-          additional_context:         (document.getElementById('additional_context').value || '').trim(),
+          measurement_vendor_other: (document.getElementById('vendor_other_input').value || '').trim(),
+          dcm_vast_tags: getCheckboxValues('dcm_vast_tags'),
+          client_led_reporting: getRadioValue('client_led_reporting'),
+          is_linear_tv_running: (document.getElementById('linear_tv').value || '').trim(),
+          additional_context: (document.getElementById('additional_context').value || '').trim(),
 
-          tier1_spend:                (document.getElementById('tier1_spend').value           || '').trim(),
-          tier1_campaign_start:       (document.getElementById('tier1_campaign_start').value  || '').trim(),
-          tier1_campaign_end:         (document.getElementById('tier1_campaign_end').value    || '').trim(),
-          tier1_sponsorship_pillars:  t1.pillars,
+          // Tier fields
+          tier1_spend: (document.getElementById('tier1_spend').value || '').trim(),
+          tier1_campaign_start: (document.getElementById('tier1_campaign_start').value || '').trim(),
+          tier1_campaign_end: (document.getElementById('tier1_campaign_end').value || '').trim(),
+          tier1_sponsorship_pillars: t1.pillars,
           tier1_sponsorship_suboptions: t1.suboptions,
-          tier1_franchise_name:       (document.getElementById('tier1_franchise_name').value  || '').trim(),
+          tier1_franchise_name: (document.getElementById('tier1_franchise_name').value || '').trim(),
 
-          tier2_spend:                (document.getElementById('tier2_spend').value           || '').trim(),
-          tier2_campaign_start:       (document.getElementById('tier2_campaign_start').value  || '').trim(),
-          tier2_campaign_end:         (document.getElementById('tier2_campaign_end').value    || '').trim(),
-          tier2_sponsorship_pillars:  t2.pillars,
+          tier2_spend: (document.getElementById('tier2_spend').value || '').trim(),
+          tier2_campaign_start: (document.getElementById('tier2_campaign_start').value || '').trim(),
+          tier2_campaign_end: (document.getElementById('tier2_campaign_end').value || '').trim(),
+          tier2_sponsorship_pillars: t2.pillars,
           tier2_sponsorship_suboptions: t2.suboptions,
-          tier2_franchise_name:       (document.getElementById('tier2_franchise_name').value  || '').trim(),
+          tier2_franchise_name: (document.getElementById('tier2_franchise_name').value || '').trim(),
 
-          tier3_spend:                (document.getElementById('tier3_spend').value           || '').trim(),
-          tier3_campaign_start:       (document.getElementById('tier3_campaign_start').value  || '').trim(),
-          tier3_campaign_end:         (document.getElementById('tier3_campaign_end').value    || '').trim(),
-          tier3_sponsorship_pillars:  t3.pillars,
+          tier3_spend: (document.getElementById('tier3_spend').value || '').trim(),
+          tier3_campaign_start: (document.getElementById('tier3_campaign_start').value || '').trim(),
+          tier3_campaign_end: (document.getElementById('tier3_campaign_end').value || '').trim(),
+          tier3_sponsorship_pillars: t3.pillars,
           tier3_sponsorship_suboptions: t3.suboptions,
-          tier3_franchise_name:       (document.getElementById('tier3_franchise_name').value  || '').trim(),
+          tier3_franchise_name: (document.getElementById('tier3_franchise_name').value || '').trim(),
 
-          tier4_spend:                (document.getElementById('tier4_spend').value           || '').trim(),
-          tier4_campaign_start:       (document.getElementById('tier4_campaign_start').value  || '').trim(),
-          tier4_campaign_end:         (document.getElementById('tier4_campaign_end').value    || '').trim(),
-          tier4_sponsorship_pillars:  t4.pillars,
+          tier4_spend: (document.getElementById('tier4_spend').value || '').trim(),
+          tier4_campaign_start: (document.getElementById('tier4_campaign_start').value || '').trim(),
+          tier4_campaign_end: (document.getElementById('tier4_campaign_end').value || '').trim(),
+          tier4_sponsorship_pillars: t4.pillars,
           tier4_sponsorship_suboptions: t4.suboptions,
-          tier4_franchise_name:       (document.getElementById('tier4_franchise_name').value  || '').trim()
+          tier4_franchise_name: (document.getElementById('tier4_franchise_name').value || '').trim()
         };
 
         var validationErrors = validate(payload);
-        if (validationErrors.length > 0) { showError(validationErrors); return; }
+        if (validationErrors.length > 0) {
+          showError(validationErrors);
+          return;
+        }
 
-        submitBtn.disabled     = true;
-        submitBtn.textContent  = 'Submitting\u2026';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting\u2026';
 
         fetch('https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-survey', {
           method: 'POST',
@@ -910,18 +969,19 @@
           .then(function (res) {
             if (!res.ok) {
               return res.text().then(function (text) {
-                throw new Error(text || ('Request failed with status ' + res.status));
+                var msg = text || ('Request failed with status ' + res.status);
+                throw new Error(msg);
               });
             }
             return res.json();
           })
           .then(function () {
             formWrapper.style.display = 'none';
-            thankYou.style.display    = 'block';
+            thankYou.style.display = 'block';
           })
           .catch(function (err) {
             showError(err.message || 'An unexpected error occurred. Please try again.');
-            submitBtn.disabled    = false;
+            submitBtn.disabled = false;
             submitBtn.textContent = 'Submit Survey';
           });
       });
