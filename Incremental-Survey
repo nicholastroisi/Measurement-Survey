@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incremental Campaign Survey</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); padding: 32px; width: 100%; max-width: 640px; }
+    h1 { font-size: 22px; font-weight: 700; color: #03363d; margin-bottom: 6px; }
+    .subtitle { font-size: 14px; color: #68737d; margin-bottom: 28px; line-height: 1.5; }
+    .field { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #2f3941; margin-bottom: 5px; }
+    label .req { color: #cc3340; margin-left: 2px; }
+    input[type="text"], input[type="date"] { width: 100%; padding: 8px 12px; border: 1px solid #c2c8cc; border-radius: 4px; font-size: 14px; color: #2f3941; outline: none; transition: border-color 0.15s; }
+    input[type="text"]:focus, input[type="date"]:focus { border-color: #1f73b7; box-shadow: 0 0 0 2px rgba(31,115,183,0.2); }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pillar-block { margin-bottom: 14px; }
+    .pillar-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #2f3941; cursor: pointer; padding: 8px 10px; border-radius: 4px; background: #f8f9f9; border: 1px solid #e9ebed; }
+    .pillar-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #1f73b7; }
+    .sub-options { display: none; padding: 10px 12px 4px 32px; flex-wrap: wrap; gap: 6px; }
+    .sub-options.visible { display: flex; }
+    .sub-option { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #49545c; cursor: pointer; white-space: nowrap; }
+    .sub-option input[type="checkbox"] { width: 14px; height: 14px; accent-color: #1f73b7; }
+    .radio-group { display: flex; gap: 20px; margin-top: 4px; }
+    .radio-option { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #2f3941; cursor: pointer; }
+    .radio-option input[type="radio"] { width: 16px; height: 16px; accent-color: #1f73b7; }
+    .error-msg { color: #cc3340; font-size: 12px; margin-top: 4px; display: none; }
+    .submit-btn { width: 100%; padding: 12px; background: #1f73b7; color: #fff; border: none; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 28px; transition: background 0.15s; }
+    .submit-btn:hover { background: #144a75; }
+    .submit-btn:disabled { background: #adc8e0; cursor: not-allowed; }
+    .success-screen { display: none; text-align: center; padding: 32px 0; }
+    .success-screen .check { font-size: 48px; margin-bottom: 16px; }
+    .success-screen h2 { font-size: 20px; color: #228f67; margin-bottom: 8px; }
+    .success-screen p { font-size: 14px; color: #68737d; }
+    .global-error { background: #fff0f1; border: 1px solid #e34f32; border-radius: 4px; padding: 12px; color: #8c1a11; font-size: 13px; margin-bottom: 16px; display: none; }
+    .invalid-link { text-align: center; padding: 32px 0; }
+    .invalid-link h2 { font-size: 20px; color: #cc3340; margin-bottom: 8px; }
+    .invalid-link p { font-size: 14px; color: #68737d; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div id="invalid-screen" style="display:none;">
+    <div class="invalid-link">
+      <h2>Invalid Survey Link</h2>
+      <p>This survey link is missing required parameters. Please use the link provided in your support ticket.</p>
+    </div>
+  </div>
+
+  <div id="form-screen">
+    <h1>Incremental Campaign Survey</h1>
+    <p class="subtitle">Please complete the details below to confirm your incremental campaign parameters.</p>
+    <div class="global-error" id="global-error"></div>
+    <form id="survey-form" novalidate>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="flight_start_date">Flight Start Date<span class="req">*</span></label>
+          <input type="date" id="flight_start_date" name="flight_start_date" required>
+          <div class="error-msg" id="err-flight_start_date">Required.</div>
+        </div>
+        <div class="field">
+          <label for="flight_end_date">Flight End Date<span class="req">*</span></label>
+          <input type="date" id="flight_end_date" name="flight_end_date" required>
+          <div class="error-msg" id="err-flight_end_date">Required.</div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="total_spend">Total Spend<span class="req">*</span></label>
+        <input type="text" id="total_spend" name="total_spend" inputmode="numeric" placeholder="e.g. 250,000" required>
+        <div class="error-msg" id="err-total_spend">Required.</div>
+      </div>
+
+      <div class="field">
+        <label for="total_imps">Total Imps<span class="req">*</span></label>
+        <input type="text" id="total_imps" name="total_imps" inputmode="numeric" placeholder="e.g. 125000000" required>
+        <div class="error-msg" id="err-total_imps">Required.</div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label for="youtube_dm_imps">YouTube D/M Imps</label>
+          <input type="text" id="youtube_dm_imps" name="youtube_dm_imps" inputmode="numeric" placeholder="optional">
+        </div>
+        <div class="field">
+          <label for="youtube_ctv_imps">YouTube CTV Imps</label>
+          <input type="text" id="youtube_ctv_imps" name="youtube_ctv_imps" inputmode="numeric" placeholder="optional">
+        </div>
+      </div>
+      <div class="field">
+        <label for="off_youtube_ctv_imps">Off-YouTube CTV Imps</label>
+        <input type="text" id="off_youtube_ctv_imps" name="off_youtube_ctv_imps" inputmode="numeric" placeholder="optional">
+      </div>
+
+      <div class="field">
+        <label>Ad Products / Sponsorship Type<span class="req">*</span></label>
+        <div class="error-msg" id="err-sponsorship_type" style="margin-bottom:8px;">Select at least one pillar with a sub-option.</div>
+
+        <div class="pillar-block">
+          <label class="pillar-label">
+            <input type="checkbox" class="pillar-cb" data-pillar="Always On"> Always On
+          </label>
+          <div class="sub-options" id="sub-always-on">
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Reach Media"> Reach Media</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Run of Network"> Run of Network</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Genre"> Genre</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Demo"> Demo</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="FAST"> FAST</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Curated Media"> Curated Media</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Artists in Cycle"> Artists in Cycle</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Vevo Studios"> Vevo Studios</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Rising Artists"> Rising Artists</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Moments"> Moments</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Local"> Local</label>
+            <label class="sub-option"><input type="checkbox" name="sub_always_on" value="Artist Targeting"> Artist Targeting</label>
+          </div>
+        </div>
+
+        <div class="pillar-block">
+          <label class="pillar-label">
+            <input type="checkbox" class="pillar-cb" data-pillar="Inclusive Solutions"> Inclusive Solutions
+          </label>
+          <div class="sub-options" id="sub-inclusive-solutions">
+            <label class="sub-option"><input type="checkbox" name="sub_inclusive_solutions" value="Somos Vevo Network"> Somos Vevo Network</label>
+            <label class="sub-option"><input type="checkbox" name="sub_inclusive_solutions" value="Vevo BLK Network"> Vevo BLK Network</label>
+            <label class="sub-option"><input type="checkbox" name="sub_inclusive_solutions" value="Out Loud"> Out Loud</label>
+            <label class="sub-option"><input type="checkbox" name="sub_inclusive_solutions" value="API Amplified"> API Amplified</label>
+          </div>
+        </div>
+
+        <div class="pillar-block">
+          <label class="pillar-label">
+            <input type="checkbox" class="pillar-cb" data-pillar="Sponsorships"> Sponsorships
+          </label>
+          <div class="sub-options" id="sub-sponsorships">
+            <label class="sub-option"><input type="checkbox" name="sub_sponsorships" value="Artist Franchise"> Artist Franchise</label>
+            <label class="sub-option"><input type="checkbox" name="sub_sponsorships" value="Premieres"> Premieres</label>
+            <label class="sub-option"><input type="checkbox" name="sub_sponsorships" value="Programs"> Programs</label>
+            <label class="sub-option"><input type="checkbox" name="sub_sponsorships" value="Custom Artist Takeover"> Custom Artist Takeover</label>
+            <label class="sub-option"><input type="checkbox" name="sub_sponsorships" value="First Impression Takeover"> First Impression Takeover</label>
+            <label class="sub-option"><input type="checkbox" name="sub_sponsorships" value="Channel Takeover"> Channel Takeover</label>
+            <label class="sub-option"><input type="checkbox" name="sub_sponsorships" value="Vevo Originals"> Vevo Originals</label>
+          </div>
+        </div>
+
+        <div class="pillar-block">
+          <label class="pillar-label">
+            <input type="checkbox" class="pillar-cb" data-pillar="Vevo Evolve"> Vevo Evolve
+          </label>
+          <div class="sub-options" id="sub-vevo-evolve">
+            <label class="sub-option"><input type="checkbox" name="sub_vevo_evolve" value="Targeting"> Targeting</label>
+            <label class="sub-option"><input type="checkbox" name="sub_vevo_evolve" value="Advanced Audiences"> Advanced Audiences</label>
+            <label class="sub-option"><input type="checkbox" name="sub_vevo_evolve" value="Contextual Targeting"> Contextual Targeting</label>
+            <label class="sub-option"><input type="checkbox" name="sub_vevo_evolve" value="Creative Match"> Creative Match</label>
+            <label class="sub-option"><input type="checkbox" name="sub_vevo_evolve" value="Performance"> Performance</label>
+            <label class="sub-option"><input type="checkbox" name="sub_vevo_evolve" value="Reach Forecasting"> Reach Forecasting</label>
+            <label class="sub-option"><input type="checkbox" name="sub_vevo_evolve" value="Attention Guaranteed"> Attention Guaranteed</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="franchise_artist_name">Ad Products/Sponsorship(s) Included</label>
+        <input type="text" id="franchise_artist_name" name="franchise_artist_name" placeholder="e.g. Taylor Swift Eras Tour">
+      </div>
+
+      <div class="field">
+        <label>Create Client-Facing Nielsen Dashboard? (If applicable)<span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="nielsen_dashboard" value="Yes" required> Yes</label>
+          <label class="radio-option"><input type="radio" name="nielsen_dashboard" value="No"> No</label>
+        </div>
+        <div class="error-msg" id="err-nielsen_dashboard">Please select an option.</div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">Submit Survey</button>
+    </form>
+  </div>
+
+  <div class="success-screen" id="success-screen">
+    <div class="check">&#10003;</div>
+    <h2>Survey Submitted</h2>
+    <p>Thank you! Your incremental campaign details have been received.</p>
+  </div>
+</div>
+
+<script>
+  var params = new URLSearchParams(window.location.search);
+  var ticketId = params.get('ticket_id');
+  var token = params.get('token');
+  var requesterName = params.get('requester_name') || '';
+  var requesterEmail = params.get('requester_email') || '';
+
+  if (!ticketId || !token) {
+    document.getElementById('form-screen').style.display = 'none';
+    document.getElementById('invalid-screen').style.display = 'block';
+  }
+
+  var NETLIFY_URL = 'https://ornate-valkyrie-9df947.netlify.app/.netlify/functions/submit-incremental-survey';
+
+  var pillarMap = {
+    'Always On': 'sub-always-on',
+    'Inclusive Solutions': 'sub-inclusive-solutions',
+    'Sponsorships': 'sub-sponsorships',
+    'Vevo Evolve': 'sub-vevo-evolve',
+  };
+
+  document.querySelectorAll('.pillar-cb').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var pillar = cb.getAttribute('data-pillar');
+      var subId = pillarMap[pillar];
+      var subDiv = document.getElementById(subId);
+      if (cb.checked) {
+        subDiv.classList.add('visible');
+      } else {
+        subDiv.classList.remove('visible');
+        subDiv.querySelectorAll('input[type="checkbox"]').forEach(function(s) { s.checked = false; });
+      }
+    });
+  });
+
+  function showError(id, show) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = show ? 'block' : 'none';
+  }
+
+  function getVal(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  document.getElementById('survey-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var valid = true;
+
+    ['flight_start_date', 'flight_end_date', 'total_spend', 'total_imps'].forEach(function(f) {
+      var v = getVal(f);
+      if (!v) { showError('err-' + f, true); valid = false; } else { showError('err-' + f, false); }
+    });
+
+    var checkedPillars = Array.from(document.querySelectorAll('.pillar-cb:checked'));
+    var sponsorshipValid = true;
+    if (checkedPillars.length === 0) {
+      sponsorshipValid = false;
+    } else {
+      checkedPillars.forEach(function(cb) {
+        var pillar = cb.getAttribute('data-pillar');
+        var subId = pillarMap[pillar];
+        var subDiv = document.getElementById(subId);
+        var checkedSubs = subDiv.querySelectorAll('input[type="checkbox"]:checked');
+        if (checkedSubs.length === 0) sponsorshipValid = false;
+      });
+    }
+    showError('err-sponsorship_type', !sponsorshipValid);
+    if (!sponsorshipValid) valid = false;
+
+    var nielsenVal = document.querySelector('input[name="nielsen_dashboard"]:checked');
+    if (!nielsenVal) { showError('err-nielsen_dashboard', true); valid = false; } else { showError('err-nielsen_dashboard', false); }
+
+    if (!valid) return;
+
+    var sponsorshipTypes = checkedPillars.map(function(cb) { return cb.getAttribute('data-pillar'); });
+    var subSelectionParts = [];
+    checkedPillars.forEach(function(cb) {
+      var pillar = cb.getAttribute('data-pillar');
+      var subId = pillarMap[pillar];
+      var subDiv = document.getElementById(subId);
+      var subs = Array.from(subDiv.querySelectorAll('input[type="checkbox"]:checked')).map(function(s) { return s.value; });
+      if (subs.length > 0) subSelectionParts.push(pillar + ': ' + subs.join(', '));
+    });
+
+    var payload = {
+      ticket_id: ticketId,
+      token: token,
+      requester_name: requesterName,
+      requester_email: requesterEmail,
+      flight_start_date: getVal('flight_start_date'),
+      flight_end_date: getVal('flight_end_date'),
+      total_spend: getVal('total_spend'),
+      total_imps: getVal('total_imps'),
+      youtube_dm_imps: getVal('youtube_dm_imps') || null,
+      youtube_ctv_imps: getVal('youtube_ctv_imps') || null,
+      off_youtube_ctv_imps: getVal('off_youtube_ctv_imps') || null,
+      sponsorship_type: sponsorshipTypes,
+      sponsorship_sub_selections: subSelectionParts.join(' | '),
+      franchise_artist_name: getVal('franchise_artist_name') || null,
+      nielsen_dashboard: nielsenVal ? nielsenVal.value : null,
+    };
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    document.getElementById('global-error').style.display = 'none';
+
+    fetch(NETLIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(function(res) { return res.json().then(function(d) { return { ok: res.ok, data: d }; }); })
+      .then(function(result) {
+        if (result.ok) {
+          document.getElementById('form-screen').style.display = 'none';
+          document.getElementById('success-screen').style.display = 'block';
+        } else {
+          throw new Error(result.data.error || 'Submission failed');
+        }
+      })
+      .catch(function(err) {
+        var ge = document.getElementById('global-error');
+        ge.textContent = 'Submission error: ' + err.message;
+        ge.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Submit Survey';
+      });
+  });
+</script>
+</body>
+</html>
